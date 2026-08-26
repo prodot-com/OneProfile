@@ -11,6 +11,7 @@ export default function Home() {
           </div>
           
           <div>
+            
             <p className="text-sm md:text-base font-semibold text-zinc-500 uppercase tracking-[0.3em]">
               Coming Soon
             </p>
