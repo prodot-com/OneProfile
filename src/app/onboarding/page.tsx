@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { createProfile } from "@/services/profile";
+import { useEffect, useMemo, useState } from "react";
 
-const TOTAL_STEPS = 7;
+const TOTAL_STEPS = 5;
 
 const themes = ["Default", "Dark", "Glass", "Minimal", "Gradient"];
 
@@ -14,15 +15,10 @@ export default function OnboardingPage() {
     displayName: "",
     bio: "",
     website: "",
-    location: "",
-    avatar: "",
     theme: "Default",
-
-    github: "",
-    x: "",
-    linkedin: "",
-    instagram: "",
   });
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState("");
 
   const username = useMemo(() => {
     return form.username.toLowerCase().replace(/[^a-z0-9-]/g, "");
@@ -31,9 +27,11 @@ export default function OnboardingPage() {
   const usernameValid = username.length >= 3 && username.length <= 30;
 
   function next() {
-    if (step < TOTAL_STEPS) {
-      setStep((s) => s + 1);
-    }
+    if (step === 2 && !usernameValid) return;
+
+    if (step === 3 && !form.displayName.trim()) return;
+
+    setStep((s) => Math.min(s + 1, TOTAL_STEPS));
   }
 
   function back() {
@@ -42,39 +40,63 @@ export default function OnboardingPage() {
     }
   }
 
+  useEffect(() => {
+    console.log(form);
+  }, [form]);
+
   function update(key: keyof typeof form, value: string) {
-    setForm((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+    setForm((prev) => ({ ...prev, [key]: value }));
   }
 
   async function finishOnboarding() {
     setLoading(true);
 
     try {
-      /*
-      Replace with your server action later.
+      let avatarUrl = "";
 
-      Example:
+      if (avatarFile) {
+        const body = new FormData();
 
-      await createProfile({
-          username: username,
-          displayName: form.displayName,
-          ...
-      })
-    */
+        body.append("file", avatarFile);
 
-      console.log(form);
+        const upload = await fetch("/api/upload", {
+          method: "POST",
+          body,
+        });
+
+        const image = await upload.json();
+
+        if (!image.success) {
+          throw new Error("Image upload failed.");
+        }
+
+        avatarUrl = image.url;
+      }
+
+      const result = await createProfile({
+        username,
+        displayName: form.displayName,
+        bio: form.bio,
+        website: form.website,
+        avatar: avatarUrl,
+        theme: form.theme,
+      });
+
+      if (!result.success) {
+        alert(result.error);
+        return;
+      }
 
       window.location.href = "/dashboard";
+    } catch (err) {
+      console.error(err);
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <main className="min-h-screen bg-zinc-50">
+    <main className="min-h-screen bg-zinc-50 text-black">
       {/* Header */}
 
       <div className="border-b bg-white">
@@ -257,19 +279,6 @@ export default function OnboardingPage() {
                     className="w-full rounded-xl border px-4 py-3 outline-none"
                   />
                 </div>
-
-                <div>
-                  <label className="mb-2 block text-sm font-medium">
-                    Location
-                  </label>
-
-                  <input
-                    value={form.location}
-                    onChange={(e) => update("location", e.target.value)}
-                    placeholder="India"
-                    className="w-full rounded-xl border px-4 py-3 outline-none"
-                  />
-                </div>
               </div>
 
               <div className="flex justify-between">
@@ -279,6 +288,7 @@ export default function OnboardingPage() {
 
                 <button
                   onClick={next}
+                  disabled={!form.displayName.trim()}
                   className="rounded-xl bg-black px-6 py-3 text-white"
                 >
                   Continue
@@ -303,9 +313,9 @@ export default function OnboardingPage() {
 
               <div className="flex flex-col items-center">
                 <div className="mb-6 flex h-36 w-36 items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-zinc-300 bg-zinc-100">
-                  {form.avatar ? (
+                  {avatarPreview ? (
                     <img
-                      src={form.avatar}
+                      src={avatarPreview}
                       alt="Avatar Preview"
                       className="h-full w-full object-cover"
                     />
@@ -322,17 +332,11 @@ export default function OnboardingPage() {
 
                     if (!file) return;
 
-                    update("avatar", URL.createObjectURL(file));
+                    setAvatarFile(file);
+
+                    setAvatarPreview(URL.createObjectURL(file));
                   }}
                 />
-
-                <button
-                  type="button"
-                  onClick={() => update("avatar", "")}
-                  className="mt-3 text-sm text-zinc-500 hover:text-black"
-                >
-                  Skip for now
-                </button>
               </div>
 
               <div className="flex justify-between">
@@ -352,7 +356,7 @@ export default function OnboardingPage() {
 
           {/* STEP 5 */}
 
-          {step === 5 && (
+          {/* {step === 5 && (
             <section className="space-y-8">
               <div>
                 <h2 className="text-3xl font-bold">Choose your theme</h2>
@@ -396,11 +400,11 @@ export default function OnboardingPage() {
                 </button>
               </div>
             </section>
-          )}
+          )} */}
 
           {/* STEP 6 */}
 
-          {step === 6 && (
+          {/* {step === 5 && (
             <section className="space-y-8">
               <div>
                 <h2 className="text-3xl font-bold">Connect your socials</h2>
@@ -477,11 +481,11 @@ export default function OnboardingPage() {
                 </button>
               </div>
             </section>
-          )}
+          )} */}
 
           {/* STEP 7 */}
 
-          {step === 7 && (
+          {step === 5 && (
             <section className="space-y-8">
               <div>
                 <h2 className="text-3xl font-bold">Review your profile</h2>
@@ -495,10 +499,10 @@ export default function OnboardingPage() {
               <div className="rounded-2xl border bg-zinc-50 p-6">
                 <div className="flex items-center gap-5">
                   <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-zinc-200">
-                    {form.avatar ? (
+                    {avatarPreview ? (
                       <img
-                        src={form.avatar}
-                        alt=""
+                        src={avatarPreview}
+                        alt={form.displayName || "Avatar"}
                         className="h-full w-full object-cover"
                       />
                     ) : (
@@ -511,7 +515,7 @@ export default function OnboardingPage() {
                       {form.displayName || "Your Name"}
                     </h3>
 
-                    <p className="text-zinc-500">@{username}</p>
+                    <p className="text-zinc-500">@{username || "username"}</p>
                   </div>
                 </div>
 
@@ -522,7 +526,9 @@ export default function OnboardingPage() {
                 <div className="mt-6 rounded-xl bg-white p-4">
                   <p className="text-sm text-zinc-500">Public URL</p>
 
-                  <p className="mt-1 font-medium">oneprofile.app/{username}</p>
+                  <p className="mt-1 font-medium">
+                    oneprofile.app/{username || "username"}
+                  </p>
                 </div>
 
                 <div className="mt-6 grid grid-cols-2 gap-4">
@@ -535,7 +541,7 @@ export default function OnboardingPage() {
                   <div>
                     <p className="text-xs uppercase text-zinc-500">Website</p>
 
-                    <p className="font-medium break-all">
+                    <p className="break-all font-medium">
                       {form.website || "-"}
                     </p>
                   </div>
