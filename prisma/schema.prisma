@@ -77,6 +77,7 @@ model Profile {
   bio         String?
   avatar      String?
   banner      String?
+  views       Int @default(0)
   isPublic    Boolean      @default(true)
   verified    Boolean      @default(false)
   createdAt   DateTime     @default(now())
