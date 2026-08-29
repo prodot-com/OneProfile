@@ -9,7 +9,7 @@ export default async function DashboardLayout({
   children: ReactNode;
 }) {
   const { user, profile } = await requireUserAndProfile();
-  console.log("Layout profile:", profile);
+
   return (
     <div className="flex h-screen bg-zinc-50/50 overflow-hidden text-zinc-900 font-sans">
       <Sidebar profile={profile} className="hidden md:flex" />

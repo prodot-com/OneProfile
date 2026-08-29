@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import EmptyLinks from "./EmptyLinks";
 
 interface LinkItem {
   id: string;
@@ -46,9 +45,7 @@ export default function LinksSection({ initialLinks }: { initialLinks: LinkItem[
       </div>
 
       <div className="flex-1 bg-zinc-50/30">
-        {links.length === 0 ? (
-          <EmptyLinks />
-        ) : filteredLinks.length === 0 ? (
+        {filteredLinks.length === 0 ? (
           <div className="p-12 text-center text-zinc-500 text-sm">
             No links match your search.
           </div>

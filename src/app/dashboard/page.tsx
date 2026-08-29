@@ -1,9 +1,10 @@
-import AnalyticsCard from "@/components/dashboard/AnalyticsCard";
+// import AnalyticsCard from "@/components/dashboard/AnalyticsCard";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import LinksSection from "@/components/dashboard/LinksSection";
 import QuickActions from "@/components/dashboard/QuickActions";
-import RecentActivity from "@/components/dashboard/RecentActivity";
-import StatsCards from "@/components/dashboard/StatsCards";
+import { requireUserAndProfile } from "@/lib/session";
+// import RecentActivity from "@/components/dashboard/RecentActivity";
+// import StatsCards from "@/components/dashboard/StatsCards";
 
 
 // Simulated Prisma data fetch
@@ -33,20 +34,18 @@ async function getDashboardData() {
 }
 
 export default async function DashboardPage() {
-  const data = await getDashboardData();
+  const { user, profile } = await requireUserAndProfile();
+  const data =await getDashboardData()
 
   return (
     <>
-      <DashboardHeader profile={data.profile} />
-      <StatsCards stats={data.stats} />
+      <DashboardHeader profile={profile} />
       <QuickActions />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
           <LinksSection initialLinks={data.links} />
         </div>
         <div className="space-y-8">
-          <AnalyticsCard />
-          <RecentActivity />
         </div>
       </div>
     </>
