@@ -1,24 +1,201 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { deleteLink, updateLink } from "@/services/Links";
+import { createLink, deleteLink, updateLink } from "@/services/Links";
 import { Link } from "@prisma/client";
-
-// interface LinkData {
-//   id: string;
-//   title: string;
-//   url: string;
-//   description: string | null;
-//   icon: string | null;
-//   active: boolean;
-// }
 
 interface LinkProps {
   open: boolean;
   onClose: () => void;
   link: Link | null;
+}
+interface AddLinkModalProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+export function AddLinkModal({
+  open,
+  onClose,
+}: AddLinkModalProps) {
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+
+  const [title, setTitle] = useState("");
+  const [url, setUrl] = useState("");
+  const [description, setDescription] = useState("");
+  const [icon, setIcon] = useState("");
+  const [active, setActive] = useState(true);
+
+  if (!open) return null;
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    setLoading(true);
+
+    try {
+      const res = await createLink({
+        title,
+        url,
+        description,
+        icon,
+        active,
+      });
+
+      if (!res.success) {
+        alert(res.message);
+        return;
+      }
+
+      setTitle("");
+      setUrl("");
+      setDescription("");
+      setIcon("");
+      setActive(true);
+
+      router.refresh();
+      onClose();
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-5"
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-xl rounded-2xl bg-white shadow-xl"
+      >
+        {/* Header */}
+
+        <div className="flex items-center justify-between border-b p-6">
+          <div>
+            <h2 className="text-xl font-bold">Add New Link</h2>
+
+            <p className="mt-1 text-sm text-zinc-500">
+              Add a new link to your profile.
+            </p>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="rounded-lg p-2 hover:bg-zinc-100"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Form */}
+
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6 p-6"
+        >
+          <div>
+            <label className="mb-2 block text-sm font-medium">
+              Title
+            </label>
+
+            <input
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="GitHub"
+              className="w-full rounded-xl border px-4 py-3 outline-none focus:border-black"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-medium">
+              URL
+            </label>
+
+            <input
+              required
+              type="url"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="https://github.com/username"
+              className="w-full rounded-xl border px-4 py-3 outline-none focus:border-black"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-medium">
+              Description
+            </label>
+
+            <textarea
+              rows={3}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Optional description"
+              className="w-full resize-none rounded-xl border px-4 py-3 outline-none focus:border-black"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-medium">
+              Icon
+            </label>
+
+            <input
+              value={icon}
+              onChange={(e) => setIcon(e.target.value)}
+              placeholder="github"
+              className="w-full rounded-xl border px-4 py-3 outline-none focus:border-black"
+            />
+          </div>
+
+          <div className="flex items-center justify-between rounded-xl border p-4">
+            <div>
+              <h3 className="font-medium">Active</h3>
+
+              <p className="text-sm text-zinc-500">
+                Display this link on your profile.
+              </p>
+            </div>
+
+            <input
+              type="checkbox"
+              checked={active}
+              onChange={(e) => setActive(e.target.checked)}
+              className="h-5 w-5"
+            />
+          </div>
+
+          <div className="flex justify-end gap-3">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={onClose}
+              className="rounded-xl border px-5 py-3"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="rounded-xl bg-black px-6 py-3 text-white disabled:opacity-60"
+            >
+              {loading ? "Creating..." : "Create Link"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }
 
 export function EditLinkModal({ open, onClose, link }: LinkProps) {
@@ -46,6 +223,8 @@ export function EditLinkModal({ open, onClose, link }: LinkProps) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    if(!link)return;
 
     setLoading(true);
 
@@ -199,6 +378,8 @@ export function DeleteLinkModal({ open, link, onClose }: DeleteLinkModalProps) {
 
   async function handleDelete() {
     setLoading(true);
+
+    if(!link)return
 
     try {
       const res = await deleteLink(link.id);

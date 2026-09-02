@@ -4,13 +4,14 @@
 import { requireUserAndProfile } from "@/lib/session";
 import { useState } from "react";
 import { Link } from "@prisma/client";
-import { DeleteLinkModal, EditLinkModal } from "./LinkModals";
+import { AddLinkModal, DeleteLinkModal, EditLinkModal } from "./LinkModals";
 
 interface LinksProps {
   links: Link[];
 }
 
 export default function LinksPage({ links }: LinksProps) {
+  const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [selectedLink, setSelectedLink] = useState<Link | null>(null);
@@ -28,7 +29,10 @@ export default function LinksPage({ links }: LinksProps) {
           </p>
         </div>
 
-        <button className="rounded-xl bg-black px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800">
+        <button
+          onClick={() => setAddModal(true)}
+          className="rounded-xl bg-black px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800"
+        >
           + Add Link
         </button>
       </div>
@@ -101,7 +105,10 @@ export default function LinksPage({ links }: LinksProps) {
                   </span>
 
                   <button
-                    onClick={() => setEditModal(true)}
+                    onClick={() => {
+                      setEditModal(true);
+                      setSelectedLink(link);
+                    }}
                     className="rounded-lg border px-4 py-2 text-sm hover:bg-zinc-100"
                   >
                     Edit
@@ -138,6 +145,13 @@ export default function LinksPage({ links }: LinksProps) {
         onClose={() => {
           setDeleteModal(false);
           setSelectedLink(null);
+        }}
+      />
+
+      <AddLinkModal
+        open={addModal}
+        onClose={() => {
+          setAddModal(false);
         }}
       />
     </section>
