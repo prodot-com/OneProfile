@@ -12,7 +12,7 @@ export async function GET(userId: any) {
 
   try {
     const session = await requireSession();
-    console.log("session10: ",session)
+    console.log("session: ",session)
 
     if (!session) {
       return {
@@ -162,5 +162,41 @@ export async function POST(req: NextRequest) {
         status: 500,
       },
     );
+  }
+}
+
+export async function PUT(req: NextRequest){
+  try {
+    const session = await requireSession();
+
+    if (!session) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Unauthorized",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+
+    const body = await req.json();
+
+    if(!body){
+      return NextResponse.json({
+        success: false,
+        message: "no change"
+      },
+    {
+      status: 203
+    }
+    )
+    }
+
+    
+
+  } catch (error) {
+    
   }
 }
