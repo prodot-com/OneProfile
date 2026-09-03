@@ -3,14 +3,16 @@
 // import Link from "next/link";
 import { requireUserAndProfile } from "@/lib/session";
 import { useState } from "react";
-import { Link } from "@prisma/client";
+import { Link, SocialLink } from "@prisma/client";
 import { AddLinkModal, DeleteLinkModal, EditLinkModal } from "./LinkModals";
+import SocialSection from "./SocialSection";
 
 interface LinksProps {
   links: Link[];
+  socials: SocialLink[]
 }
 
-export default function LinksPage({ links }: LinksProps) {
+export default function LinksPage({ links, socials }: LinksProps) {
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -18,7 +20,8 @@ export default function LinksPage({ links }: LinksProps) {
 
   return (
     <section className="space-y-8">
-      {/* Header */}
+
+      <SocialSection socials={socials}/>
 
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>

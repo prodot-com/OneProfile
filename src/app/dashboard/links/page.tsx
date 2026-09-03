@@ -1,19 +1,24 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireUserAndProfile } from "@/lib/session";
-import LinksPage from "@/components/LinkPage/Link";
+import LinksPage from "@/components/LinkPage/LinkPage";
 
 export default async function Page() {
   const { profile } = await requireUserAndProfile();
 
-  const links = await prisma.link.findMany({
+  const [links, socials] = await Promise.all([
+    prisma.link.findMany({
     where: {
       profileId: profile.id,
     },
     orderBy: {
       position: "asc",
     },
-  });
+  }),
+  prisma.socialLink.findMany({
+    where: {profileId: profile.id}
+  })
+  ])
 
-  return <LinksPage links={links} />;
+  return <LinksPage links={links} socials={socials}/>;
 }
