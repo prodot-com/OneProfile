@@ -2,19 +2,24 @@
 
 import { SocialLink } from "@prisma/client";
 import { useState } from "react";
+import { AddSocialModal, DeleteSocialModal, EditSocialModal } from "./SocialModal";
 
 interface SocialSectionProps {
   socials: SocialLink[];
 }
 
-export default function SocialSection({
-  socials,
-}: SocialSectionProps) {
+export default function SocialSection({ socials }: SocialSectionProps) {
   const [search, setSearch] = useState("");
+  const [addModal, setAddModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
 
-  const filtered = socials.filter((social) =>
-    social.platform.toLowerCase().includes(search.toLowerCase()) ||
-    social.url.toLowerCase().includes(search.toLowerCase())
+  const [selectedSocial, setSelectedSocial] = useState<SocialLink | null>(null);
+
+  const filtered = socials.filter(
+    (social) =>
+      social.platform.toLowerCase().includes(search.toLowerCase()) ||
+      social.url.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -28,7 +33,9 @@ export default function SocialSection({
           </p>
         </div>
 
-        <button className="rounded-xl bg-black px-5 py-3 text-sm font-medium text-white hover:bg-zinc-800">
+        <button 
+        onClick={()=>setAddModal(true)}
+        className="rounded-xl bg-black px-5 py-3 text-sm font-medium text-white hover:bg-zinc-800">
           + Add Social
         </button>
       </div>
@@ -49,16 +56,17 @@ export default function SocialSection({
         <div className="flex flex-col items-center justify-center py-20">
           <div className="text-5xl mb-5">🌐</div>
 
-          <h3 className="text-xl font-semibold">
-            No social links yet
-          </h3>
+          <h3 className="text-xl font-semibold">No social links yet</h3>
 
           <p className="mt-2 text-zinc-500">
             Connect your social media profiles.
           </p>
 
-          <button className="mt-8 rounded-xl bg-black px-6 py-3 text-white hover:bg-zinc-800">
-            Add Social
+          <button
+            onClick={() => setAddModal(true)}
+            className="rounded-xl bg-black px-5 py-3 text-white"
+          >
+            + Add Social
           </button>
         </div>
       ) : (
@@ -85,11 +93,23 @@ export default function SocialSection({
               </div>
 
               <div className="flex gap-3">
-                <button className="rounded-lg border px-4 py-2 text-sm hover:bg-zinc-100">
+                <button
+                  onClick={() => {
+                    setSelectedSocial(social);
+                    setEditModal(true);
+                  }}
+                  className="rounded-lg border px-4 py-2"
+                >
                   Edit
                 </button>
 
-                <button className="rounded-lg border border-red-200 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                <button
+                  onClick={() => {
+                    setSelectedSocial(social);
+                    setDeleteModal(true);
+                  }}
+                  className="rounded-lg border border-red-200 px-4 py-2 text-red-600"
+                >
                   Delete
                 </button>
               </div>
@@ -97,6 +117,25 @@ export default function SocialSection({
           ))}
         </div>
       )}
+      <AddSocialModal open={addModal} onClose={() => setAddModal(false)} />
+
+      <EditSocialModal
+        open={editModal}
+        social={selectedSocial}
+        onClose={() => {
+          setEditModal(false);
+          setSelectedSocial(null);
+        }}
+      />
+
+      <DeleteSocialModal
+        open={deleteModal}
+        social={selectedSocial}
+        onClose={() => {
+          setDeleteModal(false);
+          setSelectedSocial(null);
+        }}
+      />
     </section>
   );
 }
