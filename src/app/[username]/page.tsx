@@ -112,7 +112,7 @@ export default async function PublicProfile({ params }: Props) {
             </div>
           ) : (
             profile.links.map((link) => (
-              <Link
+              <a
                 key={link.id}
                 href={`/r/${link.id}`}
                 className="block rounded-2xl border bg-white p-5 shadow-sm transition hover:shadow-md"
@@ -132,7 +132,7 @@ export default async function PublicProfile({ params }: Props) {
 
                   <span className="text-xl">→</span>
                 </div>
-              </Link>
+              </a>
             ))
           )}
         </div>
