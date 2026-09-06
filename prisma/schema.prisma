@@ -74,17 +74,17 @@ model Profile {
   id          String       @id @default(cuid())
   username    String       @unique
   displayName String
+  views Int @default(0)
   bio         String?
   avatar      String?
   banner      String?
-  views       Int @default(0)
+  theme       Theme        @default(DEFAULT)
   isPublic    Boolean      @default(true)
   verified    Boolean      @default(false)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   userId      String       @unique
   website     String?
-  theme       String       @default("default")
   links       Link[]
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   socials     SocialLink[]
@@ -106,7 +106,7 @@ model Link {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   profileId   String
-  analytics   Click[]
+  Click       Click[]
   profile     Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   @@index([profileId])
@@ -123,7 +123,7 @@ model SocialLink {
 }
 
 model Click {
-  id        String   @id @default(cuid())
+  id        String   @id
   country   String?
   city      String?
   browser   String?
@@ -133,10 +133,10 @@ model Click {
   ipHash    String?
   createdAt DateTime @default(now())
   linkId    String
-  link      Link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  Link      Link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
 
-  @@index([linkId])
   @@index([createdAt])
+  @@index([linkId])
 }
 
 enum SocialPlatform {

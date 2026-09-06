@@ -1,6 +1,7 @@
 "use client";
 
 import { createProfile } from "@/services/profile";
+import { Theme } from "@prisma/client";
 import { useEffect, useMemo, useState } from "react";
 
 const TOTAL_STEPS = 5;
@@ -72,6 +73,7 @@ export default function OnboardingPage() {
 
         avatarUrl = image.url;
       }
+      console.log(form.theme)
 
       const result = await createProfile({
         username,
@@ -79,7 +81,7 @@ export default function OnboardingPage() {
         bio: form.bio,
         website: form.website,
         avatar: avatarUrl,
-        theme: form.theme,
+        theme: "DEFAULT",
       });
 
       if (!result.success) {
