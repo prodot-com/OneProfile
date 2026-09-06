@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { createHash } from "crypto";
-import { UAParser } from "ua-parser-js";
+import {UAParser} from "ua-parser-js";
 
 export async function GET(
   req: NextRequest,
@@ -99,33 +99,16 @@ export async function GET(
     const ipHash = createHash("sha256").update(ip).digest("hex");
 
     // Country headers (Vercel / Cloudflare)
-    let country =
-      req.headers.get("x-vercel-ip-country") ?? req.headers.get("cf-ipcountry");
+    const country =
+      req.headers.get("x-vercel-ip-country") ??
+      req.headers.get("cf-ipcountry") ??
+      null;
 
-    let city = req.headers.get("x-vercel-ip-city");
+    const city = req.headers.get("x-vercel-ip-city") ?? null;
 
-    if (!country || !city) {
-      const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
-        req.headers.get("x-real-ip");
-
-      if (ip) {
-        try {
-          const geo = await fetch(`https://ipwho.is/${ip}`).then((r) =>
-            r.json(),
-          );
-
-          if (geo.success) {
-            country = geo.country_code;
-            city = geo.city;
-          }
-        } catch (err) {
-          console.error("Geo lookup failed:", err);
-        }
-      }
-    }
-
-    country = country ?? null;
-    city = city ?? null;
+    // -----------------------
+    // Save analytics
+    // -----------------------
 
     await prisma.$transaction([
       prisma.link.update({
