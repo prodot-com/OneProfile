@@ -12,7 +12,7 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex h-screen bg-zinc-50/50 overflow-hidden text-zinc-900 font-sans">
-      <Sidebar profile={profile} className="hidden md:flex" />
+      <Sidebar className="hidden md:flex" />
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         <Topbar profile={profile} />
         <main className="flex-1 overflow-y-auto px-4 py-8 md:px-10 lg:px-12">

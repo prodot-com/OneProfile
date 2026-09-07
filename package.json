@@ -20,6 +20,7 @@
     "prisma": "^7.10.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "recharts": "^3.10.1",
     "ua-parser-js": "^2.0.10"
   },
   "devDependencies": {

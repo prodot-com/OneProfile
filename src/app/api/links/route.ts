@@ -2,23 +2,15 @@ import { prisma } from "@/lib/prisma";
 import { requireSession } from "@/lib/session";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(userId: any) {
-  // if(!userId){
-  //     return {
-  //         success: false,
-  //         error: "userid required"
-  //     }
-  // }
-
+export async function GET(_req: NextRequest) {
   try {
     const session = await requireSession();
-    console.log("session: ",session)
 
     if (!session) {
-      return {
-        success: false,
-        error: "Unauthorized",
-      };
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 401 },
+      );
     }
 
     const profile = await prisma.profile.findUnique({
@@ -28,10 +20,10 @@ export async function GET(userId: any) {
     });
 
     if (!profile) {
-      return {
-        success: false,
-        error: "Profile not found",
-      };
+      return NextResponse.json(
+        { success: false, error: "Profile not found" },
+        { status: 404 },
+      );
     }
 
     const links = await prisma.link.findMany({
@@ -55,7 +47,13 @@ export async function GET(userId: any) {
         status: 201,
       },
     );
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { success: false, error: "Internal Server Error" },
+      { status: 500 },
+    );
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -194,9 +192,15 @@ export async function PUT(req: NextRequest){
     )
     }
 
-    
-
+    return NextResponse.json(
+      { success: true, message: "Links reordered successfully." },
+      { status: 200 },
+    );
   } catch (error) {
-    
+    console.error(error);
+    return NextResponse.json(
+      { success: false, message: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }

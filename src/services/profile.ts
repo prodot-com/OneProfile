@@ -2,6 +2,7 @@
 
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { Theme } from "@prisma/client";
 import { headers } from "next/headers";
 
 export interface CreateProfileInput {
@@ -130,7 +131,9 @@ export async function createProfile(
             session.user.image,
 
           theme:
-            data.theme || "default",
+            (Object.values(Theme).includes(data.theme?.toUpperCase() as Theme)
+              ? (data.theme!.toUpperCase() as Theme)
+              : Theme.DEFAULT),
 
           userId: session.user.id,
         },
