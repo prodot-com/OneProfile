@@ -7,7 +7,7 @@ interface topbarProps {
 }
 
 export default function Topbar({profile}: topbarProps) {
-console.log(profile)
+// console.log(profile)
   return (
     <header className="h-16 bg-white border-b border-zinc-200/70 flex items-center justify-between px-4 md:px-8 shrink-0">
       <div className="flex items-center gap-4 md:hidden">

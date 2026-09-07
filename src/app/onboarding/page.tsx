@@ -41,9 +41,9 @@ export default function OnboardingPage() {
     }
   }
 
-  useEffect(() => {
-    console.log(form);
-  }, [form]);
+  // useEffect(() => {
+  //   console.log(form);
+  // }, [form]);
 
   function update(key: keyof typeof form, value: string) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -73,7 +73,7 @@ export default function OnboardingPage() {
 
         avatarUrl = image.url;
       }
-      console.log(form.theme)
+      // console.log(form.theme)
 
       const result = await createProfile({
         username,

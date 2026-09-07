@@ -7,18 +7,34 @@ export default async function AnalyticsPage() {
 
   const [links, clicks] = await Promise.all([
     prisma.link.findMany({
-      where: { profileId: profile.id },
-      orderBy: { clicks: "desc" },
+      where: {
+        profileId: profile.id,
+      },
+      orderBy: {
+        clicks: "desc",
+      },
     }),
+
     prisma.click.findMany({
-      where: { link: { profileId: profile.id } },
-      include: { link: { select: { title: true } } },
-      orderBy: { createdAt: "desc" },
+      where: {
+        link: {
+          profileId: profile.id,
+        },
+      },
+      include: {
+        link: {
+          select: {
+            title: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
       take: 50,
     }),
   ]);
 
-  // Serialise Date → ISO string before passing to Client Component
   return (
     <AnalyticsDashboard
       links={links.map((l) => ({
@@ -34,8 +50,22 @@ export default async function AnalyticsPage() {
         browser: c.browser,
         os: c.os,
         device: c.device,
+
+        // keep ISO if you need it later
         createdAt: c.createdAt.toISOString(),
-        link: { title: c.link.title },
+
+        // format on the server
+        createdAtFormatted: new Intl.DateTimeFormat("en-GB", {
+          day: "numeric",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }).format(c.createdAt),
+
+        link: {
+          title: c.link.title,
+        },
       }))}
     />
   );

@@ -21,7 +21,7 @@ export const auth = betterAuth({
   },
 });
 
-console.log({
-  id: process.env.GITHUB_CLIENT_ID,
-  secretLoaded: !!process.env.GITHUB_CLIENT_SECRET,
-});
+// console.log({
+//   id: process.env.GITHUB_CLIENT_ID,
+//   secretLoaded: !!process.env.GITHUB_CLIENT_SECRET,
+// });

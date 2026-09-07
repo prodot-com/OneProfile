@@ -16,7 +16,6 @@ import ClicksBarChart from "./ClicksBarChart";
 import DeviceDonutChart from "./DeviceDonutChart";
 import CountryBarChart from "./CountryBarChart";
 
-/* ─── Types (plain, serialisable) ─── */
 export interface LinkItem {
   id: string;
   title: string;
@@ -31,8 +30,13 @@ export interface ClickItem {
   browser: string | null;
   os: string | null;
   device: string | null;
-  createdAt: string; // ISO string — Date is not serialisable across server/client
-  link: { title: string };
+
+  createdAt: string;
+  createdAtFormatted: string;
+
+  link: {
+    title: string;
+  };
 }
 
 interface Props {
@@ -43,12 +47,10 @@ interface Props {
 export default function AnalyticsDashboard({ links, clicks }: Props) {
   const totalClicks = links.reduce((sum, l) => sum + l.clicks, 0);
 
-  /* Clicks per link bar chart */
   const clicksChartData = links
     .slice(0, 8)
     .map((l) => ({ name: l.title, clicks: l.clicks }));
 
-  /* Device breakdown */
   const deviceMap: Record<string, number> = {};
   for (const c of clicks) {
     const d = c.device ?? "Unknown";
@@ -93,10 +95,10 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
             Track and understand your profile performance
           </p>
         </div>
-        <div className="flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs text-zinc-500 shadow-sm">
+        {/* <div className="flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs text-zinc-500 shadow-sm">
           <Activity className="size-3.5 text-emerald-500" />
           Live data
-        </div>
+        </div> */}
       </div>
 
       {/* KPI Cards */}
@@ -259,12 +261,7 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
                   </div>
                 </div>
                 <time className="shrink-0 text-xs text-zinc-400">
-                  {new Date(click.createdAt).toLocaleString(undefined, {
-                    month: "short",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                  {click.createdAtFormatted}
                 </time>
               </div>
             ))}

@@ -35,7 +35,7 @@ export async function GET(_req: NextRequest) {
       },
     });
 
-    console.log("Links: ", links);
+    // console.log("Links: ", links);
 
         return NextResponse.json(
       {
@@ -136,7 +136,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    console.log(link);
+    // console.log(link);
 
     return NextResponse.json(
       {
