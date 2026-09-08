@@ -12,9 +12,25 @@ import {
   BarChart3,
   ExternalLink,
 } from "lucide-react";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { AddLinkModal, DeleteLinkModal, EditLinkModal } from "./LinkModals";
 import SocialSection from "./SocialSection";
 import PhonePreview from "./PhonePreview";
+import { SortableLinkItem } from "./SortableLinkItem";
 
 interface PreviewProfile {
   displayName: string;
@@ -50,6 +66,49 @@ export default function LinksPage({
       link.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       link.url.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = links.findIndex((link) => link.id === active.id);
+      const newIndex = links.findIndex((link) => link.id === over.id);
+
+      const newLinks = arrayMove(links, oldIndex, newIndex);
+      setLinks(newLinks);
+
+      try {
+        const orderUpdates = newLinks.map((link, index) => ({
+          id: link.id,
+          position: index,
+        }));
+
+        const res = await fetch("/api/links/reorder", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ links: orderUpdates }),
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to reorder links");
+        }
+      } catch (error) {
+        console.error("Error reordering links:", error);
+        // We could revert the state here if we wanted to
+      }
+    }
+  };
 
   /* ─── Callbacks for live preview updates ─── */
 
@@ -138,87 +197,34 @@ export default function LinksPage({
               )}
             </div>
           ) : (
-            <div className="divide-y divide-zinc-100">
-              {filteredLinks.map((link) => (
-                <div
-                  key={link.id}
-                  className="group flex flex-col gap-4 p-5 transition-colors hover:bg-zinc-50/50 md:flex-row md:items-center md:justify-between"
+            <DndContext
+              id="links-dnd-context"
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <div className="divide-y divide-zinc-100">
+                <SortableContext
+                  items={filteredLinks.map((l) => l.id)}
+                  strategy={verticalListSortingStrategy}
                 >
-                  <div className="flex items-start gap-3.5">
-                    <div className="mt-0.5 cursor-grab p-0.5 text-zinc-300 transition-colors hover:text-zinc-500 active:cursor-grabbing">
-                      <GripVertical className="size-4.5" />
-                    </div>
-                    <div className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-500 transition-colors group-hover:bg-zinc-200/70">
-                      <Link2 className="size-4.5" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2.5">
-                        <h3 className="font-semibold text-zinc-900 truncate">
-                          {link.title}
-                        </h3>
-                        <span
-                          className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
-                            link.active
-                              ? "bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200"
-                              : "bg-zinc-100 text-zinc-500 ring-1 ring-zinc-200"
-                          }`}
-                        >
-                          {link.active ? "Active" : "Hidden"}
-                        </span>
-                      </div>
-                      <a
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-0.5 block truncate text-sm text-zinc-500 hover:text-zinc-700 transition-colors"
-                      >
-                        {link.url}
-                      </a>
-                      {link.description && (
-                        <p className="mt-1 text-sm text-zinc-400 line-clamp-1">
-                          {link.description}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 pl-9 md:pl-0">
-                    <span className="flex items-center gap-1.5 rounded-lg bg-violet-50 px-2.5 py-1.5 text-xs font-semibold text-violet-600 ring-1 ring-violet-100">
-                      <BarChart3 className="size-3" />
-                      {link.clicks}
-                    </span>
-                    <button
-                      onClick={() => {
+                  {filteredLinks.map((link) => (
+                    <SortableLinkItem
+                      key={link.id}
+                      link={link}
+                      onEdit={(l) => {
+                        setSelectedLink(l);
                         setEditModal(true);
-                        setSelectedLink(link);
                       }}
-                      className="flex items-center gap-1.5 rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-all hover:bg-zinc-50 hover:border-zinc-300"
-                    >
-                      <Pencil className="size-3" />
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => {
-                        setSelectedLink(link);
+                      onDelete={(l) => {
+                        setSelectedLink(l);
                         setDeleteModal(true);
                       }}
-                      className="flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 transition-all hover:bg-red-50 hover:border-red-300"
-                    >
-                      <Trash2 className="size-3" />
-                      Delete
-                    </button>
-                    <a
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="rounded-lg p-1.5 text-zinc-300 opacity-0 transition-all group-hover:opacity-100 hover:text-zinc-600 hover:bg-zinc-100"
-                    >
-                      <ExternalLink className="size-3.5" />
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
+                    />
+                  ))}
+                </SortableContext>
+              </div>
+            </DndContext>
           )}
         </div>
 
