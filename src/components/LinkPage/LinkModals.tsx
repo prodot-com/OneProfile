@@ -2,28 +2,52 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
+import { X, AlertTriangle } from "lucide-react";
 import { createLink, deleteLink, updateLink } from "@/services/Links";
 import { Link } from "@prisma/client";
 
-interface LinkProps {
-  open: boolean;
-  onClose: () => void;
-  link: Link | null;
+/* ─── Shared form input styling ─── */
+const inputClass =
+  "w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none transition-all placeholder:text-zinc-400 focus:border-zinc-400 focus:ring-2 focus:ring-zinc-900/5";
+
+/* ─── Custom Toggle ─── */
+function Toggle({
+  checked,
+  onChange,
+}: {
+  checked: boolean;
+  onChange: (v: boolean) => void;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      onClick={() => onChange(!checked)}
+      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 ${
+        checked ? "bg-emerald-500" : "bg-zinc-200"
+      }`}
+    >
+      <span
+        className={`inline-block size-4.5 transform rounded-full bg-white shadow-sm transition-transform duration-200 ${
+          checked ? "translate-x-5.5" : "translate-x-0.5"
+        }`}
+      />
+    </button>
+  );
 }
+
+/* ─── ADD LINK MODAL ─── */
+
 interface AddLinkModalProps {
   open: boolean;
   onClose: () => void;
+  onSuccess: (link: Link) => void;
 }
 
-export function AddLinkModal({
-  open,
-  onClose,
-}: AddLinkModalProps) {
+export function AddLinkModal({ open, onClose, onSuccess }: AddLinkModalProps) {
   const router = useRouter();
-
   const [loading, setLoading] = useState(false);
-
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
@@ -34,29 +58,19 @@ export function AddLinkModal({
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-
     setLoading(true);
-
     try {
-      const res = await createLink({
-        title,
-        url,
-        description,
-        icon,
-        active,
-      });
-
+      const res = await createLink({ title, url, description, icon, active });
       if (!res.success) {
         alert(res.message);
         return;
       }
-
+      if (res.link) onSuccess(res.link);
       setTitle("");
       setUrl("");
       setDescription("");
       setIcon("");
       setActive(true);
-
       router.refresh();
       onClose();
     } catch (err) {
@@ -69,125 +83,104 @@ export function AddLinkModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-5"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-5"
       onClick={onClose}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-xl rounded-2xl bg-white shadow-xl"
+        className="w-full max-w-xl rounded-2xl bg-white shadow-2xl border border-zinc-200/50"
       >
-        {/* Header */}
-
-        <div className="flex items-center justify-between border-b p-6">
+        <div className="flex items-center justify-between border-b border-zinc-100 p-6">
           <div>
-            <h2 className="text-xl font-bold">Add New Link</h2>
-
-            <p className="mt-1 text-sm text-zinc-500">
+            <h2 className="text-lg font-semibold text-zinc-900">
+              Add New Link
+            </h2>
+            <p className="mt-0.5 text-sm text-zinc-500">
               Add a new link to your profile.
             </p>
           </div>
-
           <button
             onClick={onClose}
-            className="rounded-lg p-2 hover:bg-zinc-100"
+            className="rounded-lg p-2 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition-colors"
           >
-            ✕
+            <X className="size-4" />
           </button>
         </div>
 
-        {/* Form */}
-
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-6 p-6"
-        >
+        <form onSubmit={handleSubmit} className="space-y-5 p-6">
           <div>
-            <label className="mb-2 block text-sm font-medium">
+            <label className="mb-1.5 block text-sm font-medium text-zinc-700">
               Title
             </label>
-
             <input
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="GitHub"
-              className="w-full rounded-xl border px-4 py-3 outline-none focus:border-black"
+              className={inputClass}
             />
           </div>
-
           <div>
-            <label className="mb-2 block text-sm font-medium">
+            <label className="mb-1.5 block text-sm font-medium text-zinc-700">
               URL
             </label>
-
             <input
               required
               type="url"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://github.com/username"
-              className="w-full rounded-xl border px-4 py-3 outline-none focus:border-black"
+              className={inputClass}
             />
           </div>
-
           <div>
-            <label className="mb-2 block text-sm font-medium">
+            <label className="mb-1.5 block text-sm font-medium text-zinc-700">
               Description
             </label>
-
             <textarea
               rows={3}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Optional description"
-              className="w-full resize-none rounded-xl border px-4 py-3 outline-none focus:border-black"
+              className={`${inputClass} resize-none`}
             />
           </div>
-
           <div>
-            <label className="mb-2 block text-sm font-medium">
+            <label className="mb-1.5 block text-sm font-medium text-zinc-700">
               Icon
             </label>
-
             <input
               value={icon}
               onChange={(e) => setIcon(e.target.value)}
               placeholder="github"
-              className="w-full rounded-xl border px-4 py-3 outline-none focus:border-black"
+              className={inputClass}
             />
+            <p className="mt-1 text-xs text-zinc-400">
+              Identifier for the link icon (e.g. github, twitter)
+            </p>
           </div>
-
-          <div className="flex items-center justify-between rounded-xl border p-4">
+          <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/50 p-4">
             <div>
-              <h3 className="font-medium">Active</h3>
-
-              <p className="text-sm text-zinc-500">
+              <h3 className="text-sm font-medium text-zinc-900">Active</h3>
+              <p className="text-xs text-zinc-500">
                 Display this link on your profile.
               </p>
             </div>
-
-            <input
-              type="checkbox"
-              checked={active}
-              onChange={(e) => setActive(e.target.checked)}
-              className="h-5 w-5"
-            />
+            <Toggle checked={active} onChange={setActive} />
           </div>
-
-          <div className="flex justify-end gap-3">
+          <div className="flex justify-end gap-3 pt-1">
             <button
               type="button"
               disabled={loading}
               onClick={onClose}
-              className="rounded-xl border px-5 py-3"
+              className="rounded-xl border border-zinc-200 px-5 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
             >
               Cancel
             </button>
-
             <button
               type="submit"
               disabled={loading}
-              className="rounded-xl bg-black px-6 py-3 text-white disabled:opacity-60"
+              className="rounded-xl bg-zinc-900 px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-zinc-800 disabled:opacity-60"
             >
               {loading ? "Creating..." : "Create Link"}
             </button>
@@ -198,11 +191,23 @@ export function AddLinkModal({
   );
 }
 
-export function EditLinkModal({ open, onClose, link }: LinkProps) {
+/* ─── EDIT LINK MODAL ─── */
+
+interface EditLinkModalProps {
+  open: boolean;
+  onClose: () => void;
+  link: Link | null;
+  onSuccess: (link: Link) => void;
+}
+
+export function EditLinkModal({
+  open,
+  onClose,
+  link,
+  onSuccess,
+}: EditLinkModalProps) {
   const router = useRouter();
-
   const [loading, setLoading] = useState(false);
-
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
@@ -211,7 +216,6 @@ export function EditLinkModal({ open, onClose, link }: LinkProps) {
 
   useEffect(() => {
     if (!link) return;
-
     setTitle(link.title);
     setUrl(link.url);
     setDescription(link.description || "");
@@ -223,11 +227,8 @@ export function EditLinkModal({ open, onClose, link }: LinkProps) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
-    if(!link)return;
-
+    if (!link) return;
     setLoading(true);
-
     try {
       const res = await updateLink(link.id, {
         title,
@@ -236,12 +237,11 @@ export function EditLinkModal({ open, onClose, link }: LinkProps) {
         icon,
         active,
       });
-
       if (!res.success) {
         alert(res.message);
         return;
       }
-
+      if (res.link) onSuccess(res.link);
       router.refresh();
       onClose();
     } catch (err) {
@@ -253,106 +253,95 @@ export function EditLinkModal({ open, onClose, link }: LinkProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-5">
-      <div className="w-full max-w-xl rounded-2xl bg-white shadow-xl">
-        {/* Header */}
-
-        <div className="flex items-center justify-between border-b p-6">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-5"
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-xl rounded-2xl bg-white shadow-2xl border border-zinc-200/50"
+      >
+        <div className="flex items-center justify-between border-b border-zinc-100 p-6">
           <div>
-            <h2 className="text-xl font-bold">Edit Link</h2>
-
-            <p className="mt-1 text-sm text-zinc-500">
+            <h2 className="text-lg font-semibold text-zinc-900">Edit Link</h2>
+            <p className="mt-0.5 text-sm text-zinc-500">
               Update your link information.
             </p>
           </div>
-
           <button
             onClick={onClose}
-            className="rounded-lg p-2 hover:bg-zinc-100"
+            className="rounded-lg p-2 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition-colors"
           >
-            ✕
+            <X className="size-4" />
           </button>
         </div>
 
-        {/* Form */}
-
-        <form onSubmit={handleSubmit} className="space-y-6 p-6">
+        <form onSubmit={handleSubmit} className="space-y-5 p-6">
           <div>
-            <label className="mb-2 block text-sm font-medium">Title</label>
-
+            <label className="mb-1.5 block text-sm font-medium text-zinc-700">
+              Title
+            </label>
             <input
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-xl border px-4 py-3 outline-none focus:border-black"
+              className={inputClass}
             />
           </div>
-
           <div>
-            <label className="mb-2 block text-sm font-medium">URL</label>
-
+            <label className="mb-1.5 block text-sm font-medium text-zinc-700">
+              URL
+            </label>
             <input
               required
               type="url"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              className="w-full rounded-xl border px-4 py-3 outline-none focus:border-black"
+              className={inputClass}
             />
           </div>
-
           <div>
-            <label className="mb-2 block text-sm font-medium">
+            <label className="mb-1.5 block text-sm font-medium text-zinc-700">
               Description
             </label>
-
             <textarea
               rows={3}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full resize-none rounded-xl border px-4 py-3 outline-none focus:border-black"
+              className={`${inputClass} resize-none`}
             />
           </div>
-
           <div>
-            <label className="mb-2 block text-sm font-medium">Icon</label>
-
+            <label className="mb-1.5 block text-sm font-medium text-zinc-700">
+              Icon
+            </label>
             <input
               value={icon}
               onChange={(e) => setIcon(e.target.value)}
               placeholder="github"
-              className="w-full rounded-xl border px-4 py-3 outline-none focus:border-black"
+              className={inputClass}
             />
           </div>
-
-          <div className="flex items-center justify-between rounded-xl border p-4">
+          <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/50 p-4">
             <div>
-              <h3 className="font-medium">Active</h3>
-
-              <p className="text-sm text-zinc-500">
+              <h3 className="text-sm font-medium text-zinc-900">Active</h3>
+              <p className="text-xs text-zinc-500">
                 Show this link on your profile.
               </p>
             </div>
-
-            <input
-              type="checkbox"
-              checked={active}
-              onChange={(e) => setActive(e.target.checked)}
-              className="h-5 w-5"
-            />
+            <Toggle checked={active} onChange={setActive} />
           </div>
-
-          <div className="flex justify-end gap-3 pt-2">
+          <div className="flex justify-end gap-3 pt-1">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl border px-5 py-3"
+              className="rounded-xl border border-zinc-200 px-5 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
             >
               Cancel
             </button>
-
             <button
               disabled={loading}
-              className="rounded-xl bg-black px-6 py-3 text-white disabled:opacity-60"
+              className="rounded-xl bg-zinc-900 px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-zinc-800 disabled:opacity-60"
             >
               {loading ? "Saving..." : "Save Changes"}
             </button>
@@ -363,32 +352,36 @@ export function EditLinkModal({ open, onClose, link }: LinkProps) {
   );
 }
 
+/* ─── DELETE LINK MODAL ─── */
+
 interface DeleteLinkModalProps {
   open: boolean;
   link: Link | null;
   onClose: () => void;
+  onSuccess: (deletedId: string) => void;
 }
 
-export function DeleteLinkModal({ open, link, onClose }: DeleteLinkModalProps) {
+export function DeleteLinkModal({
+  open,
+  link,
+  onClose,
+  onSuccess,
+}: DeleteLinkModalProps) {
   const router = useRouter();
-
   const [loading, setLoading] = useState(false);
 
   if (!open || !link) return null;
 
   async function handleDelete() {
     setLoading(true);
-
-    if(!link)return
-
+    if (!link) return;
     try {
       const res = await deleteLink(link.id);
-
       if (!res.success) {
         alert(res.message);
         return;
       }
-
+      onSuccess(link.id);
       router.refresh();
       onClose();
     } catch (err) {
@@ -400,47 +393,51 @@ export function DeleteLinkModal({ open, link, onClose }: DeleteLinkModalProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-5">
-      <div className="w-full max-w-md rounded-2xl bg-white shadow-xl">
-        {/* Header */}
-
-        <div className="border-b p-6">
-          <h2 className="text-xl font-bold text-red-600">Delete Link</h2>
-
-          <p className="mt-2 text-sm text-zinc-500">
-            This action cannot be undone.
-          </p>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-5"
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-md rounded-2xl bg-white shadow-2xl border border-zinc-200/50"
+      >
+        <div className="border-b border-zinc-100 p-6">
+          <div className="flex items-center gap-3">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-red-50">
+              <AlertTriangle className="size-5 text-red-500" />
+            </div>
+            <div>
+              <h2 className="text-lg font-semibold text-red-600">
+                Delete Link
+              </h2>
+              <p className="text-sm text-zinc-500">
+                This action cannot be undone.
+              </p>
+            </div>
+          </div>
         </div>
-
-        {/* Body */}
-
         <div className="space-y-4 p-6">
-          <div className="rounded-xl border border-red-200 bg-red-50 p-4">
-            <p className="font-medium">{link.title}</p>
-
+          <div className="rounded-xl border border-red-200 bg-red-50/50 p-4">
+            <p className="font-medium text-zinc-900">{link.title}</p>
             <p className="mt-1 break-all text-sm text-zinc-500">{link.url}</p>
           </div>
-
           <p className="text-sm text-zinc-600">
-            Are you sure you want to permanently delete this link?
+            Are you sure you want to permanently delete this link? All click
+            analytics for this link will also be removed.
           </p>
         </div>
-
-        {/* Footer */}
-
-        <div className="flex justify-end gap-3 border-t p-6">
+        <div className="flex justify-end gap-3 border-t border-zinc-100 p-6">
           <button
             onClick={onClose}
             disabled={loading}
-            className="rounded-xl border px-5 py-2 hover:bg-zinc-100 disabled:opacity-50"
+            className="rounded-xl border border-zinc-200 px-5 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 disabled:opacity-50"
           >
             Cancel
           </button>
-
           <button
             onClick={handleDelete}
             disabled={loading}
-            className="rounded-xl bg-red-600 px-5 py-2 text-white hover:bg-red-700 disabled:opacity-50"
+            className="rounded-xl bg-red-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-50"
           >
             {loading ? "Deleting..." : "Delete"}
           </button>
