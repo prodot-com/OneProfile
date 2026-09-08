@@ -49,13 +49,19 @@ export default function DeviceDonutChart({ data }: DeviceDonutChartProps) {
           strokeWidth={0}
         >
           {data.map((_, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            <Cell 
+              key={`cell-${index}`} 
+              fill={COLORS[index % COLORS.length]} 
+              className="drop-shadow-sm transition-all hover:opacity-80 hover:stroke-zinc-100 hover:stroke-2"
+            />
           ))}
         </Pie>
         <Tooltip content={<CustomTooltip />} />
         <Legend
+          iconType="circle"
+          wrapperStyle={{ fontSize: 12, paddingTop: 10 }}
           formatter={(value: string) => (
-            <span style={{ color: "#a1a1aa", fontSize: 12 }}>{value}</span>
+            <span className="text-zinc-600 font-medium">{value}</span>
           )}
         />
       </PieChart>

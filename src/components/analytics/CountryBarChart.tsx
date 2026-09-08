@@ -61,7 +61,7 @@ export default function CountryBarChart({ data }: CountryBarChartProps) {
         </defs>
         <CartesianGrid
           strokeDasharray="3 3"
-          stroke="#ffffff10"
+          stroke="#f4f4f5"
           horizontal={false}
         />
         <XAxis
@@ -79,11 +79,12 @@ export default function CountryBarChart({ data }: CountryBarChartProps) {
           axisLine={false}
           tickLine={false}
         />
-        <Tooltip content={<CustomTooltip />} cursor={{ fill: "#ffffff08" }} />
+        <Tooltip content={<CustomTooltip />} cursor={{ fill: "#f4f4f5", opacity: 0.5 }} />
         <Bar
           dataKey="value"
           fill="url(#countryGradient)"
           radius={[0, 6, 6, 0]}
+          barSize={24}
         />
       </BarChart>
     </ResponsiveContainer>

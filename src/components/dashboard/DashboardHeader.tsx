@@ -16,7 +16,7 @@ function getGreeting(): string {
 }
 
 export default function DashboardHeader({ profile }: DashboardProps) {
-  const profileUrl = `oneprofile.me/${profile.username}`;
+  const profileUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${profile.username}`;
   const [copied, setCopied] = useState(false);
 
   const copyUrl = () => {

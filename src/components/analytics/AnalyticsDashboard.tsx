@@ -12,9 +12,26 @@ import {
   ExternalLink,
   Activity,
 } from "lucide-react";
+import { motion } from "framer-motion";
+import { formatDistanceToNow } from "date-fns";
 import ClicksBarChart from "./ClicksBarChart";
 import DeviceDonutChart from "./DeviceDonutChart";
 import CountryBarChart from "./CountryBarChart";
+
+// Animation Variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } },
+};
+
 
 export interface LinkItem {
   id: string;
@@ -86,7 +103,11 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
   return (
     <section className="space-y-8">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }} 
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-wrap items-center justify-between gap-4"
+      >
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-zinc-900">
             Analytics
@@ -95,47 +116,61 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
             Track and understand your profile performance
           </p>
         </div>
-        {/* <div className="flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs text-zinc-500 shadow-sm">
-          <Activity className="size-3.5 text-emerald-500" />
-          Live data
-        </div> */}
-      </div>
+      </motion.div>
 
       {/* KPI Cards */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KpiCard
-          icon={<TrendingUp className="size-5" />}
-          label="Total Clicks"
-          value={totalClicks.toLocaleString()}
-          color="violet"
-          sub="across all links"
-        />
-        <KpiCard
-          icon={<Link2 className="size-5" />}
-          label="Active Links"
-          value={links.length.toString()}
-          color="blue"
-          sub={`avg ${avgClicksPerLink} clicks each`}
-        />
-        <KpiCard
-          icon={<Users className="size-5" />}
-          label="Recent Visitors"
-          value={clicks.length.toString()}
-          color="cyan"
-          sub="last 50 recorded"
-        />
-        <KpiCard
-          icon={<Globe className="size-5" />}
-          label="Top Browser"
-          value={topBrowser?.[0] ?? "—"}
-          color="emerald"
-          sub={topBrowser ? `${topBrowser[1]} sessions` : "no data"}
-        />
-      </div>
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+      >
+        <motion.div variants={itemVariants}>
+          <KpiCard
+            icon={<TrendingUp className="size-5" />}
+            label="Total Clicks"
+            value={totalClicks.toLocaleString()}
+            color="violet"
+            sub="across all links"
+          />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <KpiCard
+            icon={<Link2 className="size-5" />}
+            label="Active Links"
+            value={links.length.toString()}
+            color="blue"
+            sub={`avg ${avgClicksPerLink} clicks each`}
+          />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <KpiCard
+            icon={<Users className="size-5" />}
+            label="Recent Visitors"
+            value={clicks.length.toString()}
+            color="cyan"
+            sub="last 50 recorded"
+          />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <KpiCard
+            icon={<Globe className="size-5" />}
+            label="Top Browser"
+            value={topBrowser?.[0] ?? "—"}
+            color="emerald"
+            sub={topBrowser ? `${topBrowser[1]} sessions` : "no data"}
+          />
+        </motion.div>
+      </motion.div>
 
       {/* Charts Row 1 */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2">
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="grid gap-6 lg:grid-cols-3"
+      >
+        <motion.div variants={itemVariants} className="lg:col-span-2">
           <ChartCard
             title="Clicks by Link"
             subtitle="Top performing links"
@@ -143,28 +178,38 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
           >
             <ClicksBarChart data={clicksChartData} />
           </ChartCard>
-        </div>
-        <ChartCard
-          title="Device Breakdown"
-          subtitle="Visitor platforms"
-          icon={<Smartphone className="size-4 text-cyan-500" />}
-        >
-          <DeviceDonutChart data={deviceData} />
-        </ChartCard>
-      </div>
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <ChartCard
+            title="Device Breakdown"
+            subtitle="Visitor platforms"
+            icon={<Smartphone className="size-4 text-cyan-500" />}
+          >
+            <DeviceDonutChart data={deviceData} />
+          </ChartCard>
+        </motion.div>
+      </motion.div>
 
       {/* Charts Row 2 */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <ChartCard
-          title="Top Countries"
-          subtitle="Where your visitors come from"
-          icon={<MapPin className="size-4 text-blue-500" />}
-        >
-          <CountryBarChart data={countryData} />
-        </ChartCard>
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.1 }}
+        className="grid gap-6 lg:grid-cols-2"
+      >
+        <motion.div variants={itemVariants}>
+          <ChartCard
+            title="Top Countries"
+            subtitle="Where your visitors come from"
+            icon={<MapPin className="size-4 text-blue-500" />}
+          >
+            <CountryBarChart data={countryData} />
+          </ChartCard>
+        </motion.div>
 
         {/* Top Links ranking */}
-        <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm">
+        <motion.div variants={itemVariants} className="group rounded-2xl border border-zinc-200/80 bg-white shadow-sm transition-all hover:shadow-md">
           <div className="flex items-center gap-2 border-b border-zinc-100 px-5 py-4">
             <Monitor className="size-4 text-emerald-500" />
             <div>
@@ -184,7 +229,7 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
                 return (
                   <div
                     key={link.id}
-                    className="flex items-center gap-4 px-5 py-3"
+                    className="flex items-center gap-4 px-5 py-3 transition-colors hover:bg-zinc-50/80"
                   >
                     <span className="w-5 text-right text-xs font-bold text-zinc-300">
                       {i + 1}
@@ -200,9 +245,11 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
                       </div>
                       <div className="mt-1">
                         <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-100">
-                          <div
-                            className="h-full rounded-full bg-gradient-to-r from-violet-500 to-indigo-500 transition-all duration-700"
-                            style={{ width: `${pct}%` }}
+                          <motion.div
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${pct}%` }}
+                            transition={{ duration: 1, ease: "easeOut" }}
+                            className="h-full rounded-full bg-gradient-to-r from-violet-500 to-indigo-500"
                           />
                         </div>
                       </div>
@@ -210,18 +257,24 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
                         {link.url}
                       </p>
                     </div>
-                    <ExternalLink className="size-3.5 shrink-0 text-zinc-300" />
+                    <ExternalLink className="size-3.5 shrink-0 text-zinc-300 transition-colors hover:text-zinc-500 cursor-pointer" />
                   </div>
                 );
               })}
             </div>
           )}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Recent Activity Feed */}
-      <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm">
-        <div className="flex items-center gap-2 border-b border-zinc-100 px-5 py-4">
+      <motion.div 
+        initial={{ opacity: 0, y: 15 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ delay: 0.2 }}
+        className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm overflow-hidden"
+      >
+        <div className="flex items-center gap-2 border-b border-zinc-100 px-5 py-4 bg-zinc-50/50">
           <Clock className="size-4 text-amber-500" />
           <div>
             <h2 className="text-sm font-semibold text-zinc-800">
@@ -236,38 +289,41 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
           <EmptyState message="No activity recorded yet." />
         ) : (
           <div className="divide-y divide-zinc-50">
-            {clicks.slice(0, 20).map((click) => (
-              <div
-                key={click.id}
-                className="grid grid-cols-[1fr_auto] items-center gap-4 px-5 py-3"
-              >
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="size-2 shrink-0 rounded-full bg-emerald-400" />
-                    <p className="truncate text-sm font-medium text-zinc-800">
-                      {click.link.title}
-                    </p>
+            {clicks.slice(0, 20).map((click) => {
+              const timeAgo = formatDistanceToNow(new Date(click.createdAt), { addSuffix: true });
+              return (
+                <div
+                  key={click.id}
+                  className="grid grid-cols-[1fr_auto] items-center gap-4 px-5 py-3.5 transition-colors hover:bg-zinc-50/50"
+                >
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="size-2 shrink-0 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]" />
+                      <p className="truncate text-sm font-medium text-zinc-800">
+                        {click.link.title}
+                      </p>
+                    </div>
+                    <div className="mt-0.5 flex flex-wrap gap-x-2 gap-y-0.5 text-xs text-zinc-400">
+                      {click.country && (
+                        <span className="flex items-center gap-1">
+                          <MapPin className="size-3" />
+                          {click.city ? `${click.city}, ` : ""}
+                          {click.country}
+                        </span>
+                      )}
+                      {click.device && <span>· {click.device}</span>}
+                      {click.browser && <span>· {click.browser}</span>}
+                    </div>
                   </div>
-                  <div className="mt-0.5 flex flex-wrap gap-x-2 gap-y-0.5 text-xs text-zinc-400">
-                    {click.country && (
-                      <span className="flex items-center gap-1">
-                        <MapPin className="size-3" />
-                        {click.city ? `${click.city}, ` : ""}
-                        {click.country}
-                      </span>
-                    )}
-                    {click.device && <span>· {click.device}</span>}
-                    {click.browser && <span>· {click.browser}</span>}
-                  </div>
+                  <time className="shrink-0 text-xs font-medium text-zinc-400" title={click.createdAtFormatted}>
+                    {timeAgo}
+                  </time>
                 </div>
-                <time className="shrink-0 text-xs text-zinc-400">
-                  {click.createdAtFormatted}
-                </time>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
-      </div>
+      </motion.div>
     </section>
   );
 }

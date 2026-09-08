@@ -57,7 +57,7 @@ export default function ClicksBarChart({ data }: ClicksBarChartProps) {
         </defs>
         <CartesianGrid
           strokeDasharray="3 3"
-          stroke="#ffffff10"
+          stroke="#f4f4f5"
           vertical={false}
         />
         <XAxis
@@ -75,8 +75,8 @@ export default function ClicksBarChart({ data }: ClicksBarChartProps) {
           tickLine={false}
           allowDecimals={false}
         />
-        <Tooltip content={<CustomTooltip />} cursor={{ fill: "#ffffff08" }} />
-        <Bar dataKey="clicks" fill="url(#barGradient)" radius={[6, 6, 0, 0]} />
+        <Tooltip content={<CustomTooltip />} cursor={{ fill: "#f4f4f5", opacity: 0.5 }} />
+        <Bar dataKey="clicks" fill="url(#barGradient)" radius={[6, 6, 0, 0]} barSize={32} />
       </BarChart>
     </ResponsiveContainer>
   );
