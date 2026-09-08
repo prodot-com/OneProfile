@@ -17,7 +17,6 @@ import {
   Hash,
   Headphones,
   Newspaper,
-  // CheckBadgeIcon, // Assuming you might want a clean verified badge
 } from "lucide-react";
 
 interface Props {
