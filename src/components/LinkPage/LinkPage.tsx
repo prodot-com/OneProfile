@@ -64,7 +64,7 @@ export default function LinksPage({
   const filteredLinks = links.filter(
     (link) =>
       link.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      link.url.toLowerCase().includes(searchTerm.toLowerCase())
+      link.url.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const sensors = useSensors(
@@ -75,7 +75,7 @@ export default function LinksPage({
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const handleDragEnd = async (event: DragEndEvent) => {
@@ -129,9 +129,9 @@ export default function LinksPage({
   }, []);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
+    <div className="flex-1 w-full h-full min-h-0 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-8 lg:overflow-hidden">
       {/* Left: Editor */}
-      <section className="space-y-8 min-w-0">
+      <section className="hide-scrollbar py-8 space-y-8 min-w-0 lg:min-h-0 lg:overflow-y-auto lg:h-full lg:pr-4">
         <SocialSection socials={socials} onUpdate={handleSocialsChanged} />
 
         {/* Header */}
@@ -256,7 +256,7 @@ export default function LinksPage({
       </section>
 
       {/* Right: Phone Preview */}
-      <div className="hidden lg:block">
+      <div className="hidden lg:flex lg:h-full lg:flex-col lg:items-center lg:justify-start lg:overflow-hidden">
         <PhonePreview profile={profile} links={links} socials={socials} />
       </div>
     </div>

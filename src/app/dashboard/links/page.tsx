@@ -16,17 +16,19 @@ export default async function Page() {
   ]);
 
   return (
-    <LinksPage
-      links={links}
-      socials={socials}
-      profile={{
-        displayName: profile.displayName,
-        username: profile.username,
-        bio: profile.bio,
-        avatar: profile.avatar,
-        banner: profile.banner,
-        website: profile.website,
-      }}
-    />
+    <div className="split-layout lg:h-full lg:flex lg:flex-col lg:min-h-0 lg:px-12 w-full">
+      <LinksPage
+        links={links}
+        socials={socials}
+        profile={{
+          displayName: profile.displayName,
+          username: profile.username,
+          bio: profile.bio,
+          avatar: profile.avatar,
+          banner: profile.banner,
+          website: profile.website,
+        }}
+      />
+    </div>
   );
 }
