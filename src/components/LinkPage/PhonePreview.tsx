@@ -1,6 +1,8 @@
 "use client";
 
 import { Globe, ExternalLink } from "lucide-react";
+import { Theme, ButtonStyle, FontFamily } from "@prisma/client";
+import { getFontClass } from "@/lib/fonts";
 
 interface PreviewLink {
   id: string;
@@ -23,6 +25,13 @@ interface PreviewProfile {
   avatar: string | null;
   banner: string | null;
   website: string | null;
+  theme?: Theme;
+  accentColor?: string;
+  backgroundColor?: string;
+  buttonStyle?: ButtonStyle;
+  fontFamily?: FontFamily;
+  buttonColor?: string;
+  buttonTextColor?: string;
 }
 
 interface PhonePreviewProps {
@@ -57,8 +66,49 @@ export default function PhonePreview({
 }: PhonePreviewProps) {
   const activeLinks = links.filter((l) => l.active);
 
+  // Defaults
+  const bgColor = profile.backgroundColor || "#FFFFFF";
+  const accColor = profile.accentColor || "#18181B";
+  const btnColor = profile.buttonColor || "#18181B";
+  const btnTextColor = profile.buttonTextColor || "#FFFFFF";
+  const fontClass = getFontClass(profile.fontFamily || "INTER");
+
+  // Determine button border radius
+  let btnRadius = "0.75rem"; // ROUNDED
+  if (profile.buttonStyle === "PILL") btnRadius = "9999px";
+  if (profile.buttonStyle === "SQUARE") btnRadius = "0px";
+
+  // Base theme classes mapping
+  const getThemeClasses = (theme: Theme = "DEFAULT") => {
+    switch (theme) {
+      case "DARK":
+        return "bg-zinc-900 text-white";
+      case "LIGHT":
+        return "bg-white text-zinc-900";
+      case "MINIMAL":
+        return "bg-transparent text-zinc-800";
+      case "GLASS":
+        return "bg-white/40 backdrop-blur-md text-zinc-800";
+      case "GRADIENT":
+        return "bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white";
+      case "DEFAULT":
+      default:
+        return "bg-zinc-50 text-zinc-900";
+    }
+  };
+
+  const themeClasses = getThemeClasses(profile.theme);
+  
+  // Dynamic inline styles override theme backgrounds if custom bgColor is picked (assuming they selected Custom)
+  // But wait, the standard themes shouldn't be overridden if they use standard ones. 
+  // Let's just safely let `style={{ backgroundColor: bgColor }}` apply unless they are using GRADIENT or GLASS.
+  const customBackgroundStyle = 
+    profile.theme === "GRADIENT" || profile.theme === "GLASS"
+      ? {}
+      : { backgroundColor: bgColor };
+
   return (
-    <div className="sticky top-8">
+    <div className="w-full pt-8">
       {/* URL bar */}
       <div className="mx-auto mb-3 flex max-w-[280px] items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-1.5 shadow-sm">
         <span className="truncate text-xs text-zinc-500">
@@ -75,9 +125,12 @@ export default function PhonePreview({
         </div>
 
         {/* Screen content — scrollable */}
-        <div className="h-[520px] overflow-y-auto overflow-x-hidden scrollbar-none">
+        <div 
+          className={`h-[520px] overflow-y-auto overflow-x-hidden scrollbar-none relative ${themeClasses} ${fontClass}`}
+          style={customBackgroundStyle}
+        >
           {/* Banner */}
-          <div className="relative h-20 w-full bg-zinc-50">
+          <div className="relative h-20 w-full" style={{ backgroundColor: accColor }}>
             {profile.banner ? (
               <img
                 src={profile.banner}
@@ -107,21 +160,24 @@ export default function PhonePreview({
             </div>
 
             {/* Name */}
-            <h3 className="mt-2 text-sm font-semibold text-zinc-900 text-center leading-tight">
+            <h3 className="mt-2 text-sm font-semibold text-center leading-tight">
               {profile.displayName}
             </h3>
-            <p className="text-[11px] text-zinc-500">@{profile.username}</p>
+            <p className="text-[11px] opacity-70">@{profile.username}</p>
 
             {/* Bio */}
             {profile.bio && (
-              <p className="mt-2 text-center text-[10px] leading-relaxed text-zinc-500 line-clamp-2 px-2">
+              <p className="mt-2 text-center text-[10px] leading-relaxed opacity-70 line-clamp-2 px-2">
                 {profile.bio}
               </p>
             )}
 
             {/* Website */}
             {profile.website && (
-              <div className="mt-2 flex items-center gap-1 rounded-full border border-zinc-200 bg-white px-2.5 py-0.5 text-[9px] text-zinc-500">
+              <div 
+                className="mt-2 flex items-center gap-1 px-2.5 py-0.5 text-[9px] shadow-sm"
+                style={{ backgroundColor: btnColor, color: btnTextColor, borderRadius: btnRadius }}
+              >
                 <Globe className="size-2.5" />
                 {profile.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
               </div>
@@ -148,27 +204,31 @@ export default function PhonePreview({
           {/* Links */}
           <div className="mt-4 flex flex-col gap-2 px-4 pb-6">
             {activeLinks.length === 0 ? (
-              <div className="py-6 text-center text-[10px] text-zinc-400">
+              <div className="py-6 text-center text-[10px] opacity-50">
                 No active links to display.
               </div>
             ) : (
               activeLinks.map((link) => (
                 <div
                   key={link.id}
-                  className="group relative flex items-center justify-between rounded-xl border border-zinc-200 bg-white px-3 py-2.5 shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all hover:border-zinc-300 hover:bg-zinc-50/50"
+                  className="group relative flex items-center justify-between px-3 py-2.5 shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all hover:brightness-110"
+                  style={{ backgroundColor: btnColor, borderRadius: btnRadius, color: btnTextColor }}
                 >
                   <div className="min-w-0 flex-1 pr-2">
-                    <p className="truncate text-[11px] font-medium text-zinc-900">
+                    <p className="truncate text-[11px] font-medium">
                       {link.title}
                     </p>
                     {link.description && (
-                      <p className="truncate text-[9px] text-zinc-400 mt-0.5">
+                      <p className="truncate text-[9px] opacity-70 mt-0.5">
                         {link.description}
                       </p>
                     )}
                   </div>
-                  <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-zinc-100 opacity-0 transition-opacity group-hover:opacity-100">
-                    <ExternalLink className="size-2.5 text-zinc-500" />
+                  <div 
+                    className="flex size-5 shrink-0 items-center justify-center rounded-full opacity-50 transition-opacity group-hover:opacity-100"
+                    style={{ backgroundColor: accColor }}
+                  >
+                    <ExternalLink className="size-2.5" style={{ color: btnTextColor }} />
                   </div>
                 </div>
               ))
@@ -177,9 +237,9 @@ export default function PhonePreview({
 
           {/* Footer */}
           <div className="pb-4 text-center">
-            <span className="text-[8px] text-zinc-400">
+            <span className="text-[8px] opacity-50">
               Powered by{" "}
-              <span className="font-medium text-zinc-600">OneProfile</span>
+              <span className="font-medium opacity-100">OneProfile</span>
             </span>
           </div>
         </div>

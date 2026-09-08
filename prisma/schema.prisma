@@ -79,6 +79,12 @@ model Profile {
   avatar      String?
   banner      String?
   theme       Theme        @default(DEFAULT)
+  accentColor String       @default("#18181B")
+  backgroundColor String   @default("#FFFFFF")
+  buttonStyle ButtonStyle  @default(ROUNDED)
+  fontFamily  FontFamily   @default(INTER)
+  buttonColor String       @default("#18181B")
+  buttonTextColor String   @default("#FFFFFF")
   isPublic    Boolean      @default(true)
   verified    Boolean      @default(false)
   createdAt   DateTime     @default(now())
@@ -167,4 +173,17 @@ enum Theme {
   MINIMAL
   GLASS
   GRADIENT
+}
+
+enum ButtonStyle {
+  ROUNDED
+  PILL
+  SQUARE
+}
+
+enum FontFamily {
+  INTER
+  POPPINS
+  ROBOTO
+  MONO
 }

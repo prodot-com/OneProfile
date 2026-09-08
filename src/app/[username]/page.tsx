@@ -18,6 +18,8 @@ import {
   Headphones,
   Newspaper,
 } from "lucide-react";
+import { Theme } from "@prisma/client";
+import { getFontClass } from "@/lib/fonts";
 
 interface Props {
   params: Promise<{
@@ -83,12 +85,50 @@ export default async function PublicProfile({ params }: Props) {
     .update({ where: { id: profile.id }, data: { views: { increment: 1 } } })
     .catch(() => {});
 
+  // Styling Variables
+  const bgColor = profile.backgroundColor || "#FFFFFF";
+  const accColor = profile.accentColor || "#18181B";
+  const btnColor = profile.buttonColor || "#18181B";
+  const btnTextColor = profile.buttonTextColor || "#FFFFFF";
+  const fontClass = getFontClass(profile.fontFamily || "INTER");
+
+  let btnRadius = "1rem"; // rounded-2xl roughly
+  if (profile.buttonStyle === "PILL") btnRadius = "9999px";
+  if (profile.buttonStyle === "SQUARE") btnRadius = "0px";
+
+  const getThemeClasses = (theme: Theme = "DEFAULT") => {
+    switch (theme) {
+      case "DARK":
+        return "bg-zinc-900 text-white selection:bg-zinc-800";
+      case "LIGHT":
+        return "bg-white text-zinc-900 selection:bg-zinc-100";
+      case "MINIMAL":
+        return "bg-transparent text-zinc-800";
+      case "GLASS":
+        return "bg-white/40 backdrop-blur-md text-zinc-800";
+      case "GRADIENT":
+        return "bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white";
+      case "DEFAULT":
+      default:
+        return "bg-white text-zinc-900 selection:bg-zinc-100";
+    }
+  };
+
+  const themeClasses = getThemeClasses(profile.theme);
+  const customBackgroundStyle = 
+    profile.theme === "GRADIENT" || profile.theme === "GLASS"
+      ? {}
+      : { backgroundColor: bgColor };
+
   return (
-    <main className="min-h-screen bg-white text-zinc-900 selection:bg-zinc-100">
+    <main 
+      className={`min-h-screen ${themeClasses} ${fontClass}`}
+      style={customBackgroundStyle}
+    >
       <div className="mx-auto max-w-2xl pb-20">
         
         {/* ── Banner ── */}
-        <div className="relative h-32 sm:h-48 w-full bg-zinc-50/80">
+        <div className="relative h-32 sm:h-48 w-full" style={{ backgroundColor: accColor }}>
           {profile.banner ? (
             <Image
               src={profile.banner}
@@ -126,7 +166,7 @@ export default async function PublicProfile({ params }: Props) {
 
           {/* Name & Bio */}
           <div className="mt-4 flex flex-col items-center text-center">
-            <h1 className="flex items-center gap-1.5 text-xl font-semibold tracking-tight text-zinc-900 sm:text-2xl">
+            <h1 className="flex items-center gap-1.5 text-xl font-semibold tracking-tight sm:text-2xl">
               {profile.displayName}
               {profile.verified && (
                 <svg className="size-5 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
@@ -134,10 +174,10 @@ export default async function PublicProfile({ params }: Props) {
                 </svg>
               )}
             </h1>
-            <p className="mt-1 text-sm font-medium text-zinc-500">@{profile.username}</p>
+            <p className="mt-1 text-sm font-medium opacity-70">@{profile.username}</p>
 
             {profile.bio && (
-              <p className="mt-4 max-w-md text-sm leading-relaxed text-zinc-600">
+              <p className="mt-4 max-w-md text-sm leading-relaxed opacity-80">
                 {profile.bio}
               </p>
             )}
@@ -148,7 +188,8 @@ export default async function PublicProfile({ params }: Props) {
                 href={profile.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-50 hover:text-zinc-900"
+                className="mt-4 flex items-center gap-2 px-4 py-1.5 text-xs font-medium transition-colors hover:opacity-80 shadow-sm"
+                style={{ backgroundColor: btnColor, color: btnTextColor, borderRadius: btnRadius }}
               >
                 <Globe className="size-3.5" />
                 {profile.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
@@ -166,7 +207,8 @@ export default async function PublicProfile({ params }: Props) {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={social.platform}
-                  className="flex size-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-600 shadow-sm transition-all hover:scale-105 hover:border-zinc-300 hover:text-zinc-900"
+                  className="flex size-11 items-center justify-center shadow-sm transition-all hover:scale-105 hover:brightness-110"
+                  style={{ backgroundColor: btnColor, color: btnTextColor, borderRadius: btnRadius }}
                 >
                   {SOCIAL_ICON[social.platform] ?? <Globe className="size-[18px]" />}
                 </a>
@@ -178,30 +220,34 @@ export default async function PublicProfile({ params }: Props) {
         {/* ── Links Section ── */}
         <div className="mt-10 flex flex-col gap-3 px-6 sm:px-12">
           {profile.links.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-zinc-200 py-12 text-center">
-              <p className="text-sm text-zinc-500">No links available right now.</p>
+            <div className="rounded-2xl border border-dashed border-zinc-200 py-12 text-center opacity-50">
+              <p className="text-sm">No links available right now.</p>
             </div>
           ) : (
             profile.links.map((link) => (
               <a
                 key={link.id}
                 href={`/r/${link.id}`}
-                className="group relative flex items-center justify-between rounded-2xl border border-zinc-200 bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all hover:border-zinc-300 hover:bg-zinc-50/50 hover:shadow-sm"
+                className="group relative flex items-center justify-between p-4 shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all hover:brightness-110"
+                style={{ backgroundColor: btnColor, color: btnTextColor, borderRadius: btnRadius }}
               >
                 <div className="flex flex-col pr-6">
-                  <h2 className="text-sm font-semibold text-zinc-900">
+                  <h2 className="text-sm font-semibold">
                     {link.title}
                   </h2>
                   {link.description && (
-                    <p className="mt-1 line-clamp-1 text-xs text-zinc-500">
+                    <p className="mt-1 line-clamp-1 text-xs opacity-70">
                       {link.description}
                     </p>
                   )}
                 </div>
                 
                 {/* Arrow icon that reveals on hover */}
-                <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 opacity-0 transition-all group-hover:opacity-100">
-                  <ExternalLink className="size-4 text-zinc-600" />
+                <div 
+                  className="flex size-8 shrink-0 items-center justify-center rounded-full opacity-50 transition-all group-hover:opacity-100"
+                  style={{ backgroundColor: accColor }}
+                >
+                  <ExternalLink className="size-4" style={{ color: btnTextColor }} />
                 </div>
               </a>
             ))
