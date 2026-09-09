@@ -1,4 +1,4 @@
-import SignInButton from "@/components/sign-in";
+import SignInButton from "@/components/signIn";
 import Image from "next/image";
 
 export default function Home() {

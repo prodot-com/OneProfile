@@ -1,8 +1,10 @@
 "use client";
 
 import { Profile } from "@prisma/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Check, Copy, ExternalLink } from "lucide-react";
+import QRCode from "qrcode";
+import QRModal from "./qrModal";
 
 interface DashboardProps {
   profile: Profile;
@@ -18,6 +20,12 @@ function getGreeting(): string {
 export default function DashboardHeader({ profile }: DashboardProps) {
   const profileUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${profile.username}`;
   const [copied, setCopied] = useState(false);
+  const [qrCode, setQrCode] = useState("");
+  const [showQR, setShowQR] = useState(false);
+
+  useEffect(() => {
+    QRCode.toDataURL(profileUrl).then(setQrCode);
+  }, [profileUrl]);
 
   const copyUrl = () => {
     navigator.clipboard.writeText(`https://${profileUrl}`);
@@ -51,6 +59,14 @@ export default function DashboardHeader({ profile }: DashboardProps) {
           <div className="text-xs text-zinc-500">{profileUrl}</div>
         </div>
         <div className="flex items-center gap-1.5 pl-3 border-l border-zinc-100">
+          {qrCode && (
+            <img
+              src={qrCode}
+              alt="QR"
+              onClick={() => setShowQR(true)}
+              className="w-12 h-12 rounded-lg cursor-pointer hover:scale-105 transition"
+            />
+          )}
           <button
             onClick={copyUrl}
             className={`p-2 rounded-lg transition-all duration-200 ${
@@ -68,7 +84,7 @@ export default function DashboardHeader({ profile }: DashboardProps) {
             )}
           </button>
           <a
-            href={`https://${profileUrl}`}
+            href={profileUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3.5 py-2 bg-zinc-900 text-white text-xs font-medium rounded-lg hover:bg-zinc-800 transition-colors whitespace-nowrap"
@@ -78,6 +94,12 @@ export default function DashboardHeader({ profile }: DashboardProps) {
           </a>
         </div>
       </div>
+      <QRModal
+        open={showQR}
+        onClose={() => setShowQR(false)}
+        profileUrl={profileUrl}
+        username={profile.username}
+      />
     </div>
   );
 }
