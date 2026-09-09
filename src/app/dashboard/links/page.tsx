@@ -27,6 +27,13 @@ export default async function Page() {
           avatar: profile.avatar,
           banner: profile.banner,
           website: profile.website,
+          theme: profile.theme,
+          accentColor: profile.accentColor,
+          backgroundColor: profile.backgroundColor,
+          buttonColor: profile.buttonColor,
+          buttonTextColor: profile.buttonTextColor,
+          buttonStyle: profile.buttonStyle,
+          fontFamily: profile.fontFamily,
         }}
       />
     </div>

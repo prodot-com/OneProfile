@@ -14,6 +14,7 @@ export type ProfileCustomizationData = Partial<
   >
 >;
 
+// Backend-only service
 export async function updateProfileTheme(
   userId: string,
   data: ProfileCustomizationData

@@ -30,6 +30,8 @@ import {
 import { AddLinkModal, DeleteLinkModal, EditLinkModal } from "./LinkModals";
 import SocialSection from "./SocialSection";
 import PhonePreview from "./PhonePreview";
+import CustomizeSection, { CustomizationState } from "./CustomizeSection";
+import { Theme, ButtonStyle, FontFamily } from "@prisma/client";
 import { SortableLinkItem } from "./SortableLinkItem";
 
 interface PreviewProfile {
@@ -39,6 +41,13 @@ interface PreviewProfile {
   avatar: string | null;
   banner: string | null;
   website: string | null;
+  theme?: Theme;
+  accentColor?: string;
+  backgroundColor?: string;
+  buttonColor?: string;
+  buttonTextColor?: string;
+  buttonStyle?: ButtonStyle;
+  fontFamily?: FontFamily;
 }
 
 interface LinksProps {
@@ -54,6 +63,17 @@ export default function LinksPage({
 }: LinksProps) {
   const [links, setLinks] = useState<Link[]>(initialLinks);
   const [socials, setSocials] = useState<SocialLink[]>(initialSocials);
+
+  // Extract customization state from profile props
+  const [customization, setCustomization] = useState<CustomizationState>({
+    theme: profile.theme || "DEFAULT",
+    accentColor: profile.accentColor || "#18181B",
+    backgroundColor: profile.backgroundColor || "#FFFFFF",
+    buttonColor: profile.buttonColor || "#18181B",
+    buttonTextColor: profile.buttonTextColor || "#FFFFFF",
+    buttonStyle: profile.buttonStyle || "ROUNDED",
+    fontFamily: profile.fontFamily || "INTER",
+  });
 
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
@@ -133,6 +153,12 @@ export default function LinksPage({
       {/* Left: Editor */}
       <section className="hide-scrollbar py-8 space-y-8 min-w-0 lg:min-h-0 lg:overflow-y-auto lg:h-full lg:pr-4">
         <SocialSection socials={socials} onUpdate={handleSocialsChanged} />
+        
+        <CustomizeSection
+          customization={customization}
+          onChange={(updates) => setCustomization((prev) => ({ ...prev, ...updates }))}
+          onSave={() => {}}
+        />
 
         {/* Header */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -257,7 +283,11 @@ export default function LinksPage({
 
       {/* Right: Phone Preview */}
       <div className="hidden lg:flex lg:h-full lg:flex-col lg:items-center lg:justify-start lg:overflow-hidden">
-        <PhonePreview profile={profile} links={links} socials={socials} />
+        <PhonePreview 
+          profile={{ ...profile, ...customization }} 
+          links={links} 
+          socials={socials} 
+        />
       </div>
     </div>
   );
