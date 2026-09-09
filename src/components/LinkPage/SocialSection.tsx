@@ -7,9 +7,39 @@ import {
   Plus,
   Pencil,
   Trash2,
-  Globe,
   ExternalLink,
+  Link2,
+  AtSign,
+  Share2,
+  Film,
+  X,
+  MessageCircle,
+  Music,
+  BookOpen,
+  Tv,
+  Hash,
+  Headphones,
+  Newspaper,
 } from "lucide-react";
+import {
+  FaGithub,
+  FaLinkedin,
+  FaInstagram,
+  FaFacebook,
+  FaYoutube,
+  FaDiscord,
+  FaReddit,
+  FaTwitch,
+  FaSpotify,
+  FaMedium,
+  FaTiktok,
+} from "react-icons/fa";
+
+import { FaHashnode, FaXTwitter } from "react-icons/fa6";
+
+import { SiThreads } from "react-icons/si";
+
+import { Globe } from "lucide-react";
 import {
   AddSocialModal,
   DeleteSocialModal,
@@ -20,6 +50,24 @@ interface SocialSectionProps {
   socials: SocialLink[];
   onUpdate: (socials: SocialLink[]) => void;
 }
+
+export const SOCIAL_ICONS = {
+  WEBSITE: <Globe className="size-5" />,
+  GITHUB: <FaGithub className="size-5" />,
+  X: <FaXTwitter className="size-5" />,
+  LINKEDIN: <FaLinkedin className="size-5" />,
+  INSTAGRAM: <FaInstagram className="size-5" />,
+  FACEBOOK: <FaFacebook className="size-5" />,
+  YOUTUBE: <FaYoutube className="size-5" />,
+  DISCORD: <FaDiscord className="size-5" />,
+  THREADS: <SiThreads className="size-5" />,
+  TIKTOK: <FaTiktok className="size-5" />,
+  REDDIT: <FaReddit className="size-5" />,
+  TWITCH: <FaTwitch className="size-5" />,
+  SPOTIFY: <FaSpotify className="size-5" />,
+  MEDIUM: <FaMedium className="size-5" />,
+  HASHNODE: <FaHashnode className="size-5" />,
+};
 
 const PLATFORM_COLORS: Record<string, string> = {
   GITHUB: "bg-zinc-900 text-white",
@@ -53,7 +101,7 @@ export default function SocialSection({
   const filtered = socials.filter(
     (social) =>
       social.platform.toLowerCase().includes(search.toLowerCase()) ||
-      social.url.toLowerCase().includes(search.toLowerCase())
+      social.url.toLowerCase().includes(search.toLowerCase()),
   );
 
   const handleSocialAdded = (newSocial: SocialLink) => {
@@ -64,7 +112,7 @@ export default function SocialSection({
 
   const handleSocialUpdated = (updatedSocial: SocialLink) => {
     const updated = socials.map((s) =>
-      s.id === updatedSocial.id ? updatedSocial : s
+      s.id === updatedSocial.id ? updatedSocial : s,
     );
     setSocials(updated);
     onUpdate(updated);
@@ -153,7 +201,9 @@ export default function SocialSection({
                     "bg-zinc-200 text-zinc-700"
                   }`}
                 >
-                  {social.platform.charAt(0)}
+                  {SOCIAL_ICONS[social.platform] || (
+                    <Globe className="size-5" />
+                  )}
                 </div>
                 <div className="min-w-0">
                   <h3 className="font-semibold text-zinc-900 capitalize">

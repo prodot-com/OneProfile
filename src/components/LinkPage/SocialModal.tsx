@@ -6,11 +6,7 @@ import { SocialLink, SocialPlatform } from "@prisma/client";
 import { X, AlertTriangle } from "lucide-react";
 import { createSocial, updateSocial, deleteSocial } from "@/services/Socials";
 
-/* ─── Shared input styling ─── */
-const inputClass =
-  "w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none transition-all placeholder:text-zinc-400 focus:border-zinc-400 focus:ring-2 focus:ring-zinc-900/5";
-
-/* ─── Shared Form ─── */
+const inputClass = "w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none transition-all placeholder:text-zinc-400 focus:border-zinc-400 focus:ring-2 focus:ring-zinc-900/5";
 
 interface SocialFormProps {
   title: string;
@@ -117,8 +113,6 @@ function SocialForm({
     </div>
   );
 }
-
-/* ─── ADD SOCIAL MODAL ─── */
 
 interface AddSocialModalProps {
   open: boolean;

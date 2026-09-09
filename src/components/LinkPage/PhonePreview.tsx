@@ -1,8 +1,43 @@
 "use client";
 
-import { Globe, ExternalLink } from "lucide-react";
-import { Theme, ButtonStyle, FontFamily } from "@prisma/client";
+import {
+  Globe,
+  ExternalLink,
+  GitFork,
+  Link2,
+  AtSign,
+  Share2,
+  Film,
+  X,
+  MessageCircle,
+  Music,
+  BookOpen,
+  Tv,
+  Hash,
+  Headphones,
+  Newspaper,
+} from "lucide-react";
+import { Theme, ButtonStyle, FontFamily, SocialPlatform } from "@prisma/client";
 import { getFontClass } from "@/lib/fonts";
+import { SOCIAL_ICONS } from "./SocialSection";
+
+// const SOCIAL_ICON_MAP: Record<string, React.ReactNode> = {
+//   WEBSITE: <Globe className="size-3.5" />,
+//   GITHUB: <GitFork className="size-3.5" />,
+//   X: <X className="size-3.5" />,
+//   LINKEDIN: <Link2 className="size-3.5" />,
+//   INSTAGRAM: <AtSign className="size-3.5" />,
+//   FACEBOOK: <Share2 className="size-3.5" />,
+//   YOUTUBE: <Film className="size-3.5" />,
+//   DISCORD: <MessageCircle className="size-3.5" />,
+//   THREADS: <Hash className="size-3.5" />,
+//   TIKTOK: <Music className="size-3.5" />,
+//   REDDIT: <Newspaper className="size-3.5" />,
+//   TWITCH: <Tv className="size-3.5" />,
+//   SPOTIFY: <Headphones className="size-3.5" />,
+//   MEDIUM: <BookOpen className="size-3.5" />,
+//   HASHNODE: <Hash className="size-3.5" />,
+// };
 
 interface PreviewLink {
   id: string;
@@ -14,7 +49,7 @@ interface PreviewLink {
 
 interface PreviewSocial {
   id: string;
-  platform: string;
+  platform: SocialPlatform;
   url: string;
 }
 
@@ -194,7 +229,7 @@ export default function PhonePreview({
                     }`}
                     title={s.platform}
                   >
-                    {s.platform.charAt(0)}
+                    {SOCIAL_ICONS[s.platform] || <Globe className="size-3.5" />}
                   </div>
                 ))}
               </div>
