@@ -118,12 +118,14 @@ interface AddSocialModalProps {
   open: boolean;
   onClose: () => void;
   onSuccess: (social: SocialLink) => void;
+  onChange?: (draft: Partial<SocialLink> | null) => void;
 }
 
 export function AddSocialModal({
   open,
   onClose,
   onSuccess,
+  onChange,
 }: AddSocialModalProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -131,6 +133,16 @@ export function AddSocialModal({
     SocialPlatform.GITHUB
   );
   const [url, setUrl] = useState("");
+
+  useEffect(() => {
+    if (open && onChange) {
+      onChange({ platform, url, id: "temp" });
+    }
+  }, [open, platform, url, onChange]);
+
+  useEffect(() => {
+    if (!open && onChange) onChange(null);
+  }, [open, onChange]);
 
   if (!open) return null;
 
@@ -143,7 +155,7 @@ export function AddSocialModal({
         alert(res.message);
         return;
       }
-      if (res.social) onSuccess(res.social);
+      if (res.data) onSuccess(res.data);
       setPlatform(SocialPlatform.GITHUB);
       setUrl("");
       router.refresh();
@@ -179,6 +191,7 @@ interface EditSocialModalProps {
   onClose: () => void;
   social: SocialLink | null;
   onSuccess: (social: SocialLink) => void;
+  onChange?: (draft: Partial<SocialLink> | null) => void;
 }
 
 export function EditSocialModal({
@@ -186,6 +199,7 @@ export function EditSocialModal({
   onClose,
   social,
   onSuccess,
+  onChange,
 }: EditSocialModalProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -200,6 +214,16 @@ export function EditSocialModal({
     setUrl(social.url);
   }, [social]);
 
+  useEffect(() => {
+    if (open && onChange && social) {
+      onChange({ platform, url, id: social.id });
+    }
+  }, [open, platform, url, social, onChange]);
+
+  useEffect(() => {
+    if (!open && onChange) onChange(null);
+  }, [open, onChange]);
+
   if (!open || !social) return null;
 
   async function handleSubmit(e: FormEvent) {
@@ -212,7 +236,7 @@ export function EditSocialModal({
         alert(res.message);
         return;
       }
-      if (res.social) onSuccess(res.social);
+      if (res.data) onSuccess(res.data);
       router.refresh();
       onClose();
     } catch (err) {

@@ -43,9 +43,10 @@ interface AddLinkModalProps {
   open: boolean;
   onClose: () => void;
   onSuccess: (link: Link) => void;
+  onChange?: (draft: Partial<Link> | null) => void;
 }
 
-export function AddLinkModal({ open, onClose, onSuccess }: AddLinkModalProps) {
+export function AddLinkModal({ open, onClose, onSuccess, onChange }: AddLinkModalProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
@@ -53,6 +54,16 @@ export function AddLinkModal({ open, onClose, onSuccess }: AddLinkModalProps) {
   const [description, setDescription] = useState("");
   const [icon, setIcon] = useState("");
   const [active, setActive] = useState(true);
+
+  useEffect(() => {
+    if (open && onChange) {
+      onChange({ title, url, description, icon, active, id: "temp" });
+    }
+  }, [open, title, url, description, icon, active, onChange]);
+
+  useEffect(() => {
+    if (!open && onChange) onChange(null);
+  }, [open, onChange]);
 
   if (!open) return null;
 
@@ -65,7 +76,7 @@ export function AddLinkModal({ open, onClose, onSuccess }: AddLinkModalProps) {
         alert(res.message);
         return;
       }
-      if (res.link) onSuccess(res.link);
+      if (res.data) onSuccess(res.data);
       setTitle("");
       setUrl("");
       setDescription("");
@@ -198,6 +209,7 @@ interface EditLinkModalProps {
   onClose: () => void;
   link: Link | null;
   onSuccess: (link: Link) => void;
+  onChange?: (draft: Partial<Link> | null) => void;
 }
 
 export function EditLinkModal({
@@ -205,6 +217,7 @@ export function EditLinkModal({
   onClose,
   link,
   onSuccess,
+  onChange
 }: EditLinkModalProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -222,6 +235,16 @@ export function EditLinkModal({
     setIcon(link.icon || "");
     setActive(link.active);
   }, [link]);
+
+  useEffect(() => {
+    if (open && onChange && link) {
+      onChange({ title, url, description, icon, active, id: link.id });
+    }
+  }, [open, title, url, description, icon, active, link, onChange]);
+
+  useEffect(() => {
+    if (!open && onChange) onChange(null);
+  }, [open, onChange]);
 
   if (!open || !link) return null;
 
@@ -241,7 +264,7 @@ export function EditLinkModal({
         alert(res.message);
         return;
       }
-      if (res.link) onSuccess(res.link);
+      if (res.data) onSuccess(res.data);
       router.refresh();
       onClose();
     } catch (err) {

@@ -64,6 +64,9 @@ export default function LinksPage({
   const [links, setLinks] = useState<Link[]>(initialLinks);
   const [socials, setSocials] = useState<SocialLink[]>(initialSocials);
 
+  const [linkDraft, setLinkDraft] = useState<Partial<Link> | null>(null);
+  const [socialDraft, setSocialDraft] = useState<Partial<SocialLink> | null>(null);
+
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -136,10 +139,34 @@ export default function LinksPage({
     setSocials(newSocials);
   }, []);
 
+  const previewLinks = [...links];
+  if (linkDraft) {
+    if (linkDraft.id === "temp") {
+      previewLinks.push({ ...linkDraft, id: "preview-add", position: 999, clicks: 0, active: linkDraft.active !== false } as Link);
+    } else {
+      const idx = previewLinks.findIndex((l) => l.id === linkDraft.id);
+      if (idx !== -1) {
+        previewLinks[idx] = { ...previewLinks[idx], ...linkDraft } as Link;
+      }
+    }
+  }
+
+  const previewSocials = [...socials];
+  if (socialDraft) {
+    if (socialDraft.id === "temp") {
+      previewSocials.push({ ...socialDraft, id: "preview-add", order: 999 } as SocialLink);
+    } else {
+      const idx = previewSocials.findIndex((s) => s.id === socialDraft.id);
+      if (idx !== -1) {
+        previewSocials[idx] = { ...previewSocials[idx], ...socialDraft } as SocialLink;
+      }
+    }
+  }
+
   return (
     <div className="flex-1 w-full h-full min-h-0 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-8 lg:overflow-hidden relative">
       <section className="hide-scrollbar py-8 space-y-8 min-w-0 lg:min-h-0 lg:overflow-y-auto lg:h-full lg:pr-4">
-        <SocialSection socials={socials} onUpdate={handleSocialsChanged} />
+        <SocialSection socials={socials} onUpdate={handleSocialsChanged} onDraftChange={setSocialDraft} />
 
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
@@ -240,6 +267,7 @@ export default function LinksPage({
             setSelectedLink(null);
           }}
           onSuccess={handleLinkUpdated}
+          onChange={setLinkDraft}
         />
 
         <DeleteLinkModal
@@ -256,6 +284,7 @@ export default function LinksPage({
           open={addModal}
           onClose={() => setAddModal(false)}
           onSuccess={handleLinkAdded}
+          onChange={setLinkDraft}
         />
       </section>
 
@@ -282,14 +311,14 @@ export default function LinksPage({
       {/* Mobile Preview Overlay */}
       {showMobilePreview && (
         <div className="fixed inset-0 z-30 bg-zinc-50/95 backdrop-blur-sm lg:hidden flex flex-col items-center pt-24 overflow-y-auto">
-           <PhonePreview profile={profile} links={links} socials={socials} />
+           <PhonePreview profile={profile} links={previewLinks} socials={previewSocials} />
            <div className="h-32" />{/* padding to avoid button overlap */}
         </div>
       )}
 
       {/* Right: Phone Preview (Desktop) */}
       <div className="hidden lg:flex lg:h-full lg:flex-col lg:items-center lg:justify-start lg:overflow-hidden">
-        <PhonePreview profile={profile} links={links} socials={socials} />
+        <PhonePreview profile={profile} links={previewLinks} socials={previewSocials} />
       </div>
     </div>
   );

@@ -49,6 +49,7 @@ import {
 interface SocialSectionProps {
   socials: SocialLink[];
   onUpdate: (socials: SocialLink[]) => void;
+  onDraftChange?: (draft: Partial<SocialLink> | null) => void;
 }
 
 export const SOCIAL_ICONS = {
@@ -90,6 +91,7 @@ const PLATFORM_COLORS: Record<string, string> = {
 export default function SocialSection({
   socials: initialSocials,
   onUpdate,
+  onDraftChange,
 }: SocialSectionProps) {
   const [socials, setSocials] = useState<SocialLink[]>(initialSocials);
   const [search, setSearch] = useState("");
@@ -259,6 +261,7 @@ export default function SocialSection({
         open={addModal}
         onClose={() => setAddModal(false)}
         onSuccess={handleSocialAdded}
+        onChange={onDraftChange}
       />
       <EditSocialModal
         open={editModal}
@@ -268,6 +271,7 @@ export default function SocialSection({
           setSelectedSocial(null);
         }}
         onSuccess={handleSocialUpdated}
+        onChange={onDraftChange}
       />
       <DeleteSocialModal
         open={deleteModal}
