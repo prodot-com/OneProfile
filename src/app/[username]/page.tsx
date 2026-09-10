@@ -86,7 +86,6 @@ export default async function PublicProfile({ params }: Props) {
     .catch(() => {});
 
   // Styling Variables
-  const bgColor = profile.backgroundColor || "#FFFFFF";
   const accColor = profile.accentColor || "#18181B";
   const btnColor = profile.buttonColor || "#18181B";
   const btnTextColor = profile.buttonTextColor || "#FFFFFF";
@@ -115,16 +114,9 @@ export default async function PublicProfile({ params }: Props) {
   };
 
   const themeClasses = getThemeClasses(profile.theme);
-  const customBackgroundStyle = 
-    profile.theme === "GRADIENT" || profile.theme === "GLASS"
-      ? {}
-      : { backgroundColor: bgColor };
 
   return (
-    <main 
-      className={`min-h-screen ${themeClasses} ${fontClass}`}
-      style={customBackgroundStyle}
-    >
+    <main className={`min-h-screen ${themeClasses} ${fontClass}`}>
       <div className="mx-auto max-w-2xl pb-20">
         
         {/* ── Banner ── */}

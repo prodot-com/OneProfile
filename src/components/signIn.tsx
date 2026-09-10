@@ -1,5 +1,3 @@
-// import { authClient } from "@/lib/auth-client"; //import the auth client
-
 "use client";
 
 import { authClient } from "@/lib/auth-client";
@@ -10,7 +8,7 @@ export default function SignInButton() {
       provider: "github",
       callbackURL: "/dashboard",
       newUserCallbackURL: "/onboarding",
-      errorCallbackURL: "/login?error=true",
+      errorCallbackURL: "/",
     });
 
     if (error) {

@@ -53,11 +53,6 @@ export default function ColorPickers({ config, onChange }: ColorPickersProps) {
       <h2 className="text-sm font-semibold text-zinc-900 mb-3">Colors</h2>
       <div className="space-y-3">
         <ColorField
-          label="Background Color"
-          value={config.backgroundColor}
-          onChange={(v) => onChange({ backgroundColor: v })}
-        />
-        <ColorField
           label="Accent Color"
           value={config.accentColor}
           onChange={(v) => onChange({ accentColor: v })}

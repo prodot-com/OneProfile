@@ -134,14 +134,6 @@ export default function PhonePreview({
 
   const themeClasses = getThemeClasses(profile.theme);
   
-  // Dynamic inline styles override theme backgrounds if custom bgColor is picked (assuming they selected Custom)
-  // But wait, the standard themes shouldn't be overridden if they use standard ones. 
-  // Let's just safely let `style={{ backgroundColor: bgColor }}` apply unless they are using GRADIENT or GLASS.
-  const customBackgroundStyle = 
-    profile.theme === "GRADIENT" || profile.theme === "GLASS"
-      ? {}
-      : { backgroundColor: bgColor };
-
   return (
     <div className="w-full pt-8">
       {/* URL bar */}
@@ -162,7 +154,6 @@ export default function PhonePreview({
         {/* Screen content — scrollable */}
         <div 
           className={`h-[520px] overflow-y-auto overflow-x-hidden scrollbar-none relative ${themeClasses} ${fontClass}`}
-          style={customBackgroundStyle}
         >
           {/* Banner */}
           <div className="relative h-20 w-full" style={{ backgroundColor: accColor }}>
