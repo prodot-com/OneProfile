@@ -11,6 +11,8 @@ import {
   Trash2,
   BarChart3,
   ExternalLink,
+  Eye,
+  X,
 } from "lucide-react";
 import {
   DndContext,
@@ -30,8 +32,6 @@ import {
 import { AddLinkModal, DeleteLinkModal, EditLinkModal } from "./LinkModals";
 import SocialSection from "./SocialSection";
 import PhonePreview from "./PhonePreview";
-import CustomizeSection, { CustomizationState } from "./CustomizeSection";
-import { Theme, ButtonStyle, FontFamily } from "@prisma/client";
 import { SortableLinkItem } from "./SortableLinkItem";
 
 interface PreviewProfile {
@@ -41,13 +41,13 @@ interface PreviewProfile {
   avatar: string | null;
   banner: string | null;
   website: string | null;
-  theme?: Theme;
+  theme?: any;
   accentColor?: string;
   backgroundColor?: string;
   buttonColor?: string;
   buttonTextColor?: string;
-  buttonStyle?: ButtonStyle;
-  fontFamily?: FontFamily;
+  buttonStyle?: any;
+  fontFamily?: any;
 }
 
 interface LinksProps {
@@ -64,22 +64,13 @@ export default function LinksPage({
   const [links, setLinks] = useState<Link[]>(initialLinks);
   const [socials, setSocials] = useState<SocialLink[]>(initialSocials);
 
-  // Extract customization state from profile props
-  const [customization, setCustomization] = useState<CustomizationState>({
-    theme: profile.theme || "DEFAULT",
-    accentColor: profile.accentColor || "#18181B",
-    backgroundColor: profile.backgroundColor || "#FFFFFF",
-    buttonColor: profile.buttonColor || "#18181B",
-    buttonTextColor: profile.buttonTextColor || "#FFFFFF",
-    buttonStyle: profile.buttonStyle || "ROUNDED",
-    fontFamily: profile.fontFamily || "INTER",
-  });
-
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [selectedLink, setSelectedLink] = useState<Link | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  
+  const [showMobilePreview, setShowMobilePreview] = useState(false);
 
   const filteredLinks = links.filter(
     (link) =>
@@ -125,12 +116,9 @@ export default function LinksPage({
         }
       } catch (error) {
         console.error("Error reordering links:", error);
-        // We could revert the state here if we wanted to
       }
     }
   };
-
-  /* ─── Callbacks for live preview updates ─── */
 
   const handleLinkAdded = useCallback((newLink: Link) => {
     setLinks((prev) => [...prev, newLink]);
@@ -149,18 +137,10 @@ export default function LinksPage({
   }, []);
 
   return (
-    <div className="flex-1 w-full h-full min-h-0 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-8 lg:overflow-hidden">
-      {/* Left: Editor */}
+    <div className="flex-1 w-full h-full min-h-0 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-8 lg:overflow-hidden relative">
       <section className="hide-scrollbar py-8 space-y-8 min-w-0 lg:min-h-0 lg:overflow-y-auto lg:h-full lg:pr-4">
         <SocialSection socials={socials} onUpdate={handleSocialsChanged} />
-        
-        <CustomizeSection
-          customization={customization}
-          onChange={(updates) => setCustomization((prev) => ({ ...prev, ...updates }))}
-          onSave={() => {}}
-        />
 
-        {/* Header */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <div className="flex items-center gap-3">
@@ -185,7 +165,6 @@ export default function LinksPage({
           </button>
         </div>
 
-        {/* Search */}
         <div className="relative">
           <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
           <input
@@ -197,8 +176,7 @@ export default function LinksPage({
           />
         </div>
 
-        {/* Links List */}
-        <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm overflow-hidden">
+        <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm overflow-hidden pb-16 lg:pb-0">
           {filteredLinks.length === 0 ? (
             <div className="flex flex-col items-center justify-center px-8 py-20 text-center">
               <div className="mb-5 flex size-14 items-center justify-center rounded-2xl bg-zinc-100">
@@ -281,13 +259,37 @@ export default function LinksPage({
         />
       </section>
 
-      {/* Right: Phone Preview */}
+      {/* Floating Preview Button for Mobile */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 lg:hidden z-40">
+        <button
+          onClick={() => setShowMobilePreview(!showMobilePreview)}
+          className="flex items-center gap-2 rounded-full bg-zinc-900/90 backdrop-blur-md px-6 py-3 text-sm font-bold tracking-wide text-white shadow-xl shadow-zinc-900/20 active:scale-95 transition-all"
+        >
+          {showMobilePreview ? (
+            <>
+              <X className="size-4" />
+              Close Preview 
+            </>
+          ) : (
+            <>
+              <Eye className="size-4" />
+              Preview
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Mobile Preview Overlay */}
+      {showMobilePreview && (
+        <div className="fixed inset-0 z-30 bg-zinc-50/95 backdrop-blur-sm lg:hidden flex flex-col items-center pt-24 overflow-y-auto">
+           <PhonePreview profile={profile} links={links} socials={socials} />
+           <div className="h-32" />{/* padding to avoid button overlap */}
+        </div>
+      )}
+
+      {/* Right: Phone Preview (Desktop) */}
       <div className="hidden lg:flex lg:h-full lg:flex-col lg:items-center lg:justify-start lg:overflow-hidden">
-        <PhonePreview 
-          profile={{ ...profile, ...customization }} 
-          links={links} 
-          socials={socials} 
-        />
+        <PhonePreview profile={profile} links={links} socials={socials} />
       </div>
     </div>
   );
