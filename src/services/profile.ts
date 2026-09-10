@@ -2,7 +2,7 @@
 
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Theme } from "@prisma/client";
+import { Theme, ButtonStyle, FontFamily } from "@prisma/client";
 import { headers } from "next/headers";
 
 export interface CreateProfileInput {
@@ -163,6 +163,12 @@ export interface UpdateProfileInput {
   banner?: string;
   theme?: string;
   isPublic?: boolean;
+  accentColor?: string;
+  backgroundColor?: string;
+  buttonColor?: string;
+  buttonTextColor?: string;
+  buttonStyle?: string;
+  fontFamily?: string;
 }
 
 export async function updateProfile(data: UpdateProfileInput) {
@@ -184,6 +190,8 @@ export async function updateProfile(data: UpdateProfileInput) {
     }
 
     const updateData: Record<string, unknown> = {};
+
+    console.log("Data: ", data)
 
     // Display name
     if (data.displayName !== undefined) {
@@ -254,14 +262,36 @@ export async function updateProfile(data: UpdateProfileInput) {
       updateData.isPublic = data.isPublic;
     }
 
+    // Design Tokens
+    if (data.accentColor !== undefined) updateData.accentColor = data.accentColor;
+    if (data.backgroundColor !== undefined) updateData.backgroundColor = data.backgroundColor;
+    if (data.buttonColor !== undefined) updateData.buttonColor = data.buttonColor;
+    if (data.buttonTextColor !== undefined) updateData.buttonTextColor = data.buttonTextColor;
+    
+    if (data.buttonStyle !== undefined) {
+      const upperBtn = data.buttonStyle.toUpperCase();
+      if (Object.values(ButtonStyle).includes(upperBtn as ButtonStyle)) {
+        updateData.buttonStyle = upperBtn as ButtonStyle;
+      }
+    }
+    
+    if (data.fontFamily !== undefined) {
+      const upperFont = data.fontFamily.toUpperCase();
+      if (Object.values(FontFamily).includes(upperFont as FontFamily)) {
+        updateData.fontFamily = upperFont as FontFamily;
+      }
+    }
+
     if (Object.keys(updateData).length === 0) {
       return { success: true };
     }
 
-    await prisma.profile.update({
+    const pro =  await prisma.profile.update({
       where: { id: profile.id },
       data: updateData,
     });
+
+    console.log(pro)
 
     return { success: true };
   } catch (err) {

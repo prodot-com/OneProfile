@@ -27,8 +27,7 @@ export default function Home() {
     <div className="min-h-screen w-full relative bg-black z-0">
       <main className="relative min-h-screen w-full ">
         <div className="absolute inset-0 bg-black/40 z-0" />
-        <div className="absolute bottom-0 left-0 right-0 h-60 border z-10" />
-        <div className="absolute bottom-0 left-0 right-0 h-60 border z-10" />
+        <div className="absolute bottom-0 left-0 right-0 h-30 z-0 bg-linear-to-t from-black to-transparent" />
         <Image
           src="/pic4.jpg"
           alt="background"
@@ -76,15 +75,15 @@ export default function Home() {
           </div>
         </div>
 
-        {/* <div className="absolute top-[24%] left-1/2 -translate-x-1/2 -translate-y-1/2 
+        <div className="absolute top-[24%] left-1/2 -translate-x-1/2 -translate-y-1/2 
           flex items-center gap-2 bg-[#755917]/35 px-3 py-1.5 rounded-lg backdrop-blur-lg">
 
-            <AvatarDemo />
+            {/* <AvatarDemo /> */}
             <p className="text-[15px] text-white font-mono">
               Trusted by 1000+ users worldwide
             </p>
 
-        </div> */}
+        </div>
       </main>
       <div className="w-full min-h-250 bg-black/40"></div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { updateProfile } from "@/services/profile";
 import { Link as PrismaLink, SocialLink, Theme, ButtonStyle, FontFamily } from "@prisma/client";
@@ -71,19 +71,17 @@ export default function ProfileEditForm({
     fontFamily: profile.fontFamily,
     isPublic: profile.isPublic,
   });
-
   const [avatar, setAvatar] = useState(profile.avatar ?? "");
   const [banner, setBanner] = useState(profile.banner ?? "");
-
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-
   const [avatarUploading, setAvatarUploading] = useState(false);
   const [bannerUploading, setBannerUploading] = useState(false);
-
   const avatarRef = useRef<HTMLInputElement>(null);
   const bannerRef = useRef<HTMLInputElement>(null);
+
+  // useEffect(()=>console.log(form), [form])
 
   const updateForm = (updates: Partial<ProfileData>) => {
     setForm((prev) => ({ ...prev, ...updates }));
@@ -122,7 +120,7 @@ export default function ProfileEditForm({
       ...form,
       avatar,
       banner,
-    } as any); // Cast as any or manually map due to Partial type on form
+    } as any);
 
     setSaving(false);
 
@@ -137,7 +135,6 @@ export default function ProfileEditForm({
 
   return (
     <div className="flex-1 w-full h-full min-h-0 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-8 lg:overflow-hidden">
-      {/* Left: Editor */}
       <section className="hide-scrollbar py-8 space-y-8 min-w-0 lg:min-h-0 lg:overflow-y-auto lg:h-full lg:pr-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-zinc-900">Appearance</h1>
@@ -145,7 +142,6 @@ export default function ProfileEditForm({
         </div>
 
         <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm overflow-hidden">
-          {/* Banner */}
           <div className="relative h-40 sm:h-52" style={{ backgroundColor: form.accentColor }}>
             {banner && (
               <img
@@ -177,7 +173,6 @@ export default function ProfileEditForm({
               }}
             />
 
-            {/* Avatar overlapping banner */}
             <div className="absolute -bottom-12 left-6">
               <div className="relative">
                 <div className="size-24 rounded-2xl border-4 border-white bg-zinc-100 shadow-md overflow-hidden">
@@ -221,7 +216,6 @@ export default function ProfileEditForm({
           <div className="h-16" />
         </div>
 
-        {/* Profile Details */}
         <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm">
           <div className="border-b border-zinc-100 px-6 py-4">
             <h2 className="text-sm font-semibold text-zinc-800">Profile Details</h2>
@@ -249,7 +243,6 @@ export default function ProfileEditForm({
           </div>
         </div>
 
-        {/* Customization Details */}
         <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm">
           <div className="border-b border-zinc-100 px-6 py-4">
             <h2 className="text-sm font-semibold text-zinc-800">Design</h2>
@@ -330,7 +323,6 @@ export default function ProfileEditForm({
           </div>
         </div>
 
-        {/* Visibility */}
         <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm p-6">
            <label className="block text-sm font-medium text-zinc-700 mb-3">Visibility</label>
            <div className="flex items-center gap-4">
@@ -355,7 +347,6 @@ export default function ProfileEditForm({
           </div>
         </div>
 
-        {/* Sticky Save Bar */}
         <div className="sticky bottom-4 flex items-center justify-between rounded-2xl border border-zinc-200/80 bg-white/90 p-4 shadow-lg backdrop-blur-md">
           <div className="text-sm font-medium">
             {error && <span className="text-red-500">{error}</span>}
@@ -372,7 +363,6 @@ export default function ProfileEditForm({
         </div>
       </section>
 
-      {/* Right: Phone Preview */}
       <div className="hidden lg:flex lg:h-full lg:flex-col lg:items-center lg:justify-start lg:overflow-hidden">
         <PhonePreview
           profile={{
