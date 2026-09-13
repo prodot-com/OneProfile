@@ -20,6 +20,7 @@ import {
 import { Theme, ButtonStyle, FontFamily, SocialPlatform } from "@prisma/client";
 import { getFontClass } from "@/lib/fonts";
 import { SOCIAL_ICONS } from "./SocialSection";
+import { PhoneMockupCard } from "@/components/ui/phoneMockup";
 
 // const SOCIAL_ICON_MAP: Record<string, React.ReactNode> = {
 //   WEBSITE: <Globe className="size-3.5" />,
@@ -144,16 +145,11 @@ export default function PhonePreview({
         <ExternalLink className="size-3 shrink-0 text-zinc-400" />
       </div>
 
-      {/* Phone frame */}
-      <div className="mx-auto w-[280px] rounded-[2.5rem] border-[6px] border-zinc-900 bg-white shadow-2xl shadow-zinc-900/20 overflow-hidden">
-        {/* Notch */}
-        <div className="relative flex justify-center bg-zinc-900 py-1.5">
-          <div className="h-[18px] w-[90px] rounded-full bg-zinc-800" />
-        </div>
-
+      {/* Phone frame wrapper */}
+      <PhoneMockupCard variant="titanium" className="mx-auto shadow-2xl shadow-zinc-900/20">
         {/* Screen content — scrollable */}
         <div 
-          className={`h-[520px] overflow-y-auto overflow-x-hidden scrollbar-none relative ${themeClasses} ${fontClass}`}
+          className={`h-full w-full overflow-y-auto overflow-x-hidden scrollbar-none relative ${themeClasses} ${fontClass}`}
         >
           {/* Banner */}
           <div className="relative h-20 w-full" style={{ backgroundColor: accColor }}>
@@ -269,12 +265,7 @@ export default function PhonePreview({
             </span>
           </div>
         </div>
-
-        {/* Home indicator */}
-        <div className="flex justify-center bg-white pb-2 pt-1">
-          <div className="h-1 w-20 rounded-full bg-zinc-300" />
-        </div>
-      </div>
+      </PhoneMockupCard>
     </div>
   );
 }

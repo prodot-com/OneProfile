@@ -1,5 +1,6 @@
 "use client";
 
+import { PhoneMockupCard } from "@/components/ui/phoneMockup";
 // import { AvatarDemo } from "@/components/AvatarCustom";
 import { authClient, signIn } from "@/lib/auth-client";
 import Logo from "@/lib/logo";
@@ -169,6 +170,8 @@ export default function Home() {
               </div>
             </motion.div>
           </motion.div>
+
+          {/* <PhoneMockupCard variant="orange" visibleRatio={2 / 3} showDynamicIsland={false} /> */}
         </div>
       </main>
 
