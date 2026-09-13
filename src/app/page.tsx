@@ -108,22 +108,21 @@ export default function Home() {
     <div className="min-h-screen relative text-[#1a1a1a] selection:bg-[#755917]/20 selection:text-[#1a1a1a]">
       {/* ─── Background Image (hero section only) ─── */}
       <div className="absolute top-0 left-0 right-0 h-screen overflow-hidden -z-10 pointer-events-none">
-        <Image
-          src="/back.png"
-          alt=""
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute bottom-0 h-25 w-full bg-linear-to-t from-white to-transparent"/>
+        <Image src="/back.png" alt="" fill className="object-cover" priority />
+        <div className="absolute bottom-0 h-25 w-full bg-linear-to-t from-white to-transparent" />
       </div>
 
-      {/* ─── Navbar ─── */}
-      <nav className="fixed top-0 inset-x-0 z-50 bg-[#FDFBF7]/80 backdrop-blur-md border-b border-[#e5e2dc]">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <Logo className="h-9 cursor-pointer" showText />
-            <div className="hidden md:flex items-center gap-6">
+      <div className="fixed top-0 left-0 flex justify-center items-center w-full mt-10 z-20 px-4">
+        <div
+          className="w-full max-w-3xl h-[60px] flex items-center justify-between 
+          font-mono px-6 bg-white/20 rounded-lg backdrop-blur-md border border-white/30 shadow-lg"
+        >
+          <div className="flex items-center gap-6">
+            <div className="w-10 h-10 flex items-center justify-center">
+              <Logo className="h-9 cursor-pointer"/>
+            </div>
+
+            <div className="flex items-center gap-7">
               {navLinks.map((link) => (
                 <a
                   key={link}
@@ -135,22 +134,23 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <div className="flex items-center gap-3">
+
+          <div className="flex items-center">
             <button
-              onClick={handleSignIn}
-              className="hidden sm:block text-[14px] text-[#6b6b6b] hover:text-[#1a1a1a] transition-colors cursor-pointer"
+            onClick={handleSignIn}
+              className="
+                relative z-10 px-5 py-2.5 cursor-pointer
+                rounded-lg text-white font-serif text-[1.1rem] tracking-wide
+                bg-linear-to-b from-[#755917] via-[#4d3a0d] to-[#2a2005]
+                shadow-[inset_0_1px_1px_rgba(255,255,255,0.35),0_20px_35px_-10px_rgba(0,0,0,0.7)]
+                hover:shadow-none transition-all delay-500 duration-150
+              "
             >
-              Log in
-            </button>
-            <button
-              onClick={handleSignIn}
-              className="px-4 py-2 rounded-lg text-[14px] font-medium bg-[#1a1a1a] text-white hover:bg-[#333] transition-colors cursor-pointer"
-            >
-              Get Started
+              Book a demo
             </button>
           </div>
         </div>
-      </nav>
+      </div>
 
       {/* ─── Hero ─── */}
       <section className="pt-36 pb-20 lg:pt-44 lg:pb-28 px-6">
@@ -231,7 +231,7 @@ export default function Home() {
       </section>
 
       {/* ─── Showcase ─── */}
-      <section className="py-20 px-6 border-t border-[#e5e2dc]">
+      <section className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center gap-16">
             <motion.div
@@ -272,12 +272,19 @@ export default function Home() {
               className="flex-shrink-0"
             >
               <div className="relative w-[280px] sm:w-[300px]">
-                <PhoneMockupCard variant="orange" className="mx-auto shadow-2xl shadow-zinc-900/20">
+                <PhoneMockupCard
+                  variant="orange"
+                  className="mx-auto shadow-2xl shadow-zinc-900/20"
+                >
                   <div className="px-5 pb-6 pt-17 flex flex-col items-center">
                     {/* Avatar */}
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#755917] to-[#2a2005] p-[2px] mb-3">
-                      <div className="w-full h-full rounded-full bg-[#FDFBF7] flex items-center justify-center">
-                        <img src="/avatar.jpeg" alt="" className="rounded-full"/>
+                      <div className="w-full h-full rounded-full flex items-center justify-center">
+                        <img
+                          src="/avatar.jpeg"
+                          alt=""
+                          className="rounded-full"
+                        />
                       </div>
                     </div>
                     <div className="font-serif text-[15px] font-bold text-[#1a1a1a] mb-0.5">
@@ -301,8 +308,6 @@ export default function Home() {
                     </div>
                   </div>
                 </PhoneMockupCard>
-                {/* </div> */}
-                {/* </div> */}
               </div>
             </motion.div>
           </div>
