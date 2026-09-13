@@ -11,7 +11,7 @@ export default async function DashboardLayout({
   const { user, profile } = await requireUserAndProfile();
 
   return (
-    <div className="flex h-screen bg-zinc-50/50 overflow-hidden text-zinc-900 font-sans">
+    <div className="flex h-screen bg-slate-300 overflow-hidden text-zinc-900 font-sans">
       <Sidebar className="hidden md:flex" />
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         <Topbar profile={profile} />

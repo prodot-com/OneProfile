@@ -1,85 +1,50 @@
 import React from "react";
 
-interface LogoIconProps {
+interface OneProfileLogoProps {
   size?: number;
   className?: string;
+  showText?: boolean;
 }
 
-export default function LogoIcon({
-  size = 56,
-  className = "",
-}: LogoIconProps) {
+export default function OneProfileLogo({
+  className = "h-10",
+  size,
+  showText = false,
+}: OneProfileLogoProps) {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 128 128"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      fill="none"
-    >
-      <defs>
-        <linearGradient
-          id="oneprofileGradient"
-          x1="0"
-          y1="0"
-          x2="128"
-          y2="128"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset="0%" stopColor="#755917" />
-          <stop offset="55%" stopColor="#4d3a0d" />
-          <stop offset="100%" stopColor="#2a2005" />
-        </linearGradient>
+    <div className={`flex items-center gap-3 ${className}`}>
+      <svg
+        viewBox="0 0 24 24"
+        className="h-full w-auto"
+        style={size ? { width: size, height: size } : undefined}
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <linearGradient id="oneprofile" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#755917" />
+            <stop offset="50%" stopColor="#4d3a0d" />
+            <stop offset="100%" stopColor="#2a2005" />
+          </linearGradient>
+        </defs>
 
-        <filter
-          id="shadow"
-          x="-20%"
-          y="-20%"
-          width="140%"
-          height="140%"
-        >
-          <feDropShadow
-            dx="0"
-            dy="6"
-            stdDeviation="8"
-            floodOpacity="0.18"
-          />
-        </filter>
-      </defs>
-
-      {/* Background */}
-      <rect
-        x="10"
-        y="10"
-        width="108"
-        height="108"
-        rx="30"
-        fill="url(#oneprofileGradient)"
-        filter="url(#shadow)"
-      />
-
-      {/* Folded One */}
-      <path
-        d="M43 38
-           L76 28
-           L76 92
-           C76 98 72 102 66 102
-           H54
-           V48
-           L43 52
-           Z"
-        fill="white"
-      />
-
-      {/* Fold */}
-      <path
-        d="M43 38
-           L54 48
-           L43 52
-           Z"
-        fill="rgba(255,255,255,.55)"
-      />
-    </svg>
+        {/* Main "1" shape */}
+        <path
+          d="M8 7 L14.5 5 L14.5 17.5 C14.5 18.5 13.5 19.5 12.5 19.5 H10 V9 L8 10 Z"
+          fill="url(#oneprofile)"
+          opacity="0.95"
+        />
+        {/* Fold accent */}
+        <path
+          d="M8 7 L10 9 L8 10 Z"
+          fill="url(#oneprofile)"
+        />
+      </svg>
+      {showText && (
+        <span className="text-2xl font-semibold tracking-tight text-gray-900">
+          OneProfile
+        </span>
+      )}
+    </div>
   );
 }

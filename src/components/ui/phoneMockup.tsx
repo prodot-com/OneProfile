@@ -143,7 +143,7 @@ export const PhoneMockupCard = forwardRef<HTMLDivElement, PhoneMockupCardProps>(
     const isCropped = ratio < 1;
 
     const phoneFrameClassName = cn(
-      "relative w-[256px] rounded-[2.6rem] p-[2px]",
+      "relative w-[259px] rounded-[2.6rem] p-[2px]",
       frame.frame,
     );
 

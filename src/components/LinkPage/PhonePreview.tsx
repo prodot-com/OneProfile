@@ -146,7 +146,7 @@ export default function PhonePreview({
       </div>
 
       {/* Phone frame wrapper */}
-      <PhoneMockupCard variant="titanium" className="mx-auto shadow-2xl shadow-zinc-900/20">
+      <PhoneMockupCard variant="orange" className="mx-auto shadow-2xl shadow-zinc-900/20">
         {/* Screen content — scrollable */}
         <div 
           className={`h-full w-full overflow-y-auto overflow-x-hidden scrollbar-none relative ${themeClasses} ${fontClass}`}
