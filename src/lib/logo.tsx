@@ -22,9 +22,9 @@ export default function OneProfileLogo({
       >
         <defs>
           <linearGradient id="oneprofile" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#755917" />
-            <stop offset="50%" stopColor="#4d3a0d" />
-            <stop offset="100%" stopColor="#2a2005" />
+            <stop offset="0%" stopColor="#fbbf27" />
+            <stop offset="45%" stopColor="#f59e0b" />
+            <stop offset="100%" stopColor="#f97316" />
           </linearGradient>
         </defs>
 
@@ -35,10 +35,7 @@ export default function OneProfileLogo({
           opacity="0.95"
         />
         {/* Fold accent */}
-        <path
-          d="M8 7 L10 9 L8 10 Z"
-          fill="url(#oneprofile)"
-        />
+        <path d="M8 7 L10 9 L8 10 Z" fill="url(#oneprofile)" />
       </svg>
       {showText && (
         <span className="text-2xl font-semibold tracking-tight text-gray-900">

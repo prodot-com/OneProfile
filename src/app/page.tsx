@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import {
   ArrowRight,
+  ArrowUpRight,
   BarChart3,
   GripVertical,
   Layers,
@@ -105,11 +106,11 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen relative text-[#1a1a1a] selection:bg-[#755917]/20 selection:text-[#1a1a1a]">
+    <div className="min-h-screen relative text-[#1a1a1a] selection:bg-[#f97316]/20 selection:text-[#1a1a1a]">
       {/* ─── Background Image (hero section only) ─── */}
       <div className="absolute top-0 left-0 right-0 h-screen overflow-hidden -z-10 pointer-events-none">
         <Image src="/back.png" alt="" fill className="object-cover" priority />
-        <div className="absolute bottom-0 h-25 w-full bg-linear-to-t from-white to-transparent" />
+        <div className="absolute bottom-0 h-20 w-full bg-linear-to-t from-white to-transparent" />
       </div>
 
       <div className="fixed top-0 left-0 flex justify-center items-center w-full mt-10 z-20 px-4">
@@ -119,7 +120,7 @@ export default function Home() {
         >
           <div className="flex items-center gap-6">
             <div className="w-10 h-10 flex items-center justify-center">
-              <Logo className="h-9 cursor-pointer"/>
+              <Logo className="h-9 cursor-pointer" />
             </div>
 
             <div className="flex items-center gap-7">
@@ -137,14 +138,16 @@ export default function Home() {
 
           <div className="flex items-center">
             <button
-            onClick={handleSignIn}
+              onClick={handleSignIn}
               className="
-                relative z-10 px-5 py-2.5 cursor-pointer
-                rounded-lg text-white font-serif text-[1.1rem] tracking-wide
-                bg-linear-to-b from-[#755917] via-[#4d3a0d] to-[#2a2005]
-                shadow-[inset_0_1px_1px_rgba(255,255,255,0.35),0_20px_35px_-10px_rgba(0,0,0,0.7)]
-                hover:shadow-none transition-all delay-500 duration-150
-              "
+relative z-10 px-5 py-2.5 cursor-pointer
+rounded-xl text-white font-serif text-[1.1rem] tracking-wide
+bg-gradient-to-b from-[#fb923c] via-[#f97316] to-[#c2410c]
+shadow-[0_12px_30px_rgba(249,115,22,0.35)]
+hover:brightness-110
+hover:scale-105
+transition-all duration-300
+"
             >
               Book a demo
             </button>
@@ -155,17 +158,6 @@ export default function Home() {
       {/* ─── Hero ─── */}
       <section className="pt-36 pb-20 lg:pt-44 lg:pb-28 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#e5e2dc] text-[13px] text-[#6b6b6b] mb-8 bg-white">
-              <Sparkles className="w-3.5 h-3.5 text-[#755917]" />
-              Free + Open for everyone
-            </div>
-          </motion.div>
-
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -173,7 +165,7 @@ export default function Home() {
             className="font-serif text-5xl sm:text-6xl lg:text-[4.5rem] leading-[1.1] tracking-tight mb-6"
           >
             Build your digital identity.{" "}
-            <span className="italic text-[#755917]">Free.</span>
+            <span className="italic text-[#f97316]">Free.</span>
           </motion.h1>
 
           <motion.p
@@ -201,7 +193,7 @@ export default function Home() {
             </button>
             <a
               href="#features"
-              className="px-6 py-3 rounded-lg text-[15px] font-medium border border-[#e5e2dc] text-[#6b6b6b] hover:border-[#ccc] hover:text-[#1a1a1a] transition-all"
+              className="px-6 py-3 rounded-lg text-[15px] font-medium border border-[#d8d5ce] bg-[#ffffff] text-[#6b6b6b] hover:border-[#ccc] hover:text-[#1a1a1a] transition-all"
             >
               Browse Features
             </a>
@@ -223,7 +215,7 @@ export default function Home() {
                 <p className="text-2xl sm:text-3xl font-serif font-bold text-[#1a1a1a]">
                   {stat.value}
                 </p>
-                <p className="text-[13px] text-[#6b6b6b] mt-1">{stat.label}</p>
+                <p className="text-[13px] text-[#000000] mt-1">{stat.label}</p>
               </div>
             ))}
           </motion.div>
@@ -244,7 +236,7 @@ export default function Home() {
             >
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl leading-tight mb-6">
                 Obsessively Detailed.{" "}
-                <span className="italic text-[#755917]">
+                <span className="italic text-[#f97316]">
                   Effortlessly Beautiful.
                 </span>
               </h2>
@@ -255,7 +247,7 @@ export default function Home() {
               </p>
               <button
                 onClick={handleSignIn}
-                className="inline-flex items-center gap-2 text-[15px] font-medium text-[#755917] hover:text-[#5a4412] transition-colors group cursor-pointer"
+                className="inline-flex items-center gap-2 text-[15px] font-medium text-[#f97316] hover:text-[#c2410c] transition-colors group cursor-pointer"
               >
                 Create your profile{" "}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -273,23 +265,38 @@ export default function Home() {
             >
               <div className="relative w-[280px] sm:w-[300px]">
                 <PhoneMockupCard
-                  variant="orange"
+                  showDynamicIsland={false}
+                  showHomeIndicator={false}
+                  variant="purple"
                   className="mx-auto shadow-2xl shadow-zinc-900/20"
+                />
+
+                <PhoneMockupCard
+                  variant="cherry"
+                  showHomeIndicator={false}
+                  className="absolute top-3 right-0 rotate-2 mx-auto shadow-2xl shadow-zinc-900/20"
+                />
+
+                <PhoneMockupCard
+                  variant="orange"
+                  className="absolute top-6 -right-5 rotate-[4deg] mx-auto shadow-2xl shadow-zinc-900/20"
                 >
                   <div className="px-5 pb-6 pt-17 flex flex-col items-center">
                     {/* Avatar */}
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#755917] to-[#2a2005] p-[2px] mb-3">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#fbbf27] via-[#f59e0b] to-[#f97316] p-[2px] mb-3">
                       <div className="w-full h-full rounded-full flex items-center justify-center">
                         <img
                           src="/avatar.jpeg"
-                          alt=""
-                          className="rounded-full"
+                          alt="Probal Ghosh"
+                          className="w-full h-full rounded-full object-cover"
                         />
                       </div>
                     </div>
+
                     <div className="font-serif text-[15px] font-bold text-[#1a1a1a] mb-0.5">
                       Probal Ghosh
                     </div>
+
                     <div className="text-[11px] text-[#6b6b6b] mb-5">
                       Fullstack Engineer
                     </div>
@@ -338,7 +345,7 @@ export default function Home() {
                 custom={idx}
                 className="bg-white border border-[#e5e2dc] rounded-2xl p-7 hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-shadow group"
               >
-                <div className="w-10 h-10 rounded-xl bg-[#f5ecd8] flex items-center justify-center mb-5 text-[#755917] group-hover:scale-105 transition-transform">
+                <div className="w-10 h-10 rounded-xl bg-[#ffedd5] flex items-center justify-center mb-5 text-[#f97316] group-hover:scale-105 transition-transform">
                   {feature.icon}
                 </div>
                 <h3 className="text-[17px] font-semibold mb-2">
@@ -392,30 +399,62 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── CTA ─── */}
-      <section className="py-24 px-6 border-t border-[#e5e2dc]">
+      {/* ─── CTA Banner ─── */}
+      <section className="py-24 px-6">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={fadeUp}
           custom={0}
-          className="max-w-3xl mx-auto text-center"
+          className="max-w-5xl mx-auto relative overflow-hidden rounded-[2rem] p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12"
         >
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl leading-tight mb-6">
-            Ready to build your{" "}
-            <span className="italic text-[#755917]">digital presence?</span>
-          </h2>
-          <p className="text-[#6b6b6b] text-lg mb-10 max-w-xl mx-auto">
-            Join thousands of creators who are already using OneProfile to
-            connect with their audience. Free, no credit card required.
-          </p>
-          <button
-            onClick={handleSignIn}
-            className="px-8 py-3.5 rounded-lg text-[15px] font-medium bg-[#1a1a1a] text-white hover:bg-[#333] transition-all active:scale-[0.98] inline-flex items-center gap-2 cursor-pointer"
-          >
-            Get Started Now <ArrowRight className="w-4 h-4" />
-          </button>
+          {/* Background image mimicking the sky */}
+          <div className="absolute inset-0 -z-20 pointer-events-none">
+            <Image
+              src="/back.png"
+              alt=""
+              fill
+              className="object-cover"
+            />
+          </div>
+          {/* Light overlay to match image vibrancy & readability */}
+          <div className="absolute inset-0 bg-linear-to-r from-white to-transparent -z-10 pointer-events-none" />
+
+          {/* Left Text Content */}
+          <div className="flex-1 text-left relative z-10">
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/60 backdrop-blur-md mb-6 text-[13px] font-medium text-[#1a1a1a] shadow-sm">
+              Upgrade OneProfile
+            </div>
+            
+            <h2 className="font-sans text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.1] font-semibold text-[#1a1a1a] mb-6 tracking-tight">
+              Help us build the <br /> ultimate workspace.
+            </h2>
+            
+            <p className="text-[#1a1a1a]/80 text-lg max-w-lg leading-relaxed">
+              OneProfile is indie-crafted and free of clutter. Your support
+              keeps the servers running, funds new focus widgets, and
+              helps us keep building a quieter web.
+            </p>
+          </div>
+
+          {/* Right Buttons */}
+          <div className="w-full md:w-[320px] shrink-0 flex flex-col gap-3 relative z-10">
+            <button
+              onClick={handleSignIn}
+              className="w-full px-7 py-5 font-semibold rounded-full bg-[#111111] text-white hover:bg-black transition-all active:scale-[0.98] flex items-center justify-between shadow-lg cursor-pointer"
+            >
+              <span>Get Started Now</span>
+              <ArrowUpRight className="w-5 h-5 text-white/50" />
+            </button>
+            <button
+              onClick={handleSignIn}
+              className="w-full px-7 py-5 font-semibold rounded-full bg-white/60 backdrop-blur-md text-[#111111] hover:bg-white/80 transition-all active:scale-[0.98] flex items-center justify-between shadow-sm cursor-pointer border border-white/40"
+            >
+              <span>Book a Demo</span>
+              <ArrowUpRight className="w-5 h-5 text-[#1a1a1a]/50" />
+            </button>
+          </div>
         </motion.div>
       </section>
 

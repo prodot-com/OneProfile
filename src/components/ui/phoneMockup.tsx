@@ -40,6 +40,7 @@ type PhoneMockupCardProps = Readonly<
     visibleRatio?: number;
     // Show or hide the Dynamic Island and camera dot.
     showDynamicIsland?: boolean;
+    showHomeIndicator?: boolean;
   }
 >;
 
@@ -92,9 +93,11 @@ function PhoneSideButtons({
 function PhoneScreen({
   children,
   showDynamicIsland,
+  showHomeIndicator,
 }: Readonly<{
   children: ReactNode;
   showDynamicIsland: boolean;
+  showHomeIndicator: boolean
 }>) {
   return (
     <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] bg-black">
@@ -114,11 +117,11 @@ function PhoneScreen({
           </div>
         ) : null}
 
-        {/* Home indicator */}
-        <div
+        {showHomeIndicator ? (<div
           className="absolute bottom-[5.5px] left-1/2 z-20 h-[3px] w-[32%] -translate-x-1/2 rounded-full bg-black/20"
           aria-hidden="true"
-        />
+        />) : null}
+
       </div>
     </div>
   );
@@ -133,6 +136,7 @@ export const PhoneMockupCard = forwardRef<HTMLDivElement, PhoneMockupCardProps>(
       variant = "purple",
       visibleRatio = 1,
       showDynamicIsland = true,
+      showHomeIndicator = true,
       style,
       ...props
     },
@@ -163,7 +167,7 @@ export const PhoneMockupCard = forwardRef<HTMLDivElement, PhoneMockupCardProps>(
           {...props}
         >
           <PhoneSideButtons frame={frame} />
-          <PhoneScreen showDynamicIsland={showDynamicIsland}>
+          <PhoneScreen showDynamicIsland={showDynamicIsland} showHomeIndicator={showHomeIndicator}>
             {children}
           </PhoneScreen>
         </div>
@@ -189,7 +193,7 @@ export const PhoneMockupCard = forwardRef<HTMLDivElement, PhoneMockupCardProps>(
             className={cn(phoneFrameClassName, "w-full shrink-0")}
             style={{ height: `${100 / ratio}%` }}
           >
-            <PhoneScreen showDynamicIsland={showDynamicIsland}>
+            <PhoneScreen showDynamicIsland={showDynamicIsland} showHomeIndicator={showHomeIndicator}>
               {children}
             </PhoneScreen>
           </div>
