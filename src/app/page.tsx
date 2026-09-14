@@ -10,12 +10,13 @@ import {
   ArrowUpRight,
   BarChart3,
   GripVertical,
-  Layers,
   Palette,
   Sparkles,
-  Users,
   Zap,
 } from "lucide-react";
+import { LuGithub } from "react-icons/lu";
+import { FaXTwitter } from "react-icons/fa6";
+import { FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
 
 export default function Home() {
   const handleSignIn = async () => {
@@ -31,45 +32,6 @@ export default function Home() {
   };
 
   const navLinks = ["Features", "How it works", "Pricing"];
-
-  const features = [
-    {
-      icon: <Palette className="w-5 h-5" />,
-      title: "Premium Themes",
-      description:
-        "Choose from beautifully crafted themes or customize every detail to match your brand perfectly.",
-    },
-    {
-      icon: <BarChart3 className="w-5 h-5" />,
-      title: "Deep Analytics",
-      description:
-        "Understand your audience with real-time insights, click tracking, and viewer demographics.",
-    },
-    {
-      icon: <Zap className="w-5 h-5" />,
-      title: "Lightning Fast",
-      description:
-        "Optimized for speed and SEO to ensure maximum conversion rates for every link.",
-    },
-    {
-      icon: <GripVertical className="w-5 h-5" />,
-      title: "Drag & Drop",
-      description:
-        "Reorder your links effortlessly with an intuitive drag-and-drop interface.",
-    },
-    {
-      icon: <Layers className="w-5 h-5" />,
-      title: "Custom Layouts",
-      description:
-        "Build your perfect link-in-bio with flexible grid systems and layout options.",
-    },
-    {
-      icon: <Users className="w-5 h-5" />,
-      title: "Social Integration",
-      description:
-        "Connect all your social profiles in one place with beautiful, recognizable icons.",
-    },
-  ];
 
   const steps = [
     {
@@ -321,8 +283,8 @@ transition-all duration-300
         </div>
       </section>
 
-      {/* ─── Features ─── */}
-      <section id="features" className="py-24 px-6 border-t border-[#e5e2dc]">
+      {/* ─── Features — Bento Grid ─── */}
+      <section id="features" className="py-24 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl mb-4">
@@ -334,28 +296,253 @@ transition-all duration-300
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {features.map((feature, idx) => (
-              <motion.div
-                key={idx}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                custom={idx}
-                className="bg-white border border-[#e5e2dc] rounded-2xl p-7 hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-shadow group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-[#ffedd5] flex items-center justify-center mb-5 text-[#f97316] group-hover:scale-105 transition-transform">
-                  {feature.icon}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 auto-rows-[minmax(240px,auto)]">
+            {/* ── Card 1: Premium Themes (tall) ── */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={0}
+              className="bg-[#f3f0ff] rounded-3xl p-8 flex flex-col justify-between hover:shadow-lg hover:scale-[1.01] transition-all duration-300 overflow-hidden"
+            >
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-white/60 flex items-center justify-center mb-5 text-purple-600">
+                  <Palette className="w-5 h-5" />
                 </div>
-                <h3 className="text-[17px] font-semibold mb-2">
-                  {feature.title}
+                <h3 className="text-xl font-semibold mb-2 text-[#1a1a1a]">
+                  Premium Themes
                 </h3>
                 <p className="text-[#6b6b6b] text-[14px] leading-relaxed">
-                  {feature.description}
+                  Choose from beautifully crafted themes or customize every
+                  detail to match your brand.
                 </p>
-              </motion.div>
-            ))}
+              </div>
+              {/* Visual: Stacked color swatches */}
+              <div className="mt-4 flex flex-col items-center gap-3">
+                {[
+                  {
+                    colors: ["#f97316", "#fb923c", "#fdba74", "#ffedd5"],
+                    label: "Sunset",
+                  },
+                  {
+                    colors: ["#8b5cf6", "#a78bfa", "#c4b5fd", "#ede9fe"],
+                    label: "Lavender",
+                  },
+                ].map((palette, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{
+                      duration: 2.5,
+                      delay: i * 0.4,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="flex items-center gap-3 bg-white/70 backdrop-blur-sm rounded-xl px-4 py-2.5 shadow-sm w-full max-w-[220px]"
+                  >
+                    <div className="flex -space-x-1">
+                      {palette.colors.map((c, j) => (
+                        <div
+                          key={j}
+                          className="w-6 h-6 rounded-full border-2 border-white"
+                          style={{ backgroundColor: c }}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-xs font-medium text-[#1a1a1a]">
+                      {palette.label}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* ── Card 2: Deep Analytics (wide) ── */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={1}
+              className="bg-[#eff6ff] rounded-3xl p-8 flex flex-col lg:col-span-2 hover:shadow-lg hover:scale-[1.01] transition-all duration-300 overflow-hidden"
+            >
+              <div className="flex items-start justify-between mb-6">
+                <div>
+                  <div className="w-10 h-10 rounded-xl bg-white/60 flex items-center justify-center mb-4 text-blue-600">
+                    <BarChart3 className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-[#1a1a1a]">
+                    Deep Analytics
+                  </h3>
+                  <p className="text-[#6b6b6b] text-[14px] leading-relaxed max-w-sm">
+                    Understand your audience with real-time insights, click
+                    tracking, and viewer demographics.
+                  </p>
+                </div>
+              </div>
+              {/* Visual: Animated bar chart */}
+              <div className="flex items-end gap-2 mt-auto h-28">
+                {[65, 40, 85, 55, 92, 48, 75, 60, 88, 42, 70, 95].map(
+                  (h, i) => (
+                    <motion.div
+                      key={i}
+                      className="flex-1 rounded-t-md"
+                      style={{
+                        backgroundColor:
+                          i === 11
+                            ? "#3b82f6"
+                            : i === 8
+                              ? "#60a5fa"
+                              : "#bfdbfe",
+                      }}
+                      initial={{ height: 0 }}
+                      whileInView={{ height: `${h}%` }}
+                      viewport={{ once: true }}
+                      transition={{
+                        duration: 0.6,
+                        delay: i * 0.05,
+                        ease: "easeOut",
+                      }}
+                    />
+                  ),
+                )}
+              </div>
+            </motion.div>
+
+            {/* ── Card 5: Lightning Fast (Moved under Card 1) ── */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={2}
+              className="bg-[#fff1f2] rounded-3xl p-8 flex flex-col hover:shadow-lg hover:scale-[1.01] transition-all duration-300 overflow-hidden"
+            >
+              <div className="w-10 h-10 rounded-xl bg-white/60 flex items-center justify-center mb-4 text-rose-500">
+                <Zap className="w-5 h-5" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-[#1a1a1a]">
+                Lightning Fast
+              </h3>
+              <p className="text-[#6b6b6b] text-[14px] leading-relaxed mb-6">
+                Optimized for speed & SEO to ensure maximum conversion rates for
+                every link.
+              </p>
+              {/* Visual: Speed gauge */}
+              <div className="mt-auto flex flex-col items-center gap-3">
+                <div className="w-full max-w-[200px] h-3 rounded-full bg-white/60 overflow-hidden">
+                  <motion.div
+                    className="h-full rounded-full bg-gradient-to-r from-rose-400 to-rose-500"
+                    initial={{ width: "0%" }}
+                    whileInView={{ width: "92%" }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+                  />
+                </div>
+                <div className="flex items-center justify-between w-full max-w-[200px] text-xs text-[#6b6b6b]">
+                  <span>0ms</span>
+                  <span className="font-semibold text-rose-500">98 / 100</span>
+                  <span>1s</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* ── Card 3: Drag & Drop ── */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={3}
+              className="bg-[#fff7ed] rounded-3xl p-8 flex flex-col hover:shadow-lg hover:scale-[1.01] transition-all duration-300 overflow-hidden"
+            >
+              <div className="w-10 h-10 rounded-xl bg-white/60 flex items-center justify-center mb-4 text-amber-600">
+                <GripVertical className="w-5 h-5" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-[#1a1a1a]">
+                Drag & Drop
+              </h3>
+              <p className="text-[#6b6b6b] text-[14px] leading-relaxed mb-6">
+                Reorder your links effortlessly with an intuitive drag-and-drop
+                interface.
+              </p>
+              {/* Visual: Animated link pills */}
+              <div className="flex flex-col gap-2 mt-auto">
+                {["Portfolio", "YouTube", "Blog"].map((label, i) => (
+                  <motion.div
+                    key={label}
+                    animate={{ x: [0, i === 1 ? 8 : i === 2 ? -4 : 0, 0] }}
+                    transition={{
+                      duration: 2,
+                      delay: i * 0.3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-xl px-4 py-3 shadow-sm"
+                  >
+                    <GripVertical className="w-4 h-4 text-[#ccc]" />
+                    <span className="text-sm font-medium text-[#1a1a1a]">
+                      {label}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* ── Card 4: Social Integration ── */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={4}
+              className="bg-[#f0fdf4] rounded-3xl p-8 flex flex-col hover:shadow-lg hover:scale-[1.01] transition-all duration-300 overflow-hidden"
+            >
+              <h3 className="text-xl font-semibold mb-2 text-[#1a1a1a]">
+                Social Integration
+              </h3>
+              <p className="text-[#6b6b6b] text-[14px] leading-relaxed mb-6">
+                Connect all your social profiles in one place with beautiful,
+                recognizable icons.
+              </p>
+              {/* Visual: Floating social icons */}
+              {/* Visual: Floating social icons */}
+              <div className="mt-auto flex items-center justify-center gap-4 flex-wrap">
+                {[
+                  { Icon: LuGithub, bg: "#18181b" },
+                  { Icon: FaXTwitter, bg: "#000000" },
+                  { Icon: FaInstagram, bg: "#E4405F" },
+                  { Icon: FaLinkedinIn, bg: "#0A66C2" },
+                  { Icon: FaYoutube, bg: "#FF0000" },
+                ].map(({ Icon, bg }, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{
+                      y: [0, -8, 0],
+                      rotate: [0, 2, -2, 0],
+                    }}
+                    transition={{
+                      duration: 2.8,
+                      delay: i * 0.15,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="
+        w-12 h-12
+        rounded-2xl
+        flex items-center justify-center
+        text-white
+        shadow-lg
+        border border-white/20
+      "
+                    style={{ backgroundColor: bg }}
+                  >
+                    <Icon className="w-5 h-5" />
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -411,12 +598,7 @@ transition-all duration-300
         >
           {/* Background image mimicking the sky */}
           <div className="absolute inset-0 -z-20 pointer-events-none">
-            <Image
-              src="/back.png"
-              alt=""
-              fill
-              className="object-cover"
-            />
+            <Image src="/back.png" alt="" fill className="object-cover" />
           </div>
           {/* Light overlay to match image vibrancy & readability */}
           <div className="absolute inset-0 bg-linear-to-r from-white to-transparent -z-10 pointer-events-none" />
@@ -426,15 +608,15 @@ transition-all duration-300
             <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/60 backdrop-blur-md mb-6 text-[13px] font-medium text-[#1a1a1a] shadow-sm">
               Upgrade OneProfile
             </div>
-            
+
             <h2 className="font-sans text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.1] font-semibold text-[#1a1a1a] mb-6 tracking-tight">
               Help us build the <br /> ultimate workspace.
             </h2>
-            
+
             <p className="text-[#1a1a1a]/80 text-lg max-w-lg leading-relaxed">
               OneProfile is indie-crafted and free of clutter. Your support
-              keeps the servers running, funds new focus widgets, and
-              helps us keep building a quieter web.
+              keeps the servers running, funds new focus widgets, and helps us
+              keep building a quieter web.
             </p>
           </div>
 
