@@ -185,7 +185,7 @@ transition-all duration-300
       </section>
 
       {/* ─── Showcase ─── */}
-      <section className="py-20 px-6 bg-white">
+      <section className="relative py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center gap-16">
             <motion.div
@@ -226,22 +226,33 @@ transition-all duration-300
               className="flex-shrink-0"
             >
               <div className="relative w-[280px] sm:w-[300px]">
+                <div
+                  className="absolute
+        left-1/2
+        bottom-[-50px]
+        -translate-x-1/2
+        w-[260px]
+        h-[120px]
+        rounded-full
+        bg-orange-400/45
+        blur-[70px]"
+                />
                 <PhoneMockupCard
                   showDynamicIsland={false}
                   showHomeIndicator={false}
                   variant="purple"
-                  className="mx-auto shadow-2xl shadow-zinc-900/20"
+                  className="mx-auto "
                 />
 
                 <PhoneMockupCard
                   variant="cherry"
                   showHomeIndicator={false}
-                  className="absolute top-3 right-0 rotate-2 mx-auto shadow-2xl shadow-zinc-900/20"
+                  className="absolute top-3 right-0 rotate-2 mx-auto"
                 />
 
                 <PhoneMockupCard
                   variant="orange"
-                  className="absolute top-6 -right-5 rotate-[4deg] mx-auto shadow-2xl shadow-zinc-900/20"
+                  className="absolute top-6 -right-5 rotate-[4deg] mx-auto"
                 >
                   <div className="px-5 pb-6 pt-17 flex flex-col items-center">
                     {/* Avatar */}
@@ -605,9 +616,6 @@ transition-all duration-300
 
           {/* Left Text Content */}
           <div className="flex-1 text-left relative z-10">
-            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/60 backdrop-blur-md mb-6 text-[13px] font-medium text-[#1a1a1a] shadow-sm">
-              Upgrade OneProfile
-            </div>
 
             <h2 className="font-sans text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.1] font-semibold text-[#1a1a1a] mb-6 tracking-tight">
               Help us build the <br /> ultimate workspace.
@@ -622,20 +630,22 @@ transition-all duration-300
 
           {/* Right Buttons */}
           <div className="w-full md:w-[320px] shrink-0 flex flex-col gap-3 relative z-10">
-            <button
-              onClick={handleSignIn}
+            <a
+              href="https://github.com/sponsors/prodot-com"
+              target="_blank"
               className="w-full px-7 py-5 font-semibold rounded-full bg-[#111111] text-white hover:bg-black transition-all active:scale-[0.98] flex items-center justify-between shadow-lg cursor-pointer"
             >
-              <span>Get Started Now</span>
+              <span>Github Sponsors</span>
               <ArrowUpRight className="w-5 h-5 text-white/50" />
-            </button>
-            <button
-              onClick={handleSignIn}
+            </a>
+            <a
+              href="https://buymeacoffee.com/prodot_com"
+              target="_blank"
               className="w-full px-7 py-5 font-semibold rounded-full bg-white/60 backdrop-blur-md text-[#111111] hover:bg-white/80 transition-all active:scale-[0.98] flex items-center justify-between shadow-sm cursor-pointer border border-white/40"
             >
-              <span>Book a Demo</span>
+              <span>Buy Me a Coffee</span>
               <ArrowUpRight className="w-5 h-5 text-[#1a1a1a]/50" />
-            </button>
+            </a>
           </div>
         </motion.div>
       </section>
