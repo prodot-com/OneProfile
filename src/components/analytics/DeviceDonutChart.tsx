@@ -6,7 +6,7 @@ interface DeviceDonutChartProps {
   data: { name: string; value: number }[];
 }
 
-const COLORS = ["#8b5cf6", "#06b6d4", "#f59e0b", "#10b981", "#f43f5e"];
+const COLORS = ["#f97316", "#c2410c", "#ffedd5", "#1a1a1a", "#6b6b6b"];
 
 const CustomTooltip = ({
   active,
@@ -17,9 +17,9 @@ const CustomTooltip = ({
 }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-xl border border-white/10 bg-zinc-900/90 px-4 py-3 shadow-xl backdrop-blur">
-        <p className="text-sm font-semibold text-white">{payload[0].name}</p>
-        <p className="text-violet-400 font-bold">{payload[0].value} clicks</p>
+      <div className="rounded-[1.25rem] border border-[#e5e2dc] bg-white/95 px-4 py-3 shadow-xl backdrop-blur-md">
+        <p className="text-sm font-semibold text-[#1a1a1a]">{payload[0].name}</p>
+        <p className="text-[#c2410c] font-serif font-bold">{payload[0].value} clicks</p>
       </div>
     );
   }
@@ -29,7 +29,7 @@ const CustomTooltip = ({
 export default function DeviceDonutChart({ data }: DeviceDonutChartProps) {
   if (data.length === 0) {
     return (
-      <div className="flex h-52 items-center justify-center text-sm text-zinc-500">
+      <div className="flex h-52 items-center justify-center text-sm text-[#b4b0a4]">
         No data yet
       </div>
     );
@@ -52,7 +52,7 @@ export default function DeviceDonutChart({ data }: DeviceDonutChartProps) {
             <Cell 
               key={`cell-${index}`} 
               fill={COLORS[index % COLORS.length]} 
-              className="drop-shadow-sm transition-all hover:opacity-80 hover:stroke-zinc-100 hover:stroke-2"
+              className="drop-shadow-sm transition-all hover:opacity-80 hover:stroke-[#fafafa] hover:stroke-2"
             />
           ))}
         </Pie>
@@ -61,7 +61,7 @@ export default function DeviceDonutChart({ data }: DeviceDonutChartProps) {
           iconType="circle"
           wrapperStyle={{ fontSize: 12, paddingTop: 10 }}
           formatter={(value: string) => (
-            <span className="text-zinc-600 font-medium">{value}</span>
+            <span className="text-[#6b6b6b] font-medium">{value}</span>
           )}
         />
       </PieChart>

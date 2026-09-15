@@ -109,10 +109,10 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
         className="flex flex-wrap items-center justify-between gap-4"
       >
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900">
+          <h1 className="text-3xl md:text-4xl font-serif font-semibold tracking-tight text-[#1a1a1a]">
             Analytics
           </h1>
-          <p className="mt-1.5 text-zinc-500">
+          <p className="mt-2 text-lg text-[#6b6b6b]">
             Track and understand your profile performance
           </p>
         </div>
@@ -174,7 +174,7 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
           <ChartCard
             title="Clicks by Link"
             subtitle="Top performing links"
-            icon={<TrendingUp className="size-4 text-violet-500" />}
+            icon={<TrendingUp className="size-4.5 text-[#f97316]" />}
           >
             <ClicksBarChart data={clicksChartData} />
           </ChartCard>
@@ -183,7 +183,7 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
           <ChartCard
             title="Device Breakdown"
             subtitle="Visitor platforms"
-            icon={<Smartphone className="size-4 text-cyan-500" />}
+            icon={<Smartphone className="size-4.5 text-[#f97316]" />}
           >
             <DeviceDonutChart data={deviceData} />
           </ChartCard>
@@ -202,62 +202,62 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
           <ChartCard
             title="Top Countries"
             subtitle="Where your visitors come from"
-            icon={<MapPin className="size-4 text-blue-500" />}
+            icon={<MapPin className="size-4.5 text-[#f97316]" />}
           >
             <CountryBarChart data={countryData} />
           </ChartCard>
         </motion.div>
 
         {/* Top Links ranking */}
-        <motion.div variants={itemVariants} className="group rounded-2xl border border-zinc-200/80 bg-white shadow-sm transition-all hover:shadow-md">
-          <div className="flex items-center gap-2 border-b border-zinc-100 px-5 py-4">
-            <Monitor className="size-4 text-emerald-500" />
+        <motion.div variants={itemVariants} className="group rounded-[1.5rem] border border-[#e5e2dc] bg-white/70 backdrop-blur-md shadow-sm overflow-hidden transition-all hover:shadow-md">
+          <div className="flex items-center gap-2 border-b border-[#f0f0f0] px-6 py-5">
+            <Monitor className="size-4.5 text-[#f97316]" />
             <div>
-              <h2 className="text-sm font-semibold text-zinc-800">Top Links</h2>
-              <p className="text-xs text-zinc-400">Ranked by click count</p>
+              <h2 className="text-lg font-serif font-semibold text-[#1a1a1a]">Top Links</h2>
+              <p className="text-xs text-[#6b6b6b]">Ranked by click count</p>
             </div>
           </div>
           {links.length === 0 ? (
             <EmptyState message="No links yet. Add some links to your profile." />
           ) : (
-            <div className="divide-y divide-zinc-50">
+            <div className="divide-y divide-[#f0f0f0]">
               {links.slice(0, 6).map((link, i) => {
                 const pct =
                   totalClicks > 0
                     ? Math.round((link.clicks / totalClicks) * 100)
                     : 0;
                 return (
-                  <div
+                    <div
                     key={link.id}
-                    className="flex items-center gap-4 px-5 py-3 transition-colors hover:bg-zinc-50/80"
+                    className="flex items-center gap-4 px-6 py-4 transition-colors hover:bg-[#fafafa]/50"
                   >
-                    <span className="w-5 text-right text-xs font-bold text-zinc-300">
+                    <span className="w-5 text-right text-sm font-bold text-[#b4b0a4]">
                       {i + 1}
                     </span>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between gap-2">
-                        <p className="truncate text-sm font-medium text-zinc-800">
+                        <p className="truncate text-sm font-semibold text-[#1a1a1a]">
                           {link.title}
                         </p>
-                        <span className="shrink-0 text-xs font-semibold text-violet-600">
+                        <span className="shrink-0 text-xs font-bold text-[#c2410c]">
                           {link.clicks.toLocaleString()}
                         </span>
                       </div>
-                      <div className="mt-1">
-                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-100">
+                      <div className="mt-1.5">
+                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#f0f0f0]">
                           <motion.div
                             initial={{ width: 0 }}
                             whileInView={{ width: `${pct}%` }}
                             transition={{ duration: 1, ease: "easeOut" }}
-                            className="h-full rounded-full bg-gradient-to-r from-violet-500 to-indigo-500"
+                            className="h-full rounded-full bg-gradient-to-r from-[#f97316] to-[#ea580c]"
                           />
                         </div>
                       </div>
-                      <p className="mt-0.5 truncate text-xs text-zinc-400">
+                      <p className="mt-1 truncate text-[11px] font-medium text-[#b4b0a4]">
                         {link.url}
                       </p>
                     </div>
-                    <ExternalLink className="size-3.5 shrink-0 text-zinc-300 transition-colors hover:text-zinc-500 cursor-pointer" />
+                    <ExternalLink className="size-4 shrink-0 text-[#d8d5ce] transition-colors hover:text-[#6b6b6b] cursor-pointer" />
                   </div>
                 );
               })}
@@ -272,15 +272,15 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.1 }}
         transition={{ delay: 0.2 }}
-        className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm overflow-hidden"
+        className="rounded-[1.5rem] border border-[#e5e2dc] bg-white/70 backdrop-blur-md shadow-sm overflow-hidden"
       >
-        <div className="flex items-center gap-2 border-b border-zinc-100 px-5 py-4 bg-zinc-50/50">
-          <Clock className="size-4 text-amber-500" />
+        <div className="flex items-center gap-2 border-b border-[#f0f0f0] px-6 py-5 bg-[#fafafa]/50">
+          <Clock className="size-4.5 text-[#f97316]" />
           <div>
-            <h2 className="text-sm font-semibold text-zinc-800">
+            <h2 className="text-lg font-serif font-semibold text-[#1a1a1a]">
               Recent Activity
             </h2>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-[#6b6b6b]">
               Last 20 clicks on your links
             </p>
           </div>
@@ -288,22 +288,22 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
         {clicks.length === 0 ? (
           <EmptyState message="No activity recorded yet." />
         ) : (
-          <div className="divide-y divide-zinc-50">
+          <div className="divide-y divide-[#f0f0f0]">
             {clicks.slice(0, 20).map((click) => {
               const timeAgo = formatDistanceToNow(new Date(click.createdAt), { addSuffix: true });
               return (
                 <div
                   key={click.id}
-                  className="grid grid-cols-[1fr_auto] items-center gap-4 px-5 py-3.5 transition-colors hover:bg-zinc-50/50"
+                  className="grid grid-cols-[1fr_auto] items-center gap-4 px-6 py-4 transition-colors hover:bg-[#fafafa]/50"
                 >
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="size-2 shrink-0 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]" />
-                      <p className="truncate text-sm font-medium text-zinc-800">
+                      <span className="size-2 shrink-0 rounded-full bg-[#f97316] shadow-[0_0_8px_rgba(249,115,22,0.5)]" />
+                      <p className="truncate text-sm font-medium text-[#1a1a1a]">
                         {click.link.title}
                       </p>
                     </div>
-                    <div className="mt-0.5 flex flex-wrap gap-x-2 gap-y-0.5 text-xs text-zinc-400">
+                    <div className="mt-1 flex flex-wrap gap-x-2 gap-y-0.5 text-xs text-[#6b6b6b]">
                       {click.country && (
                         <span className="flex items-center gap-1">
                           <MapPin className="size-3" />
@@ -315,7 +315,7 @@ export default function AnalyticsDashboard({ links, clicks }: Props) {
                       {click.browser && <span>· {click.browser}</span>}
                     </div>
                   </div>
-                  <time className="shrink-0 text-xs font-medium text-zinc-400" title={click.createdAtFormatted}>
+                  <time className="shrink-0 text-[11px] font-medium text-[#b4b0a4]" title={click.createdAtFormatted}>
                     {timeAgo}
                   </time>
                 </div>
@@ -357,22 +357,22 @@ function KpiCard({
   };
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
+    <div className="group relative overflow-hidden rounded-[1.5rem] border border-[#e5e2dc] bg-white/70 backdrop-blur-md p-6 shadow-sm transition-shadow hover:shadow-md">
       <div
-        className={`absolute -right-4 -top-4 size-24 rounded-full opacity-10 blur-2xl ${blobs[color]}`}
+        className={`absolute -right-4 -top-4 size-24 rounded-full opacity-5 blur-2xl bg-[#ea580c]`}
       />
       <div
-        className={`inline-flex size-10 items-center justify-center rounded-xl ring-1 ${colors[color]}`}
+        className={`inline-flex size-12 items-center justify-center rounded-2xl bg-[#fafafa] border border-[#f0f0f0] text-[#1a1a1a]`}
       >
         {icon}
       </div>
-      <p className="mt-4 text-xs font-medium uppercase tracking-wider text-zinc-400">
+      <p className="mt-5 text-[11px] font-bold uppercase tracking-wider text-[#b4b0a4]">
         {label}
       </p>
-      <p className="mt-1 text-3xl font-bold tracking-tight text-zinc-900">
+      <p className="mt-1 text-4xl font-serif font-semibold tracking-tight text-[#1a1a1a]">
         {value}
       </p>
-      <p className="mt-1 text-xs text-zinc-400">{sub}</p>
+      <p className="mt-1 text-xs text-[#6b6b6b] font-medium">{sub}</p>
     </div>
   );
 }
@@ -389,15 +389,15 @@ function ChartCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm">
-      <div className="flex items-center gap-2 border-b border-zinc-100 px-5 py-4">
+    <div className="rounded-[1.5rem] border border-[#e5e2dc] bg-white/70 backdrop-blur-md shadow-sm overflow-hidden">
+      <div className="flex items-center gap-2 border-b border-[#f0f0f0] px-6 py-5">
         {icon}
         <div>
-          <h2 className="text-sm font-semibold text-zinc-800">{title}</h2>
-          <p className="text-xs text-zinc-400">{subtitle}</p>
+          <h2 className="text-lg font-serif font-semibold text-[#1a1a1a]">{title}</h2>
+          <p className="text-xs text-[#6b6b6b]">{subtitle}</p>
         </div>
       </div>
-      <div className="p-5">{children}</div>
+      <div className="p-6">{children}</div>
     </div>
   );
 }

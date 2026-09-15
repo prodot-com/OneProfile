@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { signOut } from "@/lib/auth-client";
 import { updateProfile } from "@/services/profile";
+import { Profile } from "@prisma/client";
 
 interface SettingsProps {
   user: {
@@ -31,6 +32,7 @@ interface SettingsProps {
   profile: {
     username: string;
     isPublic: boolean;
+    avatar: string;
   };
   sessionCount: number;
 }
@@ -53,7 +55,7 @@ function Toggle({
       disabled={disabled}
       onClick={() => onChange(!checked)}
       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50 ${
-        checked ? "bg-emerald-500" : "bg-zinc-200"
+        checked ? "bg-[#f97316]" : "bg-[#e5e2dc]"
       }`}
     >
       <span
@@ -72,47 +74,54 @@ function SettingsCard({
   description,
   children,
   variant = "default",
+  avatar,
 }: {
   icon: React.ElementType;
   title: string;
   description: string;
   children: React.ReactNode;
   variant?: "default" | "danger";
+  avatar?: string;
 }) {
   return (
     <div
-      className={`rounded-2xl border bg-white shadow-sm overflow-hidden ${
-        variant === "danger" ? "border-red-200" : "border-zinc-200/80"
+      className={`rounded-[1.5rem] border bg-white/70 backdrop-blur-md shadow-sm overflow-hidden ${
+        variant === "danger" ? "border-red-200" : "border-[#e5e2dc]"
       }`}
     >
       <div
-        className={`flex items-center gap-3 border-b p-5 ${
-          variant === "danger" ? "border-red-100" : "border-zinc-100"
+        className={`flex items-center gap-3 border-b p-6 ${
+          variant === "danger"
+            ? "border-red-100/50 bg-red-50/30"
+            : "border-[#f0f0f0]"
         }`}
       >
         <div
-          className={`flex size-10 items-center justify-center rounded-xl ${
-            variant === "danger" ? "bg-red-50" : "bg-zinc-100"
+          className={`flex size-10 items-center justify-center rounded-[1rem] ${
+            variant === "danger" ? "bg-red-50" : "bg-[#fafafa]"
           }`}
         >
           <Icon
             className={`size-5 ${
-              variant === "danger" ? "text-red-500" : "text-zinc-500"
+              variant === "danger" ? "text-red-500" : "text-[#1a1a1a]"
             }`}
           />
+          {avatar && (
+            <img src={avatar} alt="" className="rounded-full size-10" />
+          )}
         </div>
         <div>
           <h2
-            className={`font-semibold ${
-              variant === "danger" ? "text-red-600" : "text-zinc-900"
+            className={`text-lg font-serif font-semibold ${
+              variant === "danger" ? "text-red-600" : "text-[#1a1a1a]"
             }`}
           >
             {title}
           </h2>
-          <p className="text-sm text-zinc-500">{description}</p>
+          <p className="text-sm font-medium text-[#b4b0a4]">{description}</p>
         </div>
       </div>
-      <div className="p-5">{children}</div>
+      <div className="p-6">{children}</div>
     </div>
   );
 }
@@ -128,12 +137,12 @@ function InfoRow({
   value: string;
 }) {
   return (
-    <div className="flex items-center justify-between py-3">
+    <div className="flex items-center justify-between py-4">
       <div className="flex items-center gap-3">
-        <Icon className="size-4 text-zinc-400" />
-        <span className="text-sm text-zinc-600">{label}</span>
+        <Icon className="size-4.5 text-[#1a1a1a]" />
+        <span className="text-sm font-semibold text-[#1a1a1a]">{label}</span>
       </div>
-      <span className="text-sm font-medium text-zinc-900">{value}</span>
+      <span className="text-sm font-medium text-[#6b6b6b]">{value}</span>
     </div>
   );
 }
@@ -196,10 +205,10 @@ export default function SettingsPage({
     <section className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-zinc-900">
+        <h1 className="text-3xl md:text-4xl font-serif font-semibold tracking-tight text-[#1a1a1a]">
           Settings
         </h1>
-        <p className="mt-1.5 text-zinc-500">
+        <p className="mt-2 text-lg text-[#6b6b6b]">
           Manage your account, privacy, and sessions.
         </p>
       </div>
@@ -209,11 +218,16 @@ export default function SettingsPage({
         icon={User}
         title="Account"
         description="Your account details."
+        avatar={profile.avatar}
       >
-        <div className="divide-y divide-zinc-100">
+        <div className="divide-y divide-[#f0f0f0]">
           <InfoRow icon={User} label="Name" value={user.name} />
           <InfoRow icon={Mail} label="Email" value={user.email} />
-          <InfoRow icon={Globe} label="Username" value={`@${profile.username}`} />
+          <InfoRow
+            icon={Globe}
+            label="Username"
+            value={`@${profile.username}`}
+          />
           <InfoRow icon={Calendar} label="Joined" value={createdDate} />
         </div>
       </SettingsCard>
@@ -225,28 +239,28 @@ export default function SettingsPage({
         description="Control who can see your profile."
       >
         <div className="space-y-4">
-          <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/50 p-4">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between rounded-[1.25rem] border border-[#e5e2dc] bg-[#fafafa]/50 p-5">
+            <div className="flex items-center gap-4">
               {isPublic ? (
-                <Eye className="size-5 text-emerald-500" />
+                <Eye className="size-5 text-[#f97316]" />
               ) : (
-                <EyeOff className="size-5 text-zinc-400" />
+                <EyeOff className="size-5 text-[#b4b0a4]" />
               )}
               <div>
-                <h3 className="text-sm font-medium text-zinc-900">
+                <h3 className="text-sm font-semibold text-[#1a1a1a]">
                   Public Profile
                 </h3>
-                <p className="text-xs text-zinc-500">
+                <p className="text-[13px] text-[#6b6b6b]">
                   {isPublic
                     ? "Your profile is visible to everyone."
                     : "Your profile is hidden from public view."}
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               {privacySaved && (
-                <span className="flex items-center gap-1 text-xs text-emerald-600">
-                  <Check className="size-3" />
+                <span className="flex items-center gap-1.5 text-[13px] font-medium text-[#10b981]">
+                  <Check className="size-3.5" />
                   Saved
                 </span>
               )}
@@ -267,20 +281,20 @@ export default function SettingsPage({
         description="Manage your active sessions."
       >
         <div className="space-y-4">
-          <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/50 p-4">
-            <div className="flex items-center gap-3">
-              <Lock className="size-5 text-zinc-400" />
+          <div className="flex items-center justify-between rounded-[1.25rem] border border-[#e5e2dc] bg-[#fafafa]/50 p-5">
+            <div className="flex items-center gap-4">
+              <Lock className="size-5 text-[#b4b0a4]" />
               <div>
-                <h3 className="text-sm font-medium text-zinc-900">
+                <h3 className="text-sm font-semibold text-[#1a1a1a]">
                   Active Sessions
                 </h3>
-                <p className="text-xs text-zinc-500">
+                <p className="text-[13px] text-[#6b6b6b]">
                   You have {sessionCount} active{" "}
                   {sessionCount === 1 ? "session" : "sessions"}.
                 </p>
               </div>
             </div>
-            <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-semibold text-zinc-600">
+            <span className="rounded-full bg-[#1a1a1a] px-3 py-1 text-xs font-bold text-white">
               {sessionCount}
             </span>
           </div>
@@ -288,7 +302,7 @@ export default function SettingsPage({
           <button
             onClick={handleLogout}
             disabled={logoutLoading}
-            className="flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white px-5 py-2.5 text-sm font-medium text-zinc-700 transition-all hover:bg-zinc-50 hover:border-zinc-300 disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#e5e2dc] bg-[#fafafa] px-5 py-3 text-sm font-medium text-[#1a1a1a] transition-all hover:bg-white hover:border-[#1a1a1a] disabled:opacity-50 cursor-pointer"
           >
             <LogOut className="size-4" />
             {logoutLoading ? "Signing out..." : "Sign Out"}
@@ -304,14 +318,14 @@ export default function SettingsPage({
         variant="danger"
       >
         <div className="space-y-4">
-          <p className="text-sm text-zinc-600">
+          <p className="text-[13px] font-medium text-red-600/80">
             Deleting your account will permanently remove all your data,
             including links, analytics, and social profiles. This action cannot
             be undone.
           </p>
           <button
             onClick={() => setDeleteModal(true)}
-            className="flex items-center gap-2 rounded-xl bg-red-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-700"
+            className="flex items-center gap-2 rounded-xl bg-red-600 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-red-700 active:scale-[0.98] cursor-pointer shadow-sm"
           >
             <Trash2 className="size-4" />
             Delete Account
@@ -364,40 +378,40 @@ function DeleteAccountModal({ onClose }: { onClose: () => void }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md rounded-2xl bg-white shadow-2xl border border-zinc-200/50"
+        className="w-full max-w-md rounded-[1.5rem] bg-white shadow-2xl border border-[#e5e2dc]"
       >
-        <div className="border-b border-zinc-100 p-6">
+        <div className="border-b border-[#f0f0f0] p-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex size-10 items-center justify-center rounded-xl bg-red-50">
+            <div className="flex items-center gap-4">
+              <div className="flex size-12 items-center justify-center rounded-xl bg-red-50 border border-red-100">
                 <AlertTriangle className="size-5 text-red-500" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-red-600">
+                <h2 className="text-lg font-serif font-semibold text-red-600">
                   Delete Account
                 </h2>
-                <p className="text-sm text-zinc-500">
+                <p className="text-xs font-medium text-[#6b6b6b]">
                   This cannot be undone.
                 </p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="rounded-lg p-2 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition-colors"
+              className="rounded-lg p-2 text-[#b4b0a4] hover:text-[#1a1a1a] hover:bg-[#fafafa] transition-colors"
             >
-              <X className="size-4" />
+              <X className="size-5" />
             </button>
           </div>
         </div>
 
-        <div className="space-y-4 p-6">
-          <p className="text-sm text-zinc-600">
+        <div className="space-y-5 p-6">
+          <p className="text-sm font-medium text-[#6b6b6b]">
             This will permanently delete your account, profile, all links, click
             analytics, and social profiles. There is no way to recover this
             data.
           </p>
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-zinc-700">
+            <label className="mb-2 block text-sm font-medium text-[#1a1a1a]">
               Type <span className="font-bold text-red-600">DELETE</span> to
               confirm
             </label>
@@ -405,23 +419,23 @@ function DeleteAccountModal({ onClose }: { onClose: () => void }) {
               value={confirmation}
               onChange={(e) => setConfirmation(e.target.value)}
               placeholder="DELETE"
-              className="w-full rounded-xl border border-red-200 bg-white px-4 py-3 text-sm outline-none transition-all placeholder:text-zinc-400 focus:border-red-400 focus:ring-2 focus:ring-red-500/10"
+              className="w-full rounded-[1.25rem] border border-red-200 bg-white px-4 py-3 text-sm outline-none transition-all placeholder:text-[#b4b0a4] focus:border-red-400 focus:ring-2 focus:ring-red-500/10 text-[#1a1a1a]"
             />
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 border-t border-zinc-100 p-6">
+        <div className="flex justify-end gap-3 border-t border-[#f0f0f0] p-6">
           <button
             onClick={onClose}
             disabled={loading}
-            className="rounded-xl border border-zinc-200 px-5 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 disabled:opacity-50"
+            className="rounded-xl border border-[#e5e2dc] px-5 py-2.5 text-sm font-medium text-[#1a1a1a] transition-colors hover:bg-[#fafafa] disabled:opacity-50 cursor-pointer"
           >
             Cancel
           </button>
           <button
             onClick={handleDelete}
             disabled={!canDelete || loading}
-            className="rounded-xl bg-red-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded-xl bg-red-600 px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-[0.98]"
           >
             {loading ? "Deleting..." : "Delete My Account"}
           </button>

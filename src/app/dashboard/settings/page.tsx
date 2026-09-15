@@ -4,7 +4,7 @@ import SettingsPage from "@/components/settings/SettingsPage";
 
 export default async function Page() {
   const { user, profile } = await requireUserAndProfile();
-
+  // console.log(profile);
   const sessionCount = await prisma.session.count({
     where: { userId: user.id },
   });
@@ -20,6 +20,7 @@ export default async function Page() {
       profile={{
         username: profile.username,
         isPublic: profile.isPublic,
+        avatar: profile.avatar ?? "/avatar.jpeg",
       }}
       sessionCount={sessionCount}
     />

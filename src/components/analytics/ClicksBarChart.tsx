@@ -25,11 +25,11 @@ const CustomTooltip = ({
 }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-xl border border-white/10 bg-zinc-900/90 px-4 py-3 shadow-xl backdrop-blur">
-        <p className="mb-1 text-xs text-zinc-400">{label}</p>
-        <p className="text-lg font-bold text-violet-400">
+      <div className="rounded-[1.25rem] border border-[#e5e2dc] bg-white/95 px-4 py-3 shadow-xl backdrop-blur-md">
+        <p className="mb-1 text-xs font-semibold text-[#6b6b6b]">{label}</p>
+        <p className="text-lg font-serif font-bold text-[#c2410c]">
           {payload[0].value}{" "}
-          <span className="text-sm font-normal text-zinc-300">clicks</span>
+          <span className="text-sm font-normal text-[#1a1a1a]">clicks</span>
         </p>
       </div>
     );
@@ -40,7 +40,7 @@ const CustomTooltip = ({
 export default function ClicksBarChart({ data }: ClicksBarChartProps) {
   if (data.length === 0) {
     return (
-      <div className="flex h-52 items-center justify-center text-sm text-zinc-500">
+      <div className="flex h-52 items-center justify-center text-sm font-medium text-[#b4b0a4]">
         No data yet
       </div>
     );
@@ -51,13 +51,13 @@ export default function ClicksBarChart({ data }: ClicksBarChartProps) {
       <BarChart data={data} margin={{ top: 4, right: 4, left: -20, bottom: 4 }}>
         <defs>
           <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#8b5cf6" stopOpacity={1} />
-            <stop offset="100%" stopColor="#4f46e5" stopOpacity={0.8} />
+            <stop offset="0%" stopColor="#f97316" stopOpacity={1} />
+            <stop offset="100%" stopColor="#ea580c" stopOpacity={0.8} />
           </linearGradient>
         </defs>
         <CartesianGrid
           strokeDasharray="3 3"
-          stroke="#f4f4f5"
+          stroke="#f0f0f0"
           vertical={false}
         />
         <XAxis
@@ -75,8 +75,8 @@ export default function ClicksBarChart({ data }: ClicksBarChartProps) {
           tickLine={false}
           allowDecimals={false}
         />
-        <Tooltip content={<CustomTooltip />} cursor={{ fill: "#f4f4f5", opacity: 0.5 }} />
-        <Bar dataKey="clicks" fill="url(#barGradient)" radius={[6, 6, 0, 0]} barSize={32} />
+        <Tooltip content={<CustomTooltip />} cursor={{ fill: "#fafafa", opacity: 0.8 }} />
+        <Bar dataKey="clicks" fill="url(#barGradient)" radius={[8, 8, 0, 0]} barSize={32} />
       </BarChart>
     </ResponsiveContainer>
   );
