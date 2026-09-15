@@ -32,7 +32,7 @@ export default function Topbar({profile}: topbarProps) {
   };
 
   return (
-    <header className="h-16 bg-white border-b border-zinc-200/70 flex items-center justify-between px-4 md:px-8 shrink-0 relative z-50">
+    <header className="h-16 bg-white border-b border-[#e5e2dc] flex items-center justify-between px-4 md:px-8 shrink-0 relative z-50 shadow-sm">
       <div className="flex items-center gap-4 md:hidden">
         <button
           aria-label="Open Menu"
@@ -61,7 +61,7 @@ export default function Topbar({profile}: topbarProps) {
       <div className="flex items-center gap-4">
         <button
           aria-label="Notifications"
-          className="relative p-2 rounded-full text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition-colors"
+          className="relative p-2 rounded-full text-[#6b6b6b] hover:text-[#1a1a1a] hover:bg-[#1a1a1a]/5 transition-colors"
         >
           <span className="absolute top-2 right-2.5 w-1.5 h-1.5 bg-red-500 rounded-full border border-white"></span>
           <svg
@@ -83,7 +83,7 @@ export default function Topbar({profile}: topbarProps) {
           <button
             aria-label="User Menu"
             onClick={() => setDropdownOpen((prev) => !prev)}
-            className="block h-8 w-8 rounded-full overflow-hidden border border-zinc-200 hover:border-zinc-300 transition-colors"
+            className="block h-8 w-8 rounded-full overflow-hidden border border-[#d8d5ce] hover:border-[#1a1a1a] transition-colors"
           >
             <img
               src={profile?.avatar || "/avatar.png"}
@@ -93,18 +93,18 @@ export default function Topbar({profile}: topbarProps) {
           </button>
 
           {dropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white border border-zinc-200 shadow-lg py-1 fade-in z-50">
-              <div className="px-4 py-2 border-b border-zinc-100">
-                <p className="text-sm font-medium text-zinc-900 truncate">
+            <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white border border-[#e5e2dc] shadow-lg py-1 fade-in z-50">
+              <div className="px-4 py-2 border-b border-[#f0f0f0]">
+                <p className="text-sm font-medium text-[#1a1a1a] truncate">
                   {profile?.displayName}
                 </p>
-                <p className="text-xs text-zinc-500 truncate">
+                <p className="text-xs text-[#6b6b6b] truncate">
                   @{profile?.username}
                 </p>
               </div>
               <button
                 onClick={handleLogout}
-                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-zinc-50 flex items-center gap-2 transition-colors"
+                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 transition-colors"
               >
                 <LogOut className="size-4" />
                 Logout

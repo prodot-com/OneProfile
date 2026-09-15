@@ -72,7 +72,7 @@ export default function QuickStatsBar({
         return (
           <div
             key={s.key}
-            className="group relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+            className="group relative overflow-hidden rounded-3xl border border-[#e5e2dc] bg-white/70 backdrop-blur-md p-6 shadow-sm transition-all duration-400 hover:shadow-lg hover:-translate-y-1"
             style={{ animationDelay: `${i * 80}ms` }}
           >
             {/* Decorative blob */}
@@ -88,15 +88,15 @@ export default function QuickStatsBar({
             </div>
 
             {/* Label */}
-            <p className="mt-3 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+            <p className="mt-4 text-[12px] font-medium tracking-wide text-[#6b6b6b]">
               {s.label}
             </p>
 
             {/* Value */}
             <p
               className={`mt-1 ${
-                s.key === "top" ? "text-lg truncate" : "text-2xl"
-              } font-bold tracking-tight text-zinc-900`}
+                s.key === "top" ? "text-xl truncate" : "text-3xl"
+              } font-serif tracking-tight text-[#1a1a1a]`}
             >
               {values[s.key]}
             </p>

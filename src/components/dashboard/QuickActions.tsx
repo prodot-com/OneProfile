@@ -45,8 +45,8 @@ export default function QuickActions({ profileUrl }: QuickActionsProps) {
   ] as const;
 
   return (
-    <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm">
-      <h3 className="text-sm font-semibold text-zinc-800 mb-4">
+    <div className="rounded-[1.5rem] border border-[#e5e2dc] bg-white/70 backdrop-blur-md p-6 shadow-sm">
+      <h3 className="text-lg font-serif font-semibold text-[#1a1a1a] mb-5">
         Quick Actions
       </h3>
       <div className="grid grid-cols-2 gap-3">
@@ -56,7 +56,7 @@ export default function QuickActions({ profileUrl }: QuickActionsProps) {
             <Link
               key={a.label}
               href={a.href}
-              className="group flex flex-col gap-3 rounded-xl border border-zinc-100 p-4 transition-all duration-300 hover:border-zinc-200 hover:shadow-md hover:-translate-y-0.5"
+              className="group flex flex-col gap-3 rounded-[1.25rem] border border-[#f0f0f0] bg-white p-4 transition-all duration-300 hover:border-[#d8d5ce] hover:shadow-md hover:-translate-y-0.5"
             >
               <div
                 className={`inline-flex size-9 items-center justify-center rounded-lg ${a.iconBg} transition-transform duration-300 group-hover:scale-110`}
@@ -64,8 +64,8 @@ export default function QuickActions({ profileUrl }: QuickActionsProps) {
                 <Icon className="size-4.5" />
               </div>
               <div>
-                <p className="text-sm font-medium text-zinc-900">{a.label}</p>
-                <p className="text-xs text-zinc-400 mt-0.5">{a.desc}</p>
+                <p className="text-sm font-medium text-[#1a1a1a]">{a.label}</p>
+                <p className="text-xs text-[#6b6b6b] mt-0.5">{a.desc}</p>
               </div>
             </Link>
           );
@@ -74,16 +74,16 @@ export default function QuickActions({ profileUrl }: QuickActionsProps) {
         {/* Share button (not a Link) */}
         <button
           onClick={handleShare}
-          className="group flex flex-col gap-3 rounded-xl border border-zinc-100 p-4 text-left transition-all duration-300 hover:border-zinc-200 hover:shadow-md hover:-translate-y-0.5"
+          className="group flex flex-col gap-3 rounded-[1.25rem] border border-[#f0f0f0] bg-white p-4 text-left transition-all duration-300 hover:border-[#d8d5ce] hover:shadow-md hover:-translate-y-0.5"
         >
           <div className="inline-flex size-9 items-center justify-center rounded-lg bg-amber-50 text-amber-600 transition-transform duration-300 group-hover:scale-110">
             <Share2 className="size-4.5" />
           </div>
           <div>
-            <p className="text-sm font-medium text-zinc-900">
+            <p className="text-sm font-medium text-[#1a1a1a]">
               {copied ? "Copied!" : "Share Profile"}
             </p>
-            <p className="text-xs text-zinc-400 mt-0.5">
+            <p className="text-xs text-[#6b6b6b] mt-0.5">
               {copied ? "Link is in clipboard" : "Copy your URL"}
             </p>
           </div>

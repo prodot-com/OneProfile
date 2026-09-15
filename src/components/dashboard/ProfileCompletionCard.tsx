@@ -62,7 +62,7 @@ export default function ProfileCompletionCard(
   const offset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm">
+    <div className="rounded-[1.5rem] border border-[#e5e2dc] bg-white/70 backdrop-blur-md p-6 shadow-sm">
       <div className="flex items-center gap-4 mb-5">
         {/* Progress ring */}
         <div className="relative shrink-0">
@@ -73,7 +73,7 @@ export default function ProfileCompletionCard(
               r={radius}
               fill="none"
               strokeWidth="6"
-              className="stroke-zinc-100"
+              className="stroke-[#f0f0f0]"
             />
             <circle
               cx="44"
@@ -82,23 +82,23 @@ export default function ProfileCompletionCard(
               fill="none"
               strokeWidth="6"
               strokeLinecap="round"
-              className="stroke-violet-500 transition-all duration-1000 ease-out"
+              className="stroke-[#f97316] transition-all duration-1000 ease-out"
               style={{
                 strokeDasharray: circumference,
                 strokeDashoffset: offset,
               }}
             />
           </svg>
-          <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-zinc-900">
+          <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-[#1a1a1a]">
             {percentage}%
           </span>
         </div>
 
         <div>
-          <h3 className="text-sm font-semibold text-zinc-800">
+          <h3 className="text-lg font-serif font-semibold text-[#1a1a1a] mb-1">
             Complete Your Profile
           </h3>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <p className="text-xs text-[#6b6b6b] mt-0.5 leading-relaxed">
             {completed}/{total} items done — profiles that are 100% complete get
             more views!
           </p>
@@ -116,14 +116,14 @@ export default function ProfileCompletionCard(
               className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors ${
                 done
                   ? "bg-emerald-50/60"
-                  : "bg-zinc-50 hover:bg-zinc-100/70"
+                  : "bg-[#fafafa] hover:bg-[#f0f0f0]/70"
               }`}
             >
               <div
                 className={`flex size-7 shrink-0 items-center justify-center rounded-lg ${
                   done
                     ? "bg-emerald-100 text-emerald-600"
-                    : "bg-white border border-zinc-200 text-zinc-400"
+                    : "bg-white border border-[#e5e2dc] text-[#6b6b6b]"
                 }`}
               >
                 {done ? (
@@ -135,8 +135,8 @@ export default function ProfileCompletionCard(
               <span
                 className={`flex-1 text-sm ${
                   done
-                    ? "text-zinc-500 line-through decoration-zinc-300"
-                    : "text-zinc-700 font-medium"
+                    ? "text-[#b4b0a4] line-through decoration-[#d8d5ce]"
+                    : "text-[#1a1a1a] font-medium"
                 }`}
               >
                 {item.label}
@@ -144,7 +144,7 @@ export default function ProfileCompletionCard(
               {!done && (
                 <Link
                   href={item.href}
-                  className="text-xs font-medium text-violet-600 hover:text-violet-800 transition-colors"
+                  className="text-xs font-medium text-[#c2410c] hover:text-[#f97316] transition-colors"
                 >
                   Add →
                 </Link>

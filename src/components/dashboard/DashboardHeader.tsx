@@ -37,28 +37,28 @@ export default function DashboardHeader({ profile }: DashboardProps) {
     <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
       {/* Greeting */}
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">
-          {getGreeting()}, {profile.displayName.split(" ")[0]}
+        <h1 className="text-3xl md:text-4xl font-serif tracking-tight text-[#1a1a1a]">
+          {getGreeting()}, <span className="italic text-[#f97316]">{profile.displayName.split(" ")[0]}</span>
         </h1>
-        <p className="text-zinc-500 mt-1">
+        <p className="text-[#6b6b6b] mt-2 text-lg">
           Here&apos;s an overview of your profile performance.
         </p>
       </div>
 
       {/* Profile card */}
-      <div className="bg-white border border-zinc-200/80 p-4 rounded-2xl shadow-sm flex items-center gap-4 transition-shadow hover:shadow-md">
+      <div className="bg-white/80 backdrop-blur-md border border-[#e5e2dc] p-3 md:p-4 rounded-[1.25rem] shadow-sm flex items-center gap-4 transition-all hover:shadow-md hover:-translate-y-0.5">
         <img
           src={profile?.avatar || "/avatar.png"}
           alt={profile.displayName}
-          className="w-11 h-11 rounded-full border border-zinc-100 bg-zinc-50 object-cover"
+          className="w-12 h-12 rounded-full border border-[#f0f0f0] bg-[#fafafa] object-cover shadow-sm"
         />
         <div className="flex-1 pr-3">
-          <div className="font-medium text-zinc-900 text-sm">
+          <div className="font-semibold text-[#1a1a1a] text-sm">
             {profile.displayName}
           </div>
-          <div className="text-xs text-zinc-500">{profileUrl}</div>
+          <div className="text-xs text-[#6b6b6b]">{profileUrl}</div>
         </div>
-        <div className="flex items-center gap-1.5 pl-3 border-l border-zinc-100">
+        <div className="flex items-center gap-1.5 pl-3 border-l border-[#e5e2dc]">
           {qrCode && (
             <img
               src={qrCode}
@@ -69,10 +69,10 @@ export default function DashboardHeader({ profile }: DashboardProps) {
           )}
           <button
             onClick={copyUrl}
-            className={`p-2 rounded-lg transition-all duration-200 ${
+            className={`p-2.5 rounded-xl transition-all duration-300 ${
               copied
-                ? "bg-emerald-50 text-emerald-600"
-                : "text-zinc-400 hover:text-zinc-900 hover:bg-zinc-50"
+                ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
+                : "text-[#6b6b6b] border border-transparent hover:text-[#1a1a1a] hover:bg-white hover:border-[#e5e2dc] hover:shadow-sm"
             }`}
             aria-label="Copy URL"
             title={copied ? "Copied!" : "Copy URL"}
@@ -87,7 +87,7 @@ export default function DashboardHeader({ profile }: DashboardProps) {
             href={profileUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-zinc-900 text-white text-xs font-medium rounded-lg hover:bg-zinc-800 transition-colors whitespace-nowrap"
+            className="flex items-center gap-2 px-4 py-2.5 bg-[#1a1a1a] text-white text-xs font-medium rounded-xl hover:bg-[#333] transition-all whitespace-nowrap active:scale-[0.98] shadow-sm"
           >
             <ExternalLink className="w-3.5 h-3.5" />
             Visit

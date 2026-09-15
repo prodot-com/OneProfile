@@ -19,21 +19,21 @@ export default function TopLinksWidget({ links }: TopLinksWidgetProps) {
   const topLinks = links.slice(0, 5);
 
   return (
-    <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm overflow-hidden">
+    <div className="rounded-[1.5rem] border border-[#e5e2dc] bg-white/70 backdrop-blur-md shadow-sm overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-zinc-100 px-5 py-4">
+      <div className="flex items-center justify-between border-b border-[#f0f0f0] px-6 py-5">
         <div className="flex items-center gap-2">
           <TrendingUp className="size-4 text-violet-500" />
           <div>
-            <h3 className="text-sm font-semibold text-zinc-800">
+            <h3 className="flex items-center text-lg font-serif font-semibold text-[#1a1a1a]">
               Top Performing Links
             </h3>
-            <p className="text-xs text-zinc-400">Ranked by click count</p>
+            <p className="text-xs text-[#6b6b6b] mt-0.5">Ranked by click count</p>
           </div>
         </div>
         <Link
           href="/dashboard/analytics"
-          className="flex items-center gap-1 text-xs font-medium text-zinc-400 hover:text-zinc-700 transition-colors"
+          className="flex items-center gap-1 text-xs font-medium text-[#6b6b6b] hover:text-[#1a1a1a] transition-colors"
         >
           View all
           <ArrowRight className="size-3" />
@@ -51,7 +51,7 @@ export default function TopLinksWidget({ links }: TopLinksWidgetProps) {
           </p>
         </div>
       ) : (
-        <div className="divide-y divide-zinc-50">
+        <div className="divide-y divide-[#f0f0f0]">
           {topLinks.map((link, i) => {
             const pct =
               totalClicks > 0
@@ -71,21 +71,21 @@ export default function TopLinksWidget({ links }: TopLinksWidgetProps) {
                 className="group flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-zinc-50/50"
               >
                 {/* Rank */}
-                <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-zinc-100 text-[11px] font-bold text-zinc-400 group-hover:bg-zinc-200 transition-colors">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-[#fafafa] text-[11px] font-bold text-[#b4b0a4] group-hover:bg-[#f0f0f0] transition-colors">
                   {i + 1}
                 </span>
 
                 {/* Info */}
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center justify-between gap-2 mb-1">
-                    <p className="truncate text-sm font-medium text-zinc-800">
+                <div className="min-w-0 flex-1 ml-1">
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                    <p className="truncate text-sm font-medium text-[#1a1a1a]">
                       {link.title}
                     </p>
-                    <span className="shrink-0 text-xs font-semibold text-violet-600">
+                    <span className="shrink-0 text-xs font-semibold text-[#f97316]">
                       {link.clicks.toLocaleString()}
                     </span>
                   </div>
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-100">
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#f0f0f0]">
                     <div
                       className={`h-full rounded-full bg-gradient-to-r ${barColors[i]} transition-all duration-700 ease-out`}
                       style={{ width: `${Math.max(pct, 4)}%` }}

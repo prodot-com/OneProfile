@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Logo from "@/lib/logo";
 
 interface SidebarProps {
   className?: string;
@@ -19,13 +20,13 @@ export default function Sidebar({ className = "" }: SidebarProps) {
   ];
 
   return (
-    <aside className={`w-64 flex-col border-r border-zinc-200/70 bg-white ${className}`}>
-      <div className="h-16 flex items-center px-6 border-b border-zinc-200/70">
+    <aside className={`w-64 flex-col border-r border-[#e5e2dc] bg-white ${className}`}>
+      <div className="h-16 flex items-center px-6 border-b border-[#e5e2dc]">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-zinc-900 text-white flex items-center justify-center font-bold text-lg">
-            o
+          <div className="w-8 h-8 flex items-center justify-center">
+            <Logo className="h-7 text-[#f97316]" />
           </div>
-          <span className="font-semibold text-lg tracking-tight">OneProfile</span>
+          <span className="font-semibold text-lg tracking-tight text-[#1a1a1a]">OneProfile</span>
         </div>
       </div>
       <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
@@ -38,17 +39,17 @@ export default function Sidebar({ className = "" }: SidebarProps) {
               href={item.href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${
                 isActive 
-                  ? "bg-zinc-100 text-zinc-900 font-medium" 
-                  : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50"
+                  ? "bg-[#fff7ed] text-[#c2410c] font-medium" 
+                  : "text-[#6b6b6b] hover:text-[#1a1a1a] hover:bg-[#1a1a1a]/5"
               }`}
             >
-              <Icon className={`w-5 h-5 ${isActive ? "text-zinc-900" : "text-zinc-400"}`} />
+              <Icon className={`w-5 h-5 ${isActive ? "text-[#c2410c]" : "text-[#6b6b6b]"}`} />
               {item.label}
             </Link>
           );
         })}
       </nav>
-      <div className="p-4 border-t border-zinc-200/70 text-xs text-zinc-400 text-center">
+      <div className="p-4 border-t border-[#e5e2dc] text-xs text-[#6b6b6b] text-center">
         OneProfile v1.0.0
       </div>
     </aside>

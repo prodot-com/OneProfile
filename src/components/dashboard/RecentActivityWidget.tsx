@@ -21,21 +21,21 @@ export default function RecentActivityWidget({
   clicks,
 }: RecentActivityWidgetProps) {
   return (
-    <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm overflow-hidden">
+    <div className="rounded-[1.5rem] border border-[#e5e2dc] bg-white/70 backdrop-blur-md shadow-sm overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-zinc-100 px-5 py-4">
+      <div className="flex items-center justify-between border-b border-[#f0f0f0] px-6 py-5">
         <div className="flex items-center gap-2">
           <Clock className="size-4 text-amber-500" />
           <div>
-            <h3 className="text-sm font-semibold text-zinc-800">
+            <h3 className="text-lg font-serif font-semibold text-[#1a1a1a]">
               Recent Activity
             </h3>
-            <p className="text-xs text-zinc-400">Latest clicks on your links</p>
+            <p className="text-xs text-[#6b6b6b]">Latest clicks on your links</p>
           </div>
         </div>
         <Link
           href="/dashboard/analytics"
-          className="flex items-center gap-1 text-xs font-medium text-zinc-400 hover:text-zinc-700 transition-colors"
+          className="flex items-center gap-1 text-xs font-medium text-[#6b6b6b] hover:text-[#1a1a1a] transition-colors"
         >
           View all
           <ArrowRight className="size-3" />
@@ -51,11 +51,11 @@ export default function RecentActivityWidget({
           <p className="text-sm text-zinc-400">No activity recorded yet.</p>
         </div>
       ) : (
-        <div className="divide-y divide-zinc-50">
+        <div className="divide-y divide-[#f0f0f0]">
           {clicks.map((click, i) => (
             <div
               key={click.id}
-              className="flex items-start gap-3 px-5 py-3 transition-colors hover:bg-zinc-50/50"
+              className="flex items-start gap-3 px-6 py-4 transition-colors hover:bg-[#fafafa]/50"
             >
               {/* Animated dot */}
               <div className="mt-1.5 relative">
@@ -70,11 +70,11 @@ export default function RecentActivityWidget({
               </div>
 
               {/* Content */}
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-zinc-800">
+              <div className="min-w-0 flex-1 ml-1">
+                <p className="truncate text-sm font-medium text-[#1a1a1a]">
                   {click.linkTitle}
                 </p>
-                <div className="mt-0.5 flex flex-wrap gap-x-2 gap-y-0.5 text-xs text-zinc-400">
+                <div className="mt-1 flex flex-wrap gap-x-2 gap-y-0.5 text-xs text-[#6b6b6b]">
                   {click.country && (
                     <span className="flex items-center gap-0.5">
                       <MapPin className="size-3" />
@@ -88,7 +88,7 @@ export default function RecentActivityWidget({
               </div>
 
               {/* Timestamp */}
-              <time className="shrink-0 text-[11px] text-zinc-400 mt-0.5">
+              <time className="shrink-0 text-[11px] text-[#b4b0a4] mt-0.5 font-medium">
                 {click.createdAtFormatted}
               </time>
             </div>
