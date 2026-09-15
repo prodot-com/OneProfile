@@ -14,6 +14,34 @@ export interface CreateProfileInput {
   theme?: string;
 }
 
+export async function checkUsername(
+  username: string
+): Promise<{ available: boolean; error?: string }> {
+  const cleaned = username.trim().toLowerCase();
+
+  if (!/^[a-z0-9-]{3,30}$/.test(cleaned)) {
+    return {
+      available: false,
+      error: "Username must be 3–30 characters: lowercase letters, numbers, hyphens.",
+    };
+  }
+
+  if (RESERVED_USERNAMES.includes(cleaned)) {
+    return { available: false, error: "This username is reserved." };
+  }
+
+  const existing = await prisma.profile.findUnique({
+    where: { username: cleaned },
+    select: { id: true },
+  });
+
+  if (existing) {
+    return { available: false, error: "Username already taken." };
+  }
+
+  return { available: true };
+}
+
 const RESERVED_USERNAMES = [
   "admin",
   "api",

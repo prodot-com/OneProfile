@@ -18,10 +18,9 @@ export const auth = betterAuth({
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
     },
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+    }
   },
 });
-
-// console.log({
-//   id: process.env.GITHUB_CLIENT_ID,
-//   secretLoaded: !!process.env.GITHUB_CLIENT_SECRET,
-// });
