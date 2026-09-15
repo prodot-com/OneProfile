@@ -206,7 +206,7 @@ export default function SettingsPage({
       {/* Header */}
       <div>
         <h1 className="text-3xl md:text-4xl font-serif font-semibold tracking-tight text-[#1a1a1a]">
-          Settings
+          Account
         </h1>
         <p className="mt-2 text-lg text-[#6b6b6b]">
           Manage your account, privacy, and sessions.

@@ -10,10 +10,12 @@ export default async function DashboardLayout({
 }) {
   const { user, profile } = await requireUserAndProfile();
 
+  console.log(user, profile)
+
   return (
-    <div className="flex h-screen bg-[#faf9f6] text-[#1a1a1a] selection:bg-[#f97316]/20 selection:text-[#1a1a1a] overflow-hidden font-sans">
-      <Sidebar className="hidden md:flex" />
-      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
+    <div className="flex h-screen bg-[#f7f5f0] p-0 md:p-2 md:pr-2 md:pb-2 text-[#1a1a1a] selection:bg-[#f97316]/20 selection:text-[#1a1a1a] overflow-hidden font-sans">
+      <Sidebar profile={profile} user={user} className="hidden md:flex w-64 shrink-0 bg-transparent border-0" />
+      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden bg-white md:border border-[#e5e2dc] md:rounded-[1.5rem] md:shadow-sm relative">
         <Topbar profile={profile} />
         <main className="flex-1 relative flex flex-col max-w-full overflow-y-auto lg:has-[.split-layout]:overflow-hidden px-4 md:px-10 lg:px-12 py-8 lg:has-[.split-layout]:px-0 lg:has-[.split-layout]:py-0">
           <div className="mx-auto w-full max-w-6xl space-y-8 pb-16 lg:has-[.split-layout]:max-w-none lg:has-[.split-layout]:space-y-0 lg:has-[.split-layout]:pb-0 lg:has-[.split-layout]:h-full lg:has-[.split-layout]:flex lg:has-[.split-layout]:flex-col lg:has-[.split-layout]:min-h-0">

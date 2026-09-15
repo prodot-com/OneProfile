@@ -1,36 +1,13 @@
 "use client";
 
 import { Profile } from "@prisma/client";
-import { useState, useRef, useEffect } from "react";
-import { signOut } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import { LogOut } from "lucide-react";
+
 
 interface topbarProps {
   profile: Profile
 }
 
 export default function Topbar({profile}: topbarProps) {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
-
-  // Close dropdown on outside click
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleLogout = async () => {
-    await signOut();
-    router.push("/");
-  };
-
   return (
     <header className="h-16 bg-white border-b border-[#e5e2dc] flex items-center justify-between px-4 md:px-8 shrink-0 relative z-50 shadow-sm">
       <div className="flex items-center gap-4 md:hidden">
@@ -78,40 +55,6 @@ export default function Topbar({profile}: topbarProps) {
             />
           </svg>
         </button>
-        
-        <div className="relative" ref={dropdownRef}>
-          <button
-            aria-label="User Menu"
-            onClick={() => setDropdownOpen((prev) => !prev)}
-            className="block h-8 w-8 rounded-full overflow-hidden border border-[#d8d5ce] hover:border-[#1a1a1a] transition-colors"
-          >
-            <img
-              src={profile?.avatar || "/avatar.png"}
-              alt="User avatar"
-              className="w-full h-full object-cover bg-zinc-50"
-            />
-          </button>
-
-          {dropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white border border-[#e5e2dc] shadow-lg py-1 fade-in z-50">
-              <div className="px-4 py-2 border-b border-[#f0f0f0]">
-                <p className="text-sm font-medium text-[#1a1a1a] truncate">
-                  {profile?.displayName}
-                </p>
-                <p className="text-xs text-[#6b6b6b] truncate">
-                  @{profile?.username}
-                </p>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 transition-colors"
-              >
-                <LogOut className="size-4" />
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
       </div>
     </header>
   );
