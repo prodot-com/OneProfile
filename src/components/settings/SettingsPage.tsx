@@ -33,6 +33,7 @@ interface SettingsProps {
     username: string;
     isPublic: boolean;
     avatar: string;
+    displayName: string;
   };
   sessionCount: number;
 }
@@ -221,7 +222,7 @@ export default function SettingsPage({
         avatar={profile.avatar}
       >
         <div className="divide-y divide-[#f0f0f0]">
-          <InfoRow icon={User} label="Name" value={user.name} />
+          <InfoRow icon={User} label="Name" value={profile.displayName} />
           <InfoRow icon={Mail} label="Email" value={user.email} />
           <InfoRow
             icon={Globe}

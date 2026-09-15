@@ -21,6 +21,7 @@ export default async function Page() {
         username: profile.username,
         isPublic: profile.isPublic,
         avatar: profile.avatar ?? "/avatar.jpeg",
+        displayName: profile.displayName,
       }}
       sessionCount={sessionCount}
     />

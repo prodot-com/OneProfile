@@ -165,7 +165,7 @@ export default function Sidebar({
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="text-sm font-semibold text-[#1a1a1a] truncate text-left">
-                  {user?.name}
+                  {profile?.displayName}
                 </span>
                 <span className="text-[11px] text-[#6b6b6b] truncate text-left">
                   {user?.email}

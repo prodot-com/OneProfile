@@ -17,6 +17,7 @@ import {
   Hash,
   Headphones,
   Newspaper,
+  CheckCircle2,
 } from "lucide-react";
 import { Theme } from "@prisma/client";
 import { getFontClass } from "@/lib/fonts";
@@ -68,13 +69,14 @@ export default async function PublicProfile({ params }: Props) {
 
   if (!profile.isPublic) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-white">
-        <div className="text-center">
-          <div className="mx-auto mb-5 flex size-14 items-center justify-center rounded-full bg-zinc-50 border border-zinc-100">
-            <Globe className="size-6 text-zinc-400" />
+      <main className="flex min-h-screen items-center justify-center bg-[#faf9f6]">
+        <div className="absolute inset-0 bg-[url('/back.png')] bg-cover bg-left opacity-30 mix-blend-multiply pointer-events-none" />
+        <div className="text-center relative z-10 animate-in fade-in zoom-in duration-500">
+          <div className="mx-auto mb-5 flex size-16 items-center justify-center rounded-2xl bg-white shadow-xl border border-[#e5e2dc]">
+            <Globe className="size-7 text-[#b4b0a4]" />
           </div>
-          <h1 className="text-lg font-medium text-zinc-900">Private Profile</h1>
-          <p className="mt-1.5 text-sm text-zinc-500">This profile is not publicly visible.</p>
+          <h1 className="text-2xl font-serif font-bold text-[#1a1a1a]">Private Profile</h1>
+          <p className="mt-2 text-[15px] text-[#6b6b6b]">This profile is not publicly visible.</p>
         </div>
       </main>
     );
@@ -95,32 +97,64 @@ export default async function PublicProfile({ params }: Props) {
   if (profile.buttonStyle === "PILL") btnRadius = "9999px";
   if (profile.buttonStyle === "SQUARE") btnRadius = "0px";
 
-  const getThemeClasses = (theme: Theme = "DEFAULT") => {
+  // Complex themes processing
+  const getThemeSetup = (theme: Theme = "DEFAULT") => {
     switch (theme) {
       case "DARK":
-        return "bg-zinc-900 text-white selection:bg-zinc-800";
-      case "LIGHT":
-        return "bg-white text-zinc-900 selection:bg-zinc-100";
-      case "MINIMAL":
-        return "bg-transparent text-zinc-800";
+        return {
+          wrapper: "bg-[#0a0a0a] text-zinc-100 selection:bg-zinc-800",
+          bgLayer: <div className="absolute inset-0 bg-[#0a0a0a] pointer-events-none" />,
+          cardBg: "bg-zinc-900/50 border border-zinc-800/50 backdrop-blur-sm",
+        };
       case "GLASS":
-        return "bg-white/40 backdrop-blur-md text-zinc-800";
+        return {
+          wrapper: "bg-[#faf9f6] text-zinc-900",
+          bgLayer: (
+            <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+              <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-blue-400/30 blur-[120px] mix-blend-multiply animate-pulse" />
+              <div className="absolute top-[10%] -right-[10%] w-[40%] h-[60%] rounded-full bg-pink-400/30 blur-[120px] mix-blend-multiply animate-pulse delay-700" />
+              <div className="absolute -bottom-[20%] left-[20%] w-[60%] h-[50%] rounded-full bg-purple-400/30 blur-[120px] mix-blend-multiply animate-pulse delay-1000" />
+            </div>
+          ),
+          cardBg: "bg-white/40 backdrop-blur-xl border border-white/50 shadow-xl",
+        };
       case "GRADIENT":
-        return "bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white";
+        return {
+          wrapper: "bg-gradient-to-br from-[#ffafbd] to-[#ffc3a0] text-zinc-900 selection:bg-black/10",
+          bgLayer: null,
+          cardBg: "bg-white/50 backdrop-blur-md border border-white/30 shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
+        };
+      case "MINIMAL":
+        return {
+          wrapper: "bg-white text-zinc-900",
+          bgLayer: null,
+          cardBg: "", // completely minimal, no card styling
+        };
+      case "LIGHT":
       case "DEFAULT":
       default:
-        return "bg-white text-zinc-900 selection:bg-zinc-100";
+        return {
+          wrapper: "bg-[#faf9f6] text-[#1a1a1a] selection:bg-[#f97316]/20",
+          bgLayer: <div className="fixed inset-0 bg-[url('/back.png')] bg-cover bg-left opacity-30 mix-blend-multiply pointer-events-none -z-10" />,
+          cardBg: "", 
+        };
     }
   };
 
-  const themeClasses = getThemeClasses(profile.theme);
+  const themeSetup = getThemeSetup(profile.theme);
 
   return (
-    <main className={`min-h-screen ${themeClasses} ${fontClass}`}>
-      <div className="mx-auto max-w-2xl pb-20">
+    <main className={`min-h-screen relative overflow-x-hidden ${themeSetup.wrapper} ${fontClass}`}>
+      {themeSetup.bgLayer}
+
+      {/* Main container with standard entrance animation */}
+      <div className="mx-auto max-w-[640px] pb-24 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both">
         
         {/* ── Banner ── */}
-        <div className="relative h-32 sm:h-48 w-full" style={{ backgroundColor: accColor }}>
+        <div 
+          className="relative h-40 sm:h-56 w-full" 
+          style={{ backgroundColor: profile.banner ? 'transparent' : accColor }}
+        >
           {profile.banner ? (
             <Image
               src={profile.banner}
@@ -130,46 +164,58 @@ export default async function PublicProfile({ params }: Props) {
               priority
             />
           ) : (
-            <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-30" />
+            <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.15]" />
           )}
+          {/* Subtle gradient overlay at bottom to blend banner with background */}
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 to-transparent" />
         </div>
 
         {/* ── Profile Header ── */}
-        <div className="relative -mt-12 flex flex-col items-center px-6 sm:-mt-16 sm:px-12">
+        <div className={`relative -mt-16 flex flex-col items-center px-6 sm:-mt-20 sm:px-12 ${themeSetup.cardBg ? `mx-4 sm:mx-8 px-6 pt-0 pb-10 mt-[-60px] rounded-[2rem] ${themeSetup.cardBg}` : ''}`}>
           
-          {/* Avatar */}
-          <div className="relative">
-            <div className="size-24 sm:size-32 overflow-hidden rounded-full border-4 border-white bg-white shadow-sm ring-1 ring-zinc-900/5">
+          {/* Avatar (with its own staggered animation) */}
+          <div className="relative animate-in zoom-in-75 fade-in duration-500 delay-200 fill-mode-both">
+            <div 
+              className={`size-28 sm:size-36 overflow-hidden rounded-full border-4 shadow-xl ring-1 ring-black/5 ${
+                profile.theme === 'DARK' ? 'border-[#1a1a1a] bg-[#1a1a1a]' : 'border-[#faf9f6] bg-[#faf9f6]'
+              }`}
+            >
               {profile.avatar ? (
                 <Image
                   src={profile.avatar}
                   alt={profile.displayName}
-                  width={128}
-                  height={128}
+                  width={144}
+                  height={144}
                   className="h-full w-full object-cover"
+                  priority
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-zinc-50 text-3xl font-medium text-zinc-400">
+                <div className="flex h-full w-full items-center justify-center text-4xl font-serif text-[#b4b0a4]">
                   {profile.displayName.charAt(0).toUpperCase()}
                 </div>
               )}
             </div>
+            
+            {/* Verified Badge */}
+            {profile.verified && (
+              <div 
+                className="absolute bottom-1 right-1 rounded-full bg-white p-0.5 shadow-sm"
+                title="Verified Account"
+              >
+                <CheckCircle2 className="size-7 text-[#0095F6] fill-white" />
+              </div>
+            )}
           </div>
 
           {/* Name & Bio */}
-          <div className="mt-4 flex flex-col items-center text-center">
-            <h1 className="flex items-center gap-1.5 text-xl font-semibold tracking-tight sm:text-2xl">
+          <div className="mt-5 flex flex-col items-center text-center animate-in fade-in slide-in-from-bottom-4 duration-500 delay-300 fill-mode-both">
+            <h1 className="text-2xl font-serif font-bold tracking-tight sm:text-3xl">
               {profile.displayName}
-              {profile.verified && (
-                <svg className="size-5 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                </svg>
-              )}
             </h1>
-            <p className="mt-1 text-sm font-medium opacity-70">@{profile.username}</p>
+            <p className="mt-1 text-sm font-medium opacity-60">@{profile.username}</p>
 
             {profile.bio && (
-              <p className="mt-4 max-w-md text-sm leading-relaxed opacity-80">
+              <p className="mt-4 max-w-lg text-[15px] leading-relaxed opacity-80 whitespace-pre-wrap">
                 {profile.bio}
               </p>
             )}
@@ -180,10 +226,10 @@ export default async function PublicProfile({ params }: Props) {
                 href={profile.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 flex items-center gap-2 px-4 py-1.5 text-xs font-medium transition-colors hover:opacity-80 shadow-sm"
+                className="mt-5 flex items-center gap-2.5 px-5 py-2 text-sm font-medium transition-all hover:-translate-y-0.5 hover:shadow-md active:scale-95"
                 style={{ backgroundColor: btnColor, color: btnTextColor, borderRadius: btnRadius }}
               >
-                <Globe className="size-3.5" />
+                <Globe className="size-4 opacity-80" />
                 {profile.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
               </a>
             )}
@@ -191,7 +237,7 @@ export default async function PublicProfile({ params }: Props) {
 
           {/* ── Social Links ── */}
           {profile.socials.length > 0 && (
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <div className="mt-7 flex flex-wrap justify-center gap-3.5 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-400 fill-mode-both">
               {profile.socials.map((social) => (
                 <a
                   key={social.id}
@@ -199,10 +245,10 @@ export default async function PublicProfile({ params }: Props) {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={social.platform}
-                  className="flex size-11 items-center justify-center shadow-sm transition-all hover:scale-105 hover:brightness-110"
+                  className="flex size-12 items-center justify-center transition-all hover:-translate-y-1 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md"
                   style={{ backgroundColor: btnColor, color: btnTextColor, borderRadius: btnRadius }}
                 >
-                  {SOCIAL_ICON[social.platform] ?? <Globe className="size-[18px]" />}
+                  {SOCIAL_ICON[social.platform] ?? <Globe className="size-[20px]" />}
                 </a>
               ))}
             </div>
@@ -210,33 +256,42 @@ export default async function PublicProfile({ params }: Props) {
         </div>
 
         {/* ── Links Section ── */}
-        <div className="mt-10 flex flex-col gap-3 px-6 sm:px-12">
+        <div className="mt-10 flex flex-col gap-4 px-6 sm:px-12 list-none m-0 p-0">
           {profile.links.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-zinc-200 py-12 text-center opacity-50">
-              <p className="text-sm">No links available right now.</p>
+            <div className="rounded-[1.5rem] border border-dashed border-zinc-200/50 py-16 text-center opacity-50 animate-in fade-in duration-700 delay-500 fill-mode-both">
+              <p className="text-[15px]">No links available right now.</p>
             </div>
           ) : (
-            profile.links.map((link) => (
+            profile.links.map((link, index) => (
               <a
                 key={link.id}
                 href={`/r/${link.id}`}
-                className="group relative flex items-center justify-between p-4 shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all hover:brightness-110"
-                style={{ backgroundColor: btnColor, color: btnTextColor, borderRadius: btnRadius }}
+                className="group relative flex items-center justify-between p-4 sm:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-offset-2 overflow-hidden"
+                style={{ 
+                  backgroundColor: btnColor, 
+                  color: btnTextColor, 
+                  borderRadius: btnRadius,
+                  /* Staggered entry animation */
+                  animation: `slide-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${0.5 + index * 0.05}s both`
+                }}
               >
-                <div className="flex flex-col pr-6">
-                  <h2 className="text-sm font-semibold">
+                {/* Subtle shine effect on hover */}
+                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 ease-in-out group-hover:translate-x-full" />
+                
+                <div className="flex flex-col pr-6 shrink relative z-10 w-full text-center items-center justify-center">
+                  <h2 className="text-[15px] sm:text-base font-semibold tracking-tight">
                     {link.title}
                   </h2>
                   {link.description && (
-                    <p className="mt-1 line-clamp-1 text-xs opacity-70">
+                    <p className="mt-1 text-xs sm:text-sm opacity-70 font-medium">
                       {link.description}
                     </p>
                   )}
                 </div>
                 
-                {/* Arrow icon that reveals on hover */}
+                {/* Hover Arrow */}
                 <div 
-                  className="flex size-8 shrink-0 items-center justify-center rounded-full opacity-50 transition-all group-hover:opacity-100"
+                  className="absolute right-4 flex size-8 shrink-0 items-center justify-center rounded-full opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0"
                   style={{ backgroundColor: accColor }}
                 >
                   <ExternalLink className="size-4" style={{ color: btnTextColor }} />
@@ -247,16 +302,24 @@ export default async function PublicProfile({ params }: Props) {
         </div>
 
         {/* ── Footer ── */}
-        <div className="mt-16 text-center">
+        <div className="mt-20 text-center animate-in fade-in duration-700 delay-700 fill-mode-both pb-10">
           <a
             href="/"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-400 transition-colors hover:text-zinc-600"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-wide uppercase transition-colors opacity-40 hover:opacity-100"
           >
-            Powered by <span className="text-zinc-900">OneProfile</span>
+            Powered by <span style={{ color: accColor }}>OneProfile</span>
           </a>
         </div>
         
       </div>
+      
+      {/* Add raw CSS for the custom staggered animation since Tailwind doesn't have native index loops */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes slide-in-up {
+          from { opacity: 0; transform: translateY(16px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}} />
     </main>
   );
 }
