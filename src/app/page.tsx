@@ -116,7 +116,7 @@ export default function Home() {
                 <a
                   key={link}
                   href={`#${link.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="text-[14px] text-[#6b6b6b] hover:text-[#1a1a1a] transition-colors"
+                  className="text-[18px] text-[#6b6b6b] hover:text-[#1a1a1a] transition-colors font-serif"
                 >
                   {link}
                 </a>
@@ -127,15 +127,11 @@ export default function Home() {
           <div className="flex items-center">
             <button
               onClick={handleSignIn}
-              className="
-relative z-10 px-5 py-2.5 cursor-pointer
-rounded-xl text-white font-serif text-[1.1rem] tracking-wide
-bg-gradient-to-b from-[#fb923c] via-[#f97316] to-[#c2410c]
-shadow-[0_12px_30px_rgba(249,115,22,0.35)]
-hover:brightness-110
-hover:scale-105
-transition-all duration-300
-"
+              className="relative z-10 px-5 py-2.5 cursor-pointer
+                  rounded-xl text-white font-serif text-[1.1rem] tracking-wide
+                  bg-gradient-to-b from-[#fb923c] via-[#f97316] to-[#c2410c]
+                  shadow-[0_12px_30px_rgba(249,115,22,0.35)]
+                  hover:brightness-110 hover:scale-105 transition-all duration-300"
             >
               Book a demo
             </button>
@@ -368,10 +364,6 @@ transition-all duration-300
             custom={0}
             className="text-center mb-20"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#f3f0ff] text-purple-700 text-[13px] font-medium mb-6">
-              <Sparkles className="w-3.5 h-3.5" />
-              Built for creators
-            </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl mb-4">
               Everything you need to grow
             </h2>
@@ -382,7 +374,6 @@ transition-all duration-300
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-
             {/* ── Card 1: Premium Themes — Mini Profile Preview ── */}
             <motion.div
               initial="hidden"
@@ -394,9 +385,11 @@ transition-all duration-300
             >
               {/* Subtle gradient glow on hover */}
               <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-purple-200/40 via-transparent to-orange-100/30 pointer-events-none" />
-              
+
               <div className="relative z-10">
-                <h3 className="font-serif text-2xl text-purple-800 mb-1">Premium Themes</h3>
+                <h3 className="font-serif text-2xl text-purple-800 mb-1">
+                  Premium Themes
+                </h3>
                 <p className="text-[#6b6b6b] text-[13px] leading-relaxed mb-6">
                   Customize every detail to match your brand perfectly.
                 </p>
@@ -405,29 +398,59 @@ transition-all duration-300
               {/* Visual: Animated mini-profile cards cycling themes */}
               <div className="relative z-10 mt-auto flex flex-col items-center">
                 {[
-                  { bg: "from-orange-50 to-amber-50", accent: "#f97316", ring: "ring-orange-200", name: "Sunset" },
-                  { bg: "from-violet-50 to-purple-50", accent: "#8b5cf6", ring: "ring-purple-200", name: "Lavender" },
-                  { bg: "from-emerald-50 to-teal-50", accent: "#10b981", ring: "ring-emerald-200", name: "Emerald" },
+                  {
+                    bg: "from-orange-50 to-amber-50",
+                    accent: "#f97316",
+                    ring: "ring-orange-200",
+                    name: "Sunset",
+                  },
+                  {
+                    bg: "from-violet-50 to-purple-50",
+                    accent: "#8b5cf6",
+                    ring: "ring-purple-200",
+                    name: "Lavender",
+                  },
+                  {
+                    bg: "from-emerald-50 to-teal-50",
+                    accent: "#10b981",
+                    ring: "ring-emerald-200",
+                    name: "Emerald",
+                  },
                 ].map((theme, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 20, scale: 0.95 }}
                     whileInView={{ opacity: 1, y: 0, scale: 1 - i * 0.04 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.3 + i * 0.15, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+                    transition={{
+                      delay: 0.3 + i * 0.15,
+                      duration: 0.5,
+                      ease: [0.25, 0.1, 0.25, 1],
+                    }}
                     className={`w-full max-w-[220px] bg-gradient-to-br ${theme.bg} rounded-2xl p-3 shadow-sm border border-white/60 ${i > 0 ? "-mt-8" : ""}`}
                     style={{ zIndex: 3 - i }}
                   >
                     <div className="flex items-center gap-2.5 mb-2">
-                      <div className={`w-7 h-7 rounded-full ring-2 ${theme.ring}`} style={{ backgroundColor: theme.accent }} />
+                      <div
+                        className={`w-7 h-7 rounded-full ring-2 ${theme.ring}`}
+                        style={{ backgroundColor: theme.accent }}
+                      />
                       <div>
                         <div className="h-2 w-16 rounded-full bg-black/10" />
                         <div className="h-1.5 w-10 rounded-full bg-black/5 mt-1" />
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <div className="h-6 w-full rounded-lg" style={{ backgroundColor: theme.accent + "18" }}>
-                        <div className="h-full flex items-center justify-center text-[9px] font-semibold" style={{ color: theme.accent }}>{theme.name}</div>
+                      <div
+                        className="h-6 w-full rounded-lg"
+                        style={{ backgroundColor: theme.accent + "18" }}
+                      >
+                        <div
+                          className="h-full flex items-center justify-center text-[9px] font-semibold"
+                          style={{ color: theme.accent }}
+                        >
+                          {theme.name}
+                        </div>
                       </div>
                       <div className="h-6 w-full rounded-lg bg-black/[0.03]" />
                     </div>
@@ -449,16 +472,23 @@ transition-all duration-300
 
               <div className="relative z-10 flex flex-col sm:flex-row items-start justify-between mb-6 gap-4">
                 <div>
-                  <h3 className="font-serif text-2xl text-blue-800 mb-1">Deep Analytics</h3>
+                  <h3 className="font-serif text-2xl text-blue-800 mb-1">
+                    Deep Analytics
+                  </h3>
                   <p className="text-[#6b6b6b] text-[13px] leading-relaxed max-w-sm">
-                    Real-time insights, click tracking, and viewer demographics at a glance.
+                    Real-time insights, click tracking, and viewer demographics
+                    at a glance.
                   </p>
                 </div>
                 {/* Live counters */}
                 <div className="flex gap-4">
                   {[
                     { label: "Views", value: "12.4k", color: "text-blue-600" },
-                    { label: "Clicks", value: "3.2k", color: "text-indigo-600" },
+                    {
+                      label: "Clicks",
+                      value: "3.2k",
+                      color: "text-indigo-600",
+                    },
                     { label: "CTR", value: "26%", color: "text-cyan-600" },
                   ].map((stat, i) => (
                     <motion.div
@@ -466,11 +496,19 @@ transition-all duration-300
                       initial={{ opacity: 0, scale: 0.8 }}
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
-                      transition={{ delay: 0.5 + i * 0.1, type: "spring", stiffness: 200 }}
+                      transition={{
+                        delay: 0.5 + i * 0.1,
+                        type: "spring",
+                        stiffness: 200,
+                      }}
                       className="text-center bg-white/60 backdrop-blur-sm rounded-xl px-3 py-2 shadow-sm"
                     >
-                      <div className={`text-lg font-bold ${stat.color}`}>{stat.value}</div>
-                      <div className="text-[10px] text-[#6b6b6b] font-medium">{stat.label}</div>
+                      <div className={`text-lg font-bold ${stat.color}`}>
+                        {stat.value}
+                      </div>
+                      <div className="text-[10px] text-[#6b6b6b] font-medium">
+                        {stat.label}
+                      </div>
                     </motion.div>
                   ))}
                 </div>
@@ -478,10 +516,24 @@ transition-all duration-300
 
               {/* Visual: Animated area chart using SVG */}
               <div className="relative z-10 mt-auto h-32 w-full">
-                <svg className="w-full h-full" viewBox="0 0 400 120" preserveAspectRatio="none" fill="none">
+                <svg
+                  className="w-full h-full"
+                  viewBox="0 0 400 120"
+                  preserveAspectRatio="none"
+                  fill="none"
+                >
                   {/* Grid lines */}
-                  {[30, 60, 90].map(y => (
-                    <line key={y} x1="0" y1={y} x2="400" y2={y} stroke="#bfdbfe" strokeWidth="0.5" strokeDasharray="4 4" />
+                  {[30, 60, 90].map((y) => (
+                    <line
+                      key={y}
+                      x1="0"
+                      y1={y}
+                      x2="400"
+                      y2={y}
+                      stroke="#bfdbfe"
+                      strokeWidth="0.5"
+                      strokeDasharray="4 4"
+                    />
                   ))}
                   {/* Area fill */}
                   <motion.path
@@ -505,7 +557,9 @@ transition-all duration-300
                   />
                   {/* Glowing dot at end */}
                   <motion.circle
-                    cx="400" cy="5" r="4"
+                    cx="400"
+                    cy="5"
+                    r="4"
                     fill="#3b82f6"
                     initial={{ opacity: 0, scale: 0 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -513,7 +567,9 @@ transition-all duration-300
                     transition={{ delay: 1.8, type: "spring", stiffness: 300 }}
                   />
                   <motion.circle
-                    cx="400" cy="5" r="8"
+                    cx="400"
+                    cy="5"
+                    r="8"
                     fill="#3b82f6"
                     opacity={0.2}
                     initial={{ scale: 0 }}
@@ -522,9 +578,19 @@ transition-all duration-300
                     transition={{ delay: 1.8, duration: 0.6 }}
                   />
                   <defs>
-                    <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                    <linearGradient
+                      id="areaGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
                       <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
-                      <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.02" />
+                      <stop
+                        offset="100%"
+                        stopColor="#3b82f6"
+                        stopOpacity="0.02"
+                      />
                     </linearGradient>
                   </defs>
                 </svg>
@@ -543,7 +609,9 @@ transition-all duration-300
               <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-rose-200/30 via-transparent to-pink-100/20 pointer-events-none" />
 
               <div className="relative z-10 self-start mb-4">
-                <h3 className="font-serif text-2xl text-rose-700 mb-1">Lightning Fast</h3>
+                <h3 className="font-serif text-2xl text-rose-700 mb-1">
+                  Lightning Fast
+                </h3>
                 <p className="text-[#6b6b6b] text-[13px] leading-relaxed">
                   Optimized for speed & SEO. Every millisecond counts.
                 </p>
@@ -552,10 +620,22 @@ transition-all duration-300
               {/* Visual: Circular speed gauge */}
               <div className="relative z-10 mt-auto flex flex-col items-center">
                 <div className="relative w-28 h-28">
-                  <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="42" stroke="#fecdd3" strokeWidth="6" fill="none" />
+                  <svg
+                    className="w-full h-full -rotate-90"
+                    viewBox="0 0 100 100"
+                  >
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="42"
+                      stroke="#fecdd3"
+                      strokeWidth="6"
+                      fill="none"
+                    />
                     <motion.circle
-                      cx="50" cy="50" r="42"
+                      cx="50"
+                      cy="50"
+                      r="42"
                       stroke="url(#gaugeGradient)"
                       strokeWidth="6"
                       fill="none"
@@ -564,10 +644,20 @@ transition-all duration-300
                       initial={{ strokeDashoffset: 264 }}
                       whileInView={{ strokeDashoffset: 264 * 0.02 }}
                       viewport={{ once: true }}
-                      transition={{ delay: 0.4, duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{
+                        delay: 0.4,
+                        duration: 1.8,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
                     />
                     <defs>
-                      <linearGradient id="gaugeGradient" x1="0" y1="0" x2="1" y2="1">
+                      <linearGradient
+                        id="gaugeGradient"
+                        x1="0"
+                        y1="0"
+                        x2="1"
+                        y2="1"
+                      >
                         <stop offset="0%" stopColor="#fb7185" />
                         <stop offset="100%" stopColor="#f43f5e" />
                       </linearGradient>
@@ -609,9 +699,12 @@ transition-all duration-300
               <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-amber-200/30 via-transparent to-orange-100/20 pointer-events-none" />
 
               <div className="relative z-10">
-                <h3 className="font-serif text-2xl text-amber-800 mb-1">Drag & Drop</h3>
+                <h3 className="font-serif text-2xl text-amber-800 mb-1">
+                  Drag & Drop
+                </h3>
                 <p className="text-[#6b6b6b] text-[13px] leading-relaxed mb-5">
-                  Reorder links effortlessly with fluid drag-and-drop interactions.
+                  Reorder links effortlessly with fluid drag-and-drop
+                  interactions.
                 </p>
               </div>
 
@@ -623,7 +716,12 @@ transition-all duration-300
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.3 + i * 0.12, type: "spring", stiffness: 150, damping: 15 }}
+                    transition={{
+                      delay: 0.3 + i * 0.12,
+                      type: "spring",
+                      stiffness: 150,
+                      damping: 15,
+                    }}
                     className={`group/pill relative overflow-hidden rounded-2xl bg-gradient-to-r ${color} backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] cursor-grab active:cursor-grabbing`}
                   >
                     <div className="flex items-center px-4 py-3">
@@ -631,7 +729,9 @@ transition-all duration-300
                       <div className="ml-3 flex h-9 w-9 items-center justify-center rounded-xl bg-white/80 shadow-sm">
                         <Icon className="h-4 w-4 text-neutral-700" />
                       </div>
-                      <p className="ml-3 font-medium text-sm text-neutral-900">{label}</p>
+                      <p className="ml-3 font-medium text-sm text-neutral-900">
+                        {label}
+                      </p>
                       <ChevronRight className="ml-auto h-4 w-4 text-neutral-400 transition group-hover/pill:translate-x-1" />
                     </div>
                   </motion.div>
@@ -651,7 +751,9 @@ transition-all duration-300
               <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-emerald-200/30 via-transparent to-teal-100/20 pointer-events-none" />
 
               <div className="relative z-10">
-                <h3 className="font-serif text-2xl text-emerald-800 mb-1">Social Integration</h3>
+                <h3 className="font-serif text-2xl text-emerald-800 mb-1">
+                  Social Integration
+                </h3>
                 <p className="text-[#6b6b6b] text-[13px] leading-relaxed mb-4">
                   Connect all your profiles in one beautiful, unified hub.
                 </p>
@@ -683,7 +785,12 @@ transition-all duration-300
                         initial={{ opacity: 0, scale: 0 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.5 + i * 0.1, type: "spring", stiffness: 200, damping: 12 }}
+                        transition={{
+                          delay: 0.5 + i * 0.1,
+                          type: "spring",
+                          stiffness: 200,
+                          damping: 12,
+                        }}
                         className="absolute top-1/2 left-1/2 w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg"
                         style={{
                           backgroundColor: bg,
@@ -701,12 +808,20 @@ transition-all duration-300
                     initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
                     whileInView={{ opacity: 1, scale: 1, rotate: 360 }}
                     viewport={{ once: true }}
-                    transition={{ opacity: { delay: 0.3 }, scale: { delay: 0.3, duration: 0.6 }, rotate: { delay: 0.3, duration: 20, repeat: Infinity, ease: "linear" } }}
+                    transition={{
+                      opacity: { delay: 0.3 },
+                      scale: { delay: 0.3, duration: 0.6 },
+                      rotate: {
+                        delay: 0.3,
+                        duration: 20,
+                        repeat: Infinity,
+                        ease: "linear",
+                      },
+                    }}
                   />
                 </div>
               </div>
             </motion.div>
-
           </div>
         </div>
       </section>

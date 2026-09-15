@@ -102,7 +102,7 @@ export default function Sidebar({
         })}
       </nav>
       {profile && (
-        <div className="p-4 mb-2 relative" ref={dropdownRef}>
+        <div className="p-1 mb-2 relative" ref={dropdownRef}>
           {dropdownOpen && (
             <div className="absolute bottom-full left-4 mb-2 w-56 rounded-[1rem] bg-white border border-[#e5e2dc] shadow-lg py-1 fade-in z-50">
               <div className="flex items-center gap-3 px-4 py-3 border-b border-[#f0f0f0]">
