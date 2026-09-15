@@ -6,7 +6,7 @@ import { SocialLink, SocialPlatform } from "@prisma/client";
 import { X, AlertTriangle } from "lucide-react";
 import { createSocial, updateSocial, deleteSocial } from "@/services/Socials";
 
-const inputClass = "w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none transition-all placeholder:text-zinc-400 focus:border-zinc-400 focus:ring-2 focus:ring-zinc-900/5";
+const inputClass = "w-full rounded-[1.25rem] border border-[#e5e2dc] bg-white px-4 py-3 text-sm outline-none transition-all placeholder:text-[#b4b0a4] focus:border-[#c2410c] focus:ring-2 focus:ring-[#f97316]/10 text-[#1a1a1a]";
 
 interface SocialFormProps {
   title: string;
@@ -40,12 +40,12 @@ function SocialForm({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-lg rounded-2xl bg-white shadow-2xl border border-zinc-200/50"
+        className="w-full max-w-lg rounded-[1.5rem] bg-white shadow-2xl border border-[#e5e2dc]"
       >
-        <div className="flex items-center justify-between border-b border-zinc-100 p-6">
+        <div className="flex items-center justify-between border-b border-[#f0f0f0] p-6">
           <div>
-            <h2 className="text-lg font-semibold text-zinc-900">{title}</h2>
-            <p className="mt-0.5 text-sm text-zinc-500">
+            <h2 className="text-xl font-serif font-semibold text-[#1a1a1a]">{title}</h2>
+            <p className="mt-1 text-sm text-[#6b6b6b]">
               Manage your social profile.
             </p>
           </div>
@@ -59,7 +59,7 @@ function SocialForm({
 
         <form onSubmit={onSubmit} className="space-y-5 p-6">
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-zinc-700">
+            <label className="mb-1.5 block text-sm font-medium text-[#1a1a1a]">
               Platform
             </label>
             <select
@@ -80,7 +80,7 @@ function SocialForm({
             </select>
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-zinc-700">
+            <label className="mb-1.5 block text-sm font-medium text-[#1a1a1a]">
               URL
             </label>
             <input
@@ -96,14 +96,14 @@ function SocialForm({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl border border-zinc-200 px-5 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
+              className="rounded-xl border border-[#e5e2dc] px-5 py-2.5 text-sm font-medium text-[#1a1a1a] transition-colors hover:bg-[#fafafa]"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="rounded-xl bg-zinc-900 px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-zinc-800 disabled:opacity-60"
+              className="rounded-xl bg-[#1a1a1a] px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-[#333] active:scale-[0.98] disabled:opacity-60 cursor-pointer"
             >
               {loading ? loadingText : submitText}
             </button>
@@ -310,9 +310,9 @@ export function DeleteSocialModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md rounded-2xl bg-white shadow-2xl border border-zinc-200/50"
+        className="w-full max-w-md rounded-[1.5rem] bg-white shadow-2xl border border-[#e5e2dc]"
       >
-        <div className="border-b border-zinc-100 p-6">
+        <div className="border-b border-[#f0f0f0] p-6">
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-xl bg-red-50">
               <AlertTriangle className="size-5 text-red-500" />

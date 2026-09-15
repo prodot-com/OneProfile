@@ -137,11 +137,11 @@ export default function ProfileEditForm({
     <div className="flex-1 w-full h-full min-h-0 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-8 lg:overflow-hidden">
       <section className="hide-scrollbar py-8 space-y-8 min-w-0 lg:min-h-0 lg:overflow-y-auto lg:h-full lg:pr-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900">Appearance</h1>
-          <p className="mt-1.5 text-zinc-500">Manage your profile info and visual styling.</p>
+          <h1 className="text-3xl md:text-4xl font-serif font-semibold tracking-tight text-[#1a1a1a]">Appearance</h1>
+          <p className="mt-2 text-lg text-[#6b6b6b]">Manage your profile info and visual styling.</p>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm overflow-hidden">
+        <div className="rounded-[1.5rem] border border-[#e5e2dc] bg-white/70 backdrop-blur-md shadow-sm overflow-hidden">
           <div className="relative h-40 sm:h-52" style={{ backgroundColor: form.accentColor }}>
             {banner && (
               <img
@@ -175,7 +175,7 @@ export default function ProfileEditForm({
 
             <div className="absolute -bottom-12 left-6">
               <div className="relative">
-                <div className="size-24 rounded-2xl border-4 border-white bg-zinc-100 shadow-md overflow-hidden">
+                <div className="size-24 rounded-[1.25rem] border-4 border-white bg-[#fafafa] shadow-md overflow-hidden">
                   {avatar ? (
                     <img
                       src={avatar}
@@ -183,7 +183,7 @@ export default function ProfileEditForm({
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-zinc-200 text-2xl font-bold text-zinc-400">
+                    <div className="flex h-full w-full items-center justify-center bg-[#f0f0f0] text-2xl font-serif font-bold text-[#b4b0a4]">
                       {form.displayName?.charAt(0).toUpperCase()}
                     </div>
                   )}
@@ -192,7 +192,7 @@ export default function ProfileEditForm({
                   type="button"
                   onClick={() => avatarRef.current?.click()}
                   disabled={avatarUploading}
-                  className="absolute -bottom-1 -right-1 flex size-8 items-center justify-center rounded-full bg-zinc-900 text-white shadow-md transition hover:bg-zinc-700"
+                  className="absolute -bottom-1 -right-1 flex size-8 items-center justify-center rounded-full bg-[#1a1a1a] text-white shadow-md transition hover:bg-[#333] cursor-pointer"
                 >
                   {avatarUploading ? (
                     <Loader2 className="size-3.5 animate-spin" />
@@ -216,60 +216,60 @@ export default function ProfileEditForm({
           <div className="h-16" />
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm">
-          <div className="border-b border-zinc-100 px-6 py-4">
-            <h2 className="text-sm font-semibold text-zinc-800">Profile Details</h2>
+        <div className="rounded-[1.5rem] border border-[#e5e2dc] bg-white/70 backdrop-blur-md shadow-sm">
+          <div className="border-b border-[#f0f0f0] px-6 py-5">
+            <h2 className="text-lg font-serif font-semibold text-[#1a1a1a]">Profile Details</h2>
           </div>
-          <div className="space-y-5 p-6">
-            <Field icon={<User className="size-4 text-violet-500" />} label="Display Name" desc="Your full name or brand name">
-              <input type="text" value={form.displayName} onChange={(e) => updateForm({ displayName: e.target.value })} className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-4 py-2.5 text-sm outline-none transition focus:border-violet-300 focus:ring-2 focus:ring-violet-100" />
+          <div className="space-y-6 p-6">
+            <Field icon={<User className="size-4.5 text-[#1a1a1a]" />} label="Display Name" desc="Your full name or brand name">
+              <input type="text" value={form.displayName} onChange={(e) => updateForm({ displayName: e.target.value })} className="w-full rounded-[1.25rem] border border-[#e5e2dc] bg-[#fafafa] px-4 py-3 text-sm outline-none transition focus:border-[#c2410c] focus:ring-2 focus:ring-[#f97316]/10 text-[#1a1a1a]" />
             </Field>
 
-            <Field icon={<AtSign className="size-4 text-blue-500" />} label="Username" desc="oneprofile.me/username">
-              <div className="flex items-center gap-0 rounded-xl border border-zinc-200 bg-zinc-50/50 transition focus-within:border-violet-300 focus-within:ring-2 focus-within:ring-violet-100">
-                <span className="pl-4 text-sm text-zinc-400">@</span>
-                <input type="text" value={form.username} onChange={(e) => updateForm({ username: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "") })} className="w-full bg-transparent px-2 py-2.5 text-sm outline-none" maxLength={30} />
+            <Field icon={<AtSign className="size-4.5 text-[#1a1a1a]" />} label="Username" desc="oneprofile.me/username">
+              <div className="flex items-center gap-0 rounded-[1.25rem] border border-[#e5e2dc] bg-[#fafafa] transition focus-within:border-[#c2410c] focus-within:ring-2 focus-within:ring-[#f97316]/10 text-[#1a1a1a]">
+                <span className="pl-4 text-sm text-[#b4b0a4]">@</span>
+                <input type="text" value={form.username} onChange={(e) => updateForm({ username: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "") })} className="w-full bg-transparent px-2 py-3 text-sm outline-none text-[#1a1a1a]" maxLength={30} />
               </div>
             </Field>
 
-            <Field icon={<FileText className="size-4 text-emerald-500" />} label="Bio" desc="Tell visitors about yourself">
-              <textarea value={form.bio || ""} onChange={(e) => updateForm({ bio: e.target.value.slice(0, 200) })} rows={3} className="w-full resize-none rounded-xl border border-zinc-200 bg-zinc-50/50 px-4 py-2.5 text-sm outline-none transition focus:border-violet-300 focus:ring-2 focus:ring-violet-100" />
-              <p className="mt-1 text-right text-xs text-zinc-300">{(form.bio || "").length}/200</p>
+            <Field icon={<FileText className="size-4.5 text-[#1a1a1a]" />} label="Bio" desc="Tell visitors about yourself">
+              <textarea value={form.bio || ""} onChange={(e) => updateForm({ bio: e.target.value.slice(0, 200) })} rows={3} className="w-full resize-none rounded-[1.25rem] border border-[#e5e2dc] bg-[#fafafa] px-4 py-3 text-sm outline-none transition focus:border-[#c2410c] focus:ring-2 focus:ring-[#f97316]/10 text-[#1a1a1a]" />
+              <p className="mt-1 text-right text-xs text-[#b4b0a4]">{(form.bio || "").length}/200</p>
             </Field>
 
-            <Field icon={<Link2 className="size-4 text-cyan-500" />} label="Website" desc="Your personal or company website">
-              <input type="url" value={form.website || ""} onChange={(e) => updateForm({ website: e.target.value })} className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-4 py-2.5 text-sm outline-none transition focus:border-violet-300 focus:ring-2 focus:ring-violet-100" />
+            <Field icon={<Link2 className="size-4.5 text-[#1a1a1a]" />} label="Website" desc="Your personal or company website">
+              <input type="url" value={form.website || ""} onChange={(e) => updateForm({ website: e.target.value })} className="w-full rounded-[1.25rem] border border-[#e5e2dc] bg-[#fafafa] px-4 py-3 text-sm outline-none transition focus:border-[#c2410c] focus:ring-2 focus:ring-[#f97316]/10 text-[#1a1a1a]" />
             </Field>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm">
-          <div className="border-b border-zinc-100 px-6 py-4">
-            <h2 className="text-sm font-semibold text-zinc-800">Design</h2>
-            <p className="text-xs text-zinc-400">Adjust the visual styles of your page</p>
+        <div className="rounded-[1.5rem] border border-[#e5e2dc] bg-white/70 backdrop-blur-md shadow-sm">
+          <div className="border-b border-[#f0f0f0] px-6 py-5">
+            <h2 className="text-lg font-serif font-semibold text-[#1a1a1a]">Design</h2>
+            <p className="text-xs text-[#6b6b6b]">Adjust the visual styles of your page</p>
           </div>
           
           <div className="p-6 space-y-8">
             <div className="space-y-3">
-              <label className="text-sm font-medium text-zinc-700">Theme Base</label>
+              <label className="text-sm font-medium text-[#1a1a1a]">Theme Base</label>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {THEMES.map((t) => (
                   <button
                     key={t.value}
                     type="button"
                     onClick={() => updateForm({ theme: t.value })}
-                    className={`group relative flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all duration-200 ${
+                    className={`group relative flex flex-col items-center gap-2 rounded-[1.25rem] border-2 p-4 transition-all duration-200 ${
                       form.theme === t.value
-                        ? "border-violet-500 bg-violet-50/50 shadow-sm"
-                        : "border-zinc-100 bg-zinc-50/30 hover:border-zinc-200 hover:bg-zinc-50"
+                        ? "border-[#f97316] bg-[#f97316]/5 shadow-sm"
+                        : "border-[#e5e2dc] bg-[#fafafa] hover:border-[#d8d5ce]"
                     }`}
                   >
                     {form.theme === t.value && (
-                      <div className="absolute right-2 top-2 flex size-5 items-center justify-center rounded-full bg-violet-500">
+                      <div className="absolute right-2 top-2 flex size-5 items-center justify-center rounded-full bg-[#f97316]">
                         <Check className="size-3 text-white" />
                       </div>
                     )}
-                    <span className={`text-xs font-medium ${form.theme === t.value ? "text-violet-700" : "text-zinc-500"}`}>
+                    <span className={`text-xs font-semibold ${form.theme === t.value ? "text-[#f97316]" : "text-[#b4b0a4]"}`}>
                       {t.label}
                     </span>
                   </button>
@@ -279,11 +279,11 @@ export default function ProfileEditForm({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">Font Family</label>
+                <label className="block text-sm font-medium text-[#1a1a1a] mb-2">Font Family</label>
                 <select
                   value={form.fontFamily}
                   onChange={(e) => updateForm({ fontFamily: e.target.value as FontFamily })}
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2.5 px-4 text-sm outline-none"
+                  className="w-full rounded-[1.25rem] border border-[#e5e2dc] bg-[#fafafa] py-3 px-4 text-sm outline-none text-[#1a1a1a]"
                 >
                   <option value="INTER">Inter</option>
                   <option value="POPPINS">Poppins</option>
@@ -293,7 +293,7 @@ export default function ProfileEditForm({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">Button Style</label>
+                <label className="block text-sm font-medium text-[#1a1a1a] mb-2">Button Style</label>
                 <div className="grid grid-cols-3 gap-3">
                   {(["ROUNDED", "PILL", "SQUARE"] as ButtonStyle[]).map((style) => (
                     <button
@@ -302,10 +302,10 @@ export default function ProfileEditForm({
                       onClick={() => updateForm({ buttonStyle: style })}
                       className={`py-2 px-3 border transition-colors ${
                         form.buttonStyle === style
-                          ? "border-zinc-900 bg-zinc-900 text-white"
-                          : "border-zinc-200 bg-zinc-50 text-zinc-700"
+                          ? "border-[#1a1a1a] bg-[#1a1a1a] text-white"
+                          : "border-[#e5e2dc] bg-[#fafafa] text-[#6b6b6b]"
                       } ${
-                        style === "ROUNDED" ? "rounded-xl" : style === "PILL" ? "rounded-full" : "rounded-none"
+                        style === "ROUNDED" ? "rounded-[1rem]" : style === "PILL" ? "rounded-full" : "rounded-none"
                       }`}
                     >
                       <span className="text-xs font-semibold">{style}</span>
@@ -323,14 +323,14 @@ export default function ProfileEditForm({
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm p-6">
-           <label className="block text-sm font-medium text-zinc-700 mb-3">Visibility</label>
+        <div className="rounded-[1.5rem] border border-[#e5e2dc] bg-white/70 backdrop-blur-md shadow-sm p-8">
+           <label className="block text-sm font-medium text-[#1a1a1a] mb-4">Visibility</label>
            <div className="flex items-center gap-4">
             <button
               type="button"
               onClick={() => updateForm({ isPublic: true })}
-              className={`flex flex-1 items-center gap-3 rounded-xl border-2 p-4 transition-all ${
-                form.isPublic ? "border-emerald-500 bg-emerald-50/50" : "border-zinc-100"
+              className={`flex flex-1 items-center justify-center text-sm font-semibold gap-3 rounded-[1.25rem] border-2 p-4 transition-all ${
+                form.isPublic ? "border-[#f97316] bg-[#f97316]/5 text-[#c2410c]" : "border-[#e5e2dc] bg-[#fafafa] text-[#6b6b6b]"
               }`}
             >
               Public
@@ -338,8 +338,8 @@ export default function ProfileEditForm({
             <button
               type="button"
               onClick={() => updateForm({ isPublic: false })}
-              className={`flex flex-1 items-center gap-3 rounded-xl border-2 p-4 transition-all ${
-                !form.isPublic ? "border-amber-500 bg-amber-50/50" : "border-zinc-100"
+              className={`flex flex-1 items-center justify-center text-sm font-semibold gap-3 rounded-[1.25rem] border-2 p-4 transition-all ${
+                !form.isPublic ? "border-amber-500 bg-amber-50/50 text-amber-700" : "border-[#e5e2dc] bg-[#fafafa] text-[#6b6b6b]"
               }`}
             >
               Private 
@@ -347,16 +347,16 @@ export default function ProfileEditForm({
           </div>
         </div>
 
-        <div className="sticky bottom-4 flex items-center justify-between rounded-2xl border border-zinc-200/80 bg-white/90 p-4 shadow-lg backdrop-blur-md">
-          <div className="text-sm font-medium">
+        <div className="sticky bottom-4 flex items-center justify-between rounded-[1.5rem] border border-[#e5e2dc] bg-white/90 p-4 shadow-xl backdrop-blur-md">
+          <div className="text-sm font-medium pl-2">
             {error && <span className="text-red-500">{error}</span>}
             {success && <span className="text-emerald-500">Saved successfully!</span>}
-            {!error && !success && <span className="text-zinc-500">Unsaved changes will be lost</span>}
+            {!error && !success && <span className="text-[#b4b0a4]">Unsaved changes will be lost</span>}
           </div>
           <button
             onClick={handleSave}
             disabled={saving || avatarUploading || bannerUploading}
-            className="flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-zinc-800 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl bg-[#1a1a1a] px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#333] active:scale-[0.98] disabled:opacity-50 cursor-pointer"
           >
             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save Changes"}
           </button>
@@ -384,10 +384,10 @@ function Field({ icon, label, desc, children }: { icon: React.ReactNode; label: 
     <div className="space-y-1.5">
       <div className="flex items-center gap-2">
         {icon}
-        <label className="text-sm font-medium text-zinc-700">{label}</label>
+        <label className="text-sm font-bold text-[#1a1a1a]">{label}</label>
       </div>
-      <p className="text-xs text-zinc-400">{desc}</p>
-      <div className="mt-1">{children}</div>
+      <p className="text-xs font-medium text-[#b4b0a4]">{desc}</p>
+      <div className="mt-2">{children}</div>
     </div>
   );
 }
@@ -395,10 +395,10 @@ function Field({ icon, label, desc, children }: { icon: React.ReactNode; label: 
 function ColorPicker({ label, value, onChange }: { label: string; value: string; onChange: (val: string) => void }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-zinc-700 mb-2">{label}</label>
+      <label className="block text-xs font-bold text-[#1a1a1a] mb-2">{label}</label>
       <div className="flex flex-col gap-2 relative">
-        <input type="color" value={value} onChange={(e) => onChange(e.target.value)} className="w-full h-8 opacity-0 absolute cursor-pointer" />
-        <div className="w-full h-8 rounded-lg border flex items-center justify-center font-mono text-[10px]" style={{ backgroundColor: value || "#000000", color: ['#FFF', '#FFFFFF'].includes((value || '').toUpperCase()) ? '#000' : '#fff' }}>{value}</div>
+        <input type="color" value={value} onChange={(e) => onChange(e.target.value)} className="w-full h-10 opacity-0 absolute cursor-pointer" />
+        <div className="w-full h-10 rounded-[1rem] border border-[#e5e2dc] flex items-center justify-center font-mono text-xs font-bold shadow-sm" style={{ backgroundColor: value || "#000000", color: ['#FFF', '#FFFFFF'].includes((value || '').toUpperCase()) ? '#000' : '#fff' }}>{value}</div>
       </div>
     </div>
   );

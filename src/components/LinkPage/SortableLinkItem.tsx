@@ -32,29 +32,29 @@ export function SortableLinkItem({ link, onEdit, onDelete }: SortableLinkItemPro
     <div
       ref={setNodeRef}
       style={style}
-      className="group flex flex-col gap-4 p-5 transition-colors bg-white hover:bg-zinc-50/50 md:flex-row md:items-center md:justify-between"
+      className="group flex flex-col gap-4 p-5 transition-colors bg-white hover:bg-[#fafafa]/50 md:flex-row md:items-center md:justify-between"
     >
       <div className="flex items-start gap-3.5">
         <div
           {...attributes}
           {...listeners}
-          className="mt-0.5 cursor-grab p-0.5 text-zinc-300 transition-colors hover:text-zinc-500 active:cursor-grabbing hover:bg-zinc-100 rounded touch-none flex items-center justify-center shrink-0"
+          className="mt-0.5 cursor-grab p-0.5 text-[#d8d5ce] transition-colors hover:text-[#6b6b6b] active:cursor-grabbing hover:bg-[#f0f0f0] rounded touch-none flex items-center justify-center shrink-0"
         >
           <GripVertical className="size-4.5" />
         </div>
-        <div className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-500 transition-colors group-hover:bg-zinc-200/70">
+        <div className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#fafafa] border border-[#f0f0f0] text-[#1a1a1a] transition-colors group-hover:bg-[#f0f0f0]/70">
           <Link2 className="size-4.5" />
         </div>
         <div className="min-w-0">
           <div className="flex items-center gap-2.5">
-            <h3 className="font-semibold text-zinc-900 truncate">
+            <h3 className="font-semibold text-[#1a1a1a] truncate">
               {link.title}
             </h3>
             <span
               className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
                 link.active
                   ? "bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200"
-                  : "bg-zinc-100 text-zinc-500 ring-1 ring-zinc-200"
+                  : "bg-[#fafafa] text-[#b4b0a4] ring-1 ring-[#e5e2dc]"
               }`}
             >
               {link.active ? "Active" : "Hidden"}
@@ -65,12 +65,12 @@ export function SortableLinkItem({ link, onEdit, onDelete }: SortableLinkItemPro
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => isDragging && e.preventDefault()}
-            className="mt-0.5 block truncate text-sm text-zinc-500 hover:text-zinc-700 transition-colors"
+            className="mt-0.5 block truncate text-sm text-[#6b6b6b] hover:text-[#1a1a1a] transition-colors"
           >
             {link.url}
           </a>
           {link.description && (
-            <p className="mt-1 text-sm text-zinc-400 line-clamp-1">
+            <p className="mt-1 text-sm text-[#b4b0a4] line-clamp-1">
               {link.description}
             </p>
           )}
@@ -84,14 +84,14 @@ export function SortableLinkItem({ link, onEdit, onDelete }: SortableLinkItemPro
         </span>
         <button
           onClick={() => onEdit(link)}
-          className="flex items-center gap-1.5 rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-all hover:bg-zinc-50 hover:border-zinc-300"
+          className="flex items-center gap-1.5 rounded-xl border border-[#e5e2dc] px-3.5 py-2 text-xs font-medium text-[#1a1a1a] transition-all hover:bg-[#fafafa] hover:border-[#d8d5ce] active:scale-[0.98]"
         >
           <Pencil className="size-3" />
           Edit
         </button>
         <button
           onClick={() => onDelete(link)}
-          className="flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 transition-all hover:bg-red-50 hover:border-red-300"
+          className="flex items-center gap-1.5 rounded-xl border border-red-200 px-3.5 py-2 text-xs font-medium text-red-600 transition-all hover:bg-red-50 hover:border-red-300 active:scale-[0.98]"
         >
           <Trash2 className="size-3" />
           Delete
@@ -101,7 +101,7 @@ export function SortableLinkItem({ link, onEdit, onDelete }: SortableLinkItemPro
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => isDragging && e.preventDefault()}
-          className="rounded-lg p-1.5 text-zinc-300 opacity-0 transition-all group-hover:opacity-100 hover:text-zinc-600 hover:bg-zinc-100 hidden md:block"
+          className="rounded-xl p-2 text-[#d8d5ce] opacity-0 transition-all group-hover:opacity-100 hover:text-[#1a1a1a] hover:bg-[#fafafa] hidden md:block"
         >
           <ExternalLink className="size-3.5" />
         </a>

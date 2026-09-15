@@ -171,48 +171,48 @@ export default function LinksPage({
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-bold tracking-tight text-zinc-900">
+              <h1 className="text-3xl md:text-4xl font-serif font-semibold tracking-tight text-[#1a1a1a]">
                 Links
               </h1>
-              <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-semibold text-zinc-600">
+              <span className="rounded-full bg-[#fafafa] px-3 py-1 text-[11px] font-bold text-[#b4b0a4] border border-[#f0f0f0]">
                 {links.length}
               </span>
             </div>
-            <p className="mt-1.5 text-zinc-500">
+            <p className="mt-2 text-lg text-[#6b6b6b]">
               Manage the links displayed on your public profile.
             </p>
           </div>
 
           <button
             onClick={() => setAddModal(true)}
-            className="group flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-zinc-800 hover:shadow-lg hover:shadow-zinc-900/10"
+            className="group flex items-center gap-2 rounded-xl bg-[#1a1a1a] px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#333] hover:shadow-lg active:scale-[0.98] cursor-pointer"
           >
-            <Plus className="size-4 transition-transform group-hover:rotate-90" />
+            <Plus className="size-4.5 transition-transform group-hover:rotate-90" />
             Add Link
           </button>
         </div>
 
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
+          <Search className="absolute left-4 top-1/2 size-4.5 -translate-y-1/2 text-[#b4b0a4]" />
           <input
             type="text"
             placeholder="Search links..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full rounded-xl border border-zinc-200 bg-white py-3 pl-11 pr-4 text-sm outline-none transition-all placeholder:text-zinc-400 focus:border-zinc-400 focus:ring-2 focus:ring-zinc-900/5"
+            className="w-full rounded-[1.25rem] border border-[#e5e2dc] bg-white/70 backdrop-blur-md py-3.5 pl-12 pr-4 text-sm outline-none transition-all placeholder:text-[#b4b0a4] focus:border-[#c2410c] focus:ring-2 focus:ring-[#f97316]/10 shadow-sm text-[#1a1a1a]"
           />
         </div>
 
-        <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-sm overflow-hidden pb-16 lg:pb-0">
+        <div className="rounded-[1.5rem] border border-[#e5e2dc] bg-white/70 backdrop-blur-md shadow-sm overflow-hidden pb-16 lg:pb-0">
           {filteredLinks.length === 0 ? (
-            <div className="flex flex-col items-center justify-center px-8 py-20 text-center">
-              <div className="mb-5 flex size-14 items-center justify-center rounded-2xl bg-zinc-100">
-                <Link2 className="size-6 text-zinc-400" />
+            <div className="flex flex-col items-center justify-center px-8 py-24 text-center">
+              <div className="mb-6 flex size-16 items-center justify-center rounded-2xl bg-[#fafafa] border border-[#f0f0f0]">
+                <Link2 className="size-7 text-[#b4b0a4]" />
               </div>
-              <h2 className="text-xl font-semibold text-zinc-900">
+              <h2 className="text-xl font-serif font-semibold text-[#1a1a1a]">
                 {searchTerm ? "No links match your search" : "No links yet"}
               </h2>
-              <p className="mt-2 max-w-sm text-sm text-zinc-500">
+              <p className="mt-2.5 max-w-sm text-sm text-[#6b6b6b] leading-relaxed">
                 {searchTerm
                   ? "Try adjusting your search terms."
                   : "Start building your OneProfile by adding your first link."}
@@ -220,9 +220,9 @@ export default function LinksPage({
               {!searchTerm && (
                 <button
                   onClick={() => setAddModal(true)}
-                  className="mt-6 flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-zinc-800 transition-colors"
+                  className="mt-8 flex items-center gap-2 rounded-xl bg-[#1a1a1a] px-6 py-3 text-sm font-medium text-white hover:bg-[#333] transition-colors active:scale-[0.98] cursor-pointer"
                 >
-                  <Plus className="size-4" />
+                  <Plus className="size-4.5" />
                   Create First Link
                 </button>
               )}
@@ -234,7 +234,7 @@ export default function LinksPage({
               collisionDetection={closestCenter}
               onDragEnd={handleDragEnd}
             >
-              <div className="divide-y divide-zinc-100">
+              <div className="divide-y divide-[#f0f0f0]">
                 <SortableContext
                   items={filteredLinks.map((l) => l.id)}
                   strategy={verticalListSortingStrategy}
@@ -292,7 +292,7 @@ export default function LinksPage({
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 lg:hidden z-40">
         <button
           onClick={() => setShowMobilePreview(!showMobilePreview)}
-          className="flex items-center gap-2 rounded-full bg-zinc-900/90 backdrop-blur-md px-6 py-3 text-sm font-bold tracking-wide text-white shadow-xl shadow-zinc-900/20 active:scale-95 transition-all"
+          className="flex items-center gap-2 rounded-full bg-[#1a1a1a]/95 backdrop-blur-md px-6 py-3 text-sm font-bold tracking-wide text-white shadow-xl hover:bg-[#333] active:scale-95 transition-all cursor-pointer"
         >
           {showMobilePreview ? (
             <>
@@ -310,7 +310,7 @@ export default function LinksPage({
 
       {/* Mobile Preview Overlay */}
       {showMobilePreview && (
-        <div className="fixed inset-0 z-30 bg-zinc-50/95 backdrop-blur-sm lg:hidden flex flex-col items-center pt-24 overflow-y-auto">
+        <div className="fixed inset-0 z-30 bg-[#faf9f6]/95 backdrop-blur-md lg:hidden flex flex-col items-center pt-24 overflow-y-auto">
            <PhonePreview profile={profile} links={previewLinks} socials={previewSocials} />
            <div className="h-32" />{/* padding to avoid button overlap */}
         </div>

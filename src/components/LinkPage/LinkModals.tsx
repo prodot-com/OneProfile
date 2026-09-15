@@ -8,7 +8,7 @@ import { Link } from "@prisma/client";
 
 /* ─── Shared form input styling ─── */
 const inputClass =
-  "w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none transition-all placeholder:text-zinc-400 focus:border-zinc-400 focus:ring-2 focus:ring-zinc-900/5";
+  "w-full rounded-[1.25rem] border border-[#e5e2dc] bg-white px-4 py-3 text-sm outline-none transition-all placeholder:text-[#b4b0a4] focus:border-[#c2410c] focus:ring-2 focus:ring-[#f97316]/10 text-[#1a1a1a]";
 
 /* ─── Custom Toggle ─── */
 function Toggle({
@@ -25,7 +25,7 @@ function Toggle({
       aria-checked={checked}
       onClick={() => onChange(!checked)}
       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 ${
-        checked ? "bg-emerald-500" : "bg-zinc-200"
+        checked ? "bg-[#f97316]" : "bg-[#e5e2dc]"
       }`}
     >
       <span
@@ -99,14 +99,14 @@ export function AddLinkModal({ open, onClose, onSuccess, onChange }: AddLinkModa
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-xl rounded-2xl bg-white shadow-2xl border border-zinc-200/50"
+        className="w-full max-w-xl rounded-[1.5rem] bg-white shadow-2xl border border-[#e5e2dc]"
       >
-        <div className="flex items-center justify-between border-b border-zinc-100 p-6">
+        <div className="flex items-center justify-between border-b border-[#f0f0f0] p-6">
           <div>
-            <h2 className="text-lg font-semibold text-zinc-900">
+            <h2 className="text-xl font-serif font-semibold text-[#1a1a1a]">
               Add New Link
             </h2>
-            <p className="mt-0.5 text-sm text-zinc-500">
+            <p className="mt-1 text-sm text-[#6b6b6b]">
               Add a new link to your profile.
             </p>
           </div>
@@ -120,7 +120,7 @@ export function AddLinkModal({ open, onClose, onSuccess, onChange }: AddLinkModa
 
         <form onSubmit={handleSubmit} className="space-y-5 p-6">
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-zinc-700">
+            <label className="mb-1.5 block text-sm font-medium text-[#1a1a1a]">
               Title
             </label>
             <input
@@ -170,10 +170,10 @@ export function AddLinkModal({ open, onClose, onSuccess, onChange }: AddLinkModa
               Identifier for the link icon (e.g. github, twitter)
             </p>
           </div>
-          <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/50 p-4">
+          <div className="flex items-center justify-between rounded-[1.25rem] border border-[#e5e2dc] bg-[#fafafa] p-4">
             <div>
-              <h3 className="text-sm font-medium text-zinc-900">Active</h3>
-              <p className="text-xs text-zinc-500">
+              <h3 className="text-sm font-medium text-[#1a1a1a]">Active</h3>
+              <p className="text-xs text-[#6b6b6b]">
                 Display this link on your profile.
               </p>
             </div>
@@ -184,14 +184,14 @@ export function AddLinkModal({ open, onClose, onSuccess, onChange }: AddLinkModa
               type="button"
               disabled={loading}
               onClick={onClose}
-              className="rounded-xl border border-zinc-200 px-5 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
+              className="rounded-xl border border-[#e5e2dc] px-5 py-2.5 text-sm font-medium text-[#1a1a1a] transition-colors hover:bg-[#fafafa]"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="rounded-xl bg-zinc-900 px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-zinc-800 disabled:opacity-60"
+              className="rounded-xl bg-[#1a1a1a] px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-[#333] active:scale-[0.98] disabled:opacity-60 cursor-pointer"
             >
               {loading ? "Creating..." : "Create Link"}
             </button>
@@ -282,12 +282,12 @@ export function EditLinkModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-xl rounded-2xl bg-white shadow-2xl border border-zinc-200/50"
+        className="w-full max-w-xl rounded-[1.5rem] bg-white shadow-2xl border border-[#e5e2dc]"
       >
-        <div className="flex items-center justify-between border-b border-zinc-100 p-6">
+        <div className="flex items-center justify-between border-b border-[#f0f0f0] p-6">
           <div>
-            <h2 className="text-lg font-semibold text-zinc-900">Edit Link</h2>
-            <p className="mt-0.5 text-sm text-zinc-500">
+            <h2 className="text-xl font-serif font-semibold text-[#1a1a1a]">Edit Link</h2>
+            <p className="mt-1 text-sm text-[#6b6b6b]">
               Update your link information.
             </p>
           </div>
@@ -358,13 +358,13 @@ export function EditLinkModal({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl border border-zinc-200 px-5 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
+              className="rounded-xl border border-[#e5e2dc] px-5 py-2.5 text-sm font-medium text-[#1a1a1a] transition-colors hover:bg-[#fafafa]"
             >
               Cancel
             </button>
             <button
               disabled={loading}
-              className="rounded-xl bg-zinc-900 px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-zinc-800 disabled:opacity-60"
+              className="rounded-xl bg-[#1a1a1a] px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-[#333] active:scale-[0.98] disabled:opacity-60 cursor-pointer"
             >
               {loading ? "Saving..." : "Save Changes"}
             </button>
@@ -422,9 +422,9 @@ export function DeleteLinkModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md rounded-2xl bg-white shadow-2xl border border-zinc-200/50"
+        className="w-full max-w-md rounded-[1.5rem] bg-white shadow-2xl border border-[#e5e2dc]"
       >
-        <div className="border-b border-zinc-100 p-6">
+        <div className="border-b border-[#f0f0f0] p-6">
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-xl bg-red-50">
               <AlertTriangle className="size-5 text-red-500" />
