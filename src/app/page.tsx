@@ -25,6 +25,7 @@ import {
   FaLinkedinIn,
   FaYoutube,
 } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 const links = [
   {
@@ -45,16 +46,10 @@ const links = [
 ];
 
 export default function Home() {
-  const handleSignIn = async () => {
-    const { error } = await authClient.signIn.social({
-      provider: "github",
-      callbackURL: "/dashboard",
-      newUserCallbackURL: "/onboarding",
-      errorCallbackURL: "/",
-    });
-    if (error) {
-      console.error(error);
-    }
+  const router = useRouter();
+
+  const handleSignIn = () => {
+    router.push("/login");
   };
 
   const navLinks = ["Features", "How it works", "Pricing"];
@@ -126,7 +121,6 @@ export default function Home() {
 
           <div className="flex items-center">
             <button
-              onClick={handleSignIn}
               className="relative z-10 px-5 py-2.5 cursor-pointer
                   rounded-xl text-white font-serif text-[1.1rem] tracking-wide
                   bg-gradient-to-b from-[#fb923c] via-[#f97316] to-[#c2410c]
