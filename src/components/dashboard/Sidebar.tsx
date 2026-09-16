@@ -131,10 +131,10 @@ export default function Sidebar({
                   <SettingsIconType className="size-4 text-[#6b6b6b]" />
                   Account
                 </Link>
-                <button className="w-full text-left px-3 py-2 text-sm text-[#1a1a1a] font-medium rounded-lg hover:bg-black/5 flex items-center gap-2 transition-colors">
+                {/* <button className="w-full text-left px-3 py-2 text-sm text-[#1a1a1a] font-medium rounded-lg hover:bg-black/5 flex items-center gap-2 transition-colors">
                   <CreditCard className="size-4 text-[#6b6b6b]" />
                   Billing
-                </button>
+                </button> */}
                 <button className="w-full text-left px-3 py-2 text-sm text-[#1a1a1a] font-medium rounded-lg hover:bg-black/5 flex items-center gap-2 transition-colors">
                   <Bell className="size-4 text-[#6b6b6b]" />
                   Notifications
