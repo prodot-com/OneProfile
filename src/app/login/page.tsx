@@ -7,7 +7,7 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-[url('/back.png')] bg-cover bg-top" />
         <div className="absolute bottom-0 h-40 w-full bg-gradient-to-t from-[#faf9f6] to-transparent" />
       </div>
-      <div className="w-full max-w-sm md:max-w-4xl z-10">
+      <div className="w-[380px] md:w-[900px] max-w-[95vw] z-10">
         <LoginForm />
       </div>
     </div>

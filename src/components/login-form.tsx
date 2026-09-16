@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -95,12 +95,14 @@ export function LoginForm({
     }
   };
 
+  useEffect(()=>setError(""),[email, password, name])
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden p-0 rounded-[1.5rem] border-[#e5e2dc] shadow-xl bg-white/90 backdrop-blur-md">
-        <CardContent className="grid p-0 md:grid-cols-2">
+      <Card className="w-full h-[650px] overflow-hidden p-0 rounded-[1rem] border-[#e5e2dc] shadow-xl bg-white/90 backdrop-blur-md">
+        <CardContent className="h-full grid p-0 md:grid-cols-2">
           <form
-            className="p-6 md:p-10 flex flex-col justify-center"
+            className="h-full p-6 md:p-10 flex flex-col justify-center"
             onSubmit={(e) => {
               e.preventDefault();
               handleEmailAuth();
@@ -283,13 +285,13 @@ export function LoginForm({
           </form>
 
           {/* Right panel */}
-          <div className="relative hidden w-full h-full bg-[#fdfaf5] md:block overflow-hidden min-h-[500px]">
-            <div className="absolute inset-0 bg-[url('/back.png')] bg-cover bg-left opacity-30 mix-blend-multiply" />
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#f97316]/20 via-transparent to-transparent pointer-events-none" />
-            <div className="flex w-full h-full p-10 flex-col items-center justify-center relative z-10">
-              <h2 className="text-3xl font-serif font-bold text-[#c2410c] text-center !leading-tight">
+          <div className="relative hidden w-full h-full bg-[#fdfaf5] md:block overflow-hidden">
+            <div className="absolute inset-0 bg-[url('/signIn.png')] bg-cover bg-center mix-blend-multiply" />
+            {/* <div className="absolute inset-0 bg-gradient-to-tr from-[#f97316]/20 via-transparent to-transparent pointer-events-none" /> */}
+            <div className="flex w-full h-full p-10 flex-col items-center justify-center relative z-10 bg-linear-to-r from-white to-transparent">
+              {/* <h2 className="text-3xl font-serif font-bold text-[#c2410c] text-center !leading-tight">
                 Your entire digital identity, in one beautiful page.
-              </h2>
+              </h2> */}
             </div>
           </div>
         </CardContent>
