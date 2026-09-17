@@ -63,10 +63,8 @@ export default function LinksPage({
 }: LinksProps) {
   const [links, setLinks] = useState<Link[]>(initialLinks);
   const [socials, setSocials] = useState<SocialLink[]>(initialSocials);
-
   const [linkDraft, setLinkDraft] = useState<Partial<Link> | null>(null);
   const [socialDraft, setSocialDraft] = useState<Partial<SocialLink> | null>(null);
-
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);

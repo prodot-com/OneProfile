@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { X, AlertTriangle } from "lucide-react";
 import { createLink, deleteLink, updateLink } from "@/services/Links";
@@ -54,18 +55,21 @@ export function AddLinkModal({ open, onClose, onSuccess, onChange }: AddLinkModa
   const [description, setDescription] = useState("");
   const [icon, setIcon] = useState("");
   const [active, setActive] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (open && onChange) {
       onChange({ title, url, description, icon, active, id: "temp" });
     }
-  }, [open, title, url, description, icon, active, onChange]);
+  }, [open, title, url, description, active, onChange]);
 
   useEffect(() => {
     if (!open && onChange) onChange(null);
   }, [open, onChange]);
 
-  if (!open) return null;
+  if (!open || !mounted) return null;
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -92,9 +96,9 @@ export function AddLinkModal({ open, onClose, onSuccess, onChange }: AddLinkModa
     }
   }
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-5"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-5"
       onClick={onClose}
     >
       <div
@@ -156,20 +160,6 @@ export function AddLinkModal({ open, onClose, onSuccess, onChange }: AddLinkModa
               className={`${inputClass} resize-none`}
             />
           </div>
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-zinc-700">
-              Icon
-            </label>
-            <input
-              value={icon}
-              onChange={(e) => setIcon(e.target.value)}
-              placeholder="github"
-              className={inputClass}
-            />
-            <p className="mt-1 text-xs text-zinc-400">
-              Identifier for the link icon (e.g. github, twitter)
-            </p>
-          </div>
           <div className="flex items-center justify-between rounded-[1.25rem] border border-[#e5e2dc] bg-[#fafafa] p-4">
             <div>
               <h3 className="text-sm font-medium text-[#1a1a1a]">Active</h3>
@@ -198,7 +188,8 @@ export function AddLinkModal({ open, onClose, onSuccess, onChange }: AddLinkModa
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
@@ -224,29 +215,30 @@ export function EditLinkModal({
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
-  const [icon, setIcon] = useState("");
   const [active, setActive] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!link) return;
     setTitle(link.title);
     setUrl(link.url);
     setDescription(link.description || "");
-    setIcon(link.icon || "");
     setActive(link.active);
   }, [link]);
 
   useEffect(() => {
     if (open && onChange && link) {
-      onChange({ title, url, description, icon, active, id: link.id });
+      onChange({ title, url, description, active, id: link.id });
     }
-  }, [open, title, url, description, icon, active, link, onChange]);
+  }, [open, title, url, description, active, link, onChange]);
 
   useEffect(() => {
     if (!open && onChange) onChange(null);
   }, [open, onChange]);
 
-  if (!open || !link) return null;
+  if (!open || !link || !mounted) return null;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -257,7 +249,6 @@ export function EditLinkModal({
         title,
         url,
         description,
-        icon,
         active,
       });
       if (!res.success) {
@@ -275,9 +266,9 @@ export function EditLinkModal({
     }
   }
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-5"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-5"
       onClick={onClose}
     >
       <div
@@ -334,17 +325,6 @@ export function EditLinkModal({
               className={`${inputClass} resize-none`}
             />
           </div>
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-zinc-700">
-              Icon
-            </label>
-            <input
-              value={icon}
-              onChange={(e) => setIcon(e.target.value)}
-              placeholder="github"
-              className={inputClass}
-            />
-          </div>
           <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/50 p-4">
             <div>
               <h3 className="text-sm font-medium text-zinc-900">Active</h3>
@@ -371,7 +351,8 @@ export function EditLinkModal({
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
@@ -392,8 +373,11 @@ export function DeleteLinkModal({
 }: DeleteLinkModalProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  if (!open || !link) return null;
+  useEffect(() => setMounted(true), []);
+
+  if (!open || !link || !mounted) return null;
 
   async function handleDelete() {
     setLoading(true);
@@ -415,9 +399,9 @@ export function DeleteLinkModal({
     }
   }
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-5"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-5"
       onClick={onClose}
     >
       <div
@@ -466,6 +450,7 @@ export function DeleteLinkModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

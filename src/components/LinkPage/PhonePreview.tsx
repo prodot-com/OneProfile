@@ -22,23 +22,6 @@ import { getFontClass } from "@/lib/fonts";
 import { SOCIAL_ICONS } from "./SocialSection";
 import { PhoneMockupCard } from "@/components/ui/phoneMockup";
 
-// const SOCIAL_ICON_MAP: Record<string, React.ReactNode> = {
-//   WEBSITE: <Globe className="size-3.5" />,
-//   GITHUB: <GitFork className="size-3.5" />,
-//   X: <X className="size-3.5" />,
-//   LINKEDIN: <Link2 className="size-3.5" />,
-//   INSTAGRAM: <AtSign className="size-3.5" />,
-//   FACEBOOK: <Share2 className="size-3.5" />,
-//   YOUTUBE: <Film className="size-3.5" />,
-//   DISCORD: <MessageCircle className="size-3.5" />,
-//   THREADS: <Hash className="size-3.5" />,
-//   TIKTOK: <Music className="size-3.5" />,
-//   REDDIT: <Newspaper className="size-3.5" />,
-//   TWITCH: <Tv className="size-3.5" />,
-//   SPOTIFY: <Headphones className="size-3.5" />,
-//   MEDIUM: <BookOpen className="size-3.5" />,
-//   HASHNODE: <Hash className="size-3.5" />,
-// };
 
 interface PreviewLink {
   id: string;
@@ -138,12 +121,15 @@ export default function PhonePreview({
   return (
     <div className="w-full pt-8">
       {/* URL bar */}
-      <div className="mx-auto mb-3 flex max-w-[280px] items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-1.5 shadow-sm">
+      <a 
+      href={`${process.env.NEXT_PUBLIC_APP_URL}/${profile.username}`}
+      className="mx-auto mb-3 flex max-w-[280px] items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-1.5 shadow-sm">
         <span className="truncate text-xs text-zinc-500">
-          oneprofile.me/{profile.username}
+          {process.env.NEXT_PUBLIC_APP_URL}/{profile.username}
         </span>
-        <ExternalLink className="size-3 shrink-0 text-zinc-400" />
-      </div>
+        <ExternalLink 
+        className="size-3 shrink-0 text-zinc-400" />
+      </a>
 
       {/* Phone frame wrapper */}
       <PhoneMockupCard variant="orange" className="mx-auto shadow-2xl shadow-zinc-900/20">

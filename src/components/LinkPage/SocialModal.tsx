@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { SocialLink, SocialPlatform } from "@prisma/client";
 import { X, AlertTriangle } from "lucide-react";
@@ -33,9 +34,14 @@ function SocialForm({
   onSubmit,
   onClose,
 }: SocialFormProps) {
-  return (
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
+
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-5"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-5"
       onClick={onClose}
     >
       <div
@@ -110,7 +116,8 @@ function SocialForm({
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
@@ -281,7 +288,10 @@ export function DeleteSocialModal({
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  if (!open || !social) return null;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!open || !social || !mounted) return null;
 
   async function handleDelete() {
     if (!social) return;
@@ -303,9 +313,9 @@ export function DeleteSocialModal({
     }
   }
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-5"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-5"
       onClick={onClose}
     >
       <div
@@ -357,6 +367,7 @@ export function DeleteSocialModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

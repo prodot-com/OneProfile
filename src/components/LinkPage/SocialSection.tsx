@@ -8,18 +8,6 @@ import {
   Pencil,
   Trash2,
   ExternalLink,
-  Link2,
-  AtSign,
-  Share2,
-  Film,
-  X,
-  MessageCircle,
-  Music,
-  BookOpen,
-  Tv,
-  Hash,
-  Headphones,
-  Newspaper,
 } from "lucide-react";
 import {
   FaGithub,
