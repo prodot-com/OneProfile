@@ -25,6 +25,7 @@ import {
 import { FaHashnode, FaXTwitter } from "react-icons/fa6";
 import { SiThreads } from "react-icons/si";
 import { LinkPreviewCard } from "@/components/ui/LinkPreviewCard";
+import { ViewTracker } from "./ViewTracker";
 
 interface Props {
   params: Promise<{
@@ -106,11 +107,6 @@ export default async function PublicProfile({ params }: Props) {
     );
   }
 
-  // Increment view count (fire-and-forget)
-  prisma.profile
-    .update({ where: { id: profile.id }, data: { views: { increment: 1 } } })
-    .catch(() => {});
-
   // Styling Variables
   const accColor = profile.accentColor || "#18181B";
   const btnColor = profile.buttonColor || "#18181B";
@@ -169,6 +165,7 @@ export default async function PublicProfile({ params }: Props) {
 
   return (
     <main className={`min-h-screen relative overflow-x-hidden ${themeSetup.wrapper} ${fontClass}`}>
+      <ViewTracker profileId={profile.id} />
       {themeSetup.bgLayer}
 
       {/* Main container with standard entrance animation */}
@@ -308,6 +305,8 @@ export default async function PublicProfile({ params }: Props) {
                   btnTextColor={btnTextColor}
                   btnRadius={btnRadius}
                   accColor={accColor}
+                  hrefOverride={`/r/${link.id}`}
+                  height="90px"
                 />
               </div>
             ))

@@ -230,6 +230,7 @@ export default function PhonePreview({
                   btnTextColor={btnTextColor}
                   btnRadius={btnRadius}
                   accColor={accColor}
+                  height="60px"
                 />
               ))
             )}

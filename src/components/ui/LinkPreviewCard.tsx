@@ -20,6 +20,8 @@ interface LinkPreviewCardProps {
   btnTextColor: string;
   btnRadius: string;
   accColor: string;
+  hrefOverride?: string;
+  height: string
 }
 
 export function LinkPreviewCard({
@@ -28,6 +30,8 @@ export function LinkPreviewCard({
   btnTextColor,
   btnRadius,
   accColor,
+  hrefOverride,
+  height= "50px",
 }: LinkPreviewCardProps) {
   if (!link.active) return null;
 
@@ -43,14 +47,15 @@ export function LinkPreviewCard({
 
   return (
     <a
-      href={link.url}
+      href={hrefOverride || link.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex flex-row overflow-hidden transition-all hover:brightness-110 shadow-sm hover:shadow-md border border-black/5 h-[60px]"
+      className="group relative flex flex-row overflow-hidden transition-all hover:brightness-110 shadow-sm hover:shadow-md border border-black/5"
       style={{
         backgroundColor: btnColor,
         borderRadius: btnRadius,
         color: btnTextColor,
+        height: height,
       }}
     >
       {link.ogImage ? (
