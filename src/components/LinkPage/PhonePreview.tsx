@@ -141,7 +141,7 @@ export default function PhonePreview({
       <PhoneMockupCard variant="orange" className="mx-auto shadow-2xl shadow-zinc-900/20">
         {/* Screen content — scrollable */}
         <div 
-          className={`h-full w-full overflow-y-auto overflow-x-hidden scrollbar-none relative ${themeClasses} ${fontClass}`}
+          className={`h-full w-full overflow-y-auto overflow-x-hidden scrollbar-none relative rounded-[2.3rem] ${themeClasses} ${fontClass}`}
         >
           {/* Banner */}
           <div className="relative h-20 w-full rounded-b-2xl overflow-hidden" style={{ backgroundColor: accColor }}>

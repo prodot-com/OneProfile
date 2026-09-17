@@ -322,7 +322,7 @@ export default async function PublicProfile({ params }: Props) {
           className="mx-auto inline-flex items-center justify-center gap-2 rounded-full bg-white/90 backdrop-blur-md px-4 py-2 text-[11px] font-semibold tracking-wide shadow-xl ring-1 ring-black/5 hover:scale-105 transition-all text-zinc-900"
         >
           <Globe className="size-3 text-[#f97316]" />
-          oneprofile.me/{profile.username}
+          {process.env.NEXT_PUBLIC_APP_URL}/{profile.username}
         </a>
       </div>
       

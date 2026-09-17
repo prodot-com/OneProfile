@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { requireUserAndProfile } from "@/lib/session";
-import ProfileEditForm from "@/components/dashboard/ProfileEditForm";
+import { DesignPage } from "@/components/dashboard/design/DesignPage";
 
 export default async function AppearancePage() {
   const { profile } = await requireUserAndProfile();
@@ -16,8 +16,8 @@ export default async function AppearancePage() {
   ]);
 
   return (
-    <div className="split-layout lg:h-full lg:flex lg:flex-col lg:min-h-0 lg:px-12 w-full">
-      <ProfileEditForm
+    <div className="split-layout lg:h-full lg:flex lg:flex-col lg:min-h-0 lg:px-4 w-full">
+      <DesignPage
         profile={{
           id: profile.id,
           username: profile.username,
@@ -28,7 +28,7 @@ export default async function AppearancePage() {
           website: profile.website,
           theme: profile.theme,
           accentColor: profile.accentColor,
-          backgroundColor: profile.backgroundColor,
+          backgroundColor: profile.backgroundColor || undefined,
           buttonColor: profile.buttonColor,
           buttonTextColor: profile.buttonTextColor,
           buttonStyle: profile.buttonStyle,
