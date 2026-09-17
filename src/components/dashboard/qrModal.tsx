@@ -60,7 +60,7 @@ export default function QRModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="relative w-full max-w-[400px] overflow-hidden rounded-[2rem] bg-white shadow-2xl ring-1 ring-black/5"
+            className="relative w-full max-w-[400px] overflow-hidden rounded-[1rem] bg-white shadow-2xl ring-1 ring-black/5"
           >
             <div className="flex items-center justify-between border-b border-[#e5e2dc] px-6 py-5 bg-[#fafafa]/50">
               <div className="flex items-center gap-2.5">

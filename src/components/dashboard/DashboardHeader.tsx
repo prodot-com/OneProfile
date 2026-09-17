@@ -56,7 +56,7 @@ export default function DashboardHeader({ profile }: DashboardProps) {
           <div className="font-semibold text-[#1a1a1a] text-sm">
             {profile.displayName}
           </div>
-          <div className="text-xs text-[#6b6b6b]">{profileUrl}</div>
+          <div className="text-xs text-[#6b6b6b]">{`oneprofile.../${profile.username}`}</div>
         </div>
         <div className="flex items-center gap-1.5 pl-3 border-l border-[#e5e2dc]">
           {qrCode && (
