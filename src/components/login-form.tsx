@@ -123,7 +123,7 @@ export function LoginForm({
                     : "Login to your OneProfile account"}
                 </p>
               </div>
-
+ 
               {/* Error */}
               {error && (
                 <div className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm text-red-700">
