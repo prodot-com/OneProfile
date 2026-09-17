@@ -17,10 +17,12 @@ import {
   Trash2,
   X,
   Check,
+  LogIn,
 } from "lucide-react";
+import { LuGithub } from "react-icons/lu";
+import { FaGoogle } from "react-icons/fa6";
 import { signOut } from "@/lib/auth-client";
 import { updateProfile } from "@/services/profile";
-import { Profile } from "@prisma/client";
 
 interface SettingsProps {
   user: {
@@ -35,10 +37,12 @@ interface SettingsProps {
     avatar: string;
     displayName: string;
   };
+  account:{
+    providerId?: string;
+  }
   sessionCount: number;
 }
 
-/* ─── Custom Toggle ─── */
 function Toggle({
   checked,
   onChange,
@@ -68,7 +72,6 @@ function Toggle({
   );
 }
 
-/* ─── Section Card ─── */
 function SettingsCard({
   icon: Icon,
   title,
@@ -135,7 +138,7 @@ function InfoRow({
 }: {
   icon: React.ElementType;
   label: string;
-  value: string;
+  value: React.ReactNode;
 }) {
   return (
     <div className="flex items-center justify-between py-4">
@@ -143,17 +146,22 @@ function InfoRow({
         <Icon className="size-4.5 text-[#1a1a1a]" />
         <span className="text-sm font-semibold text-[#1a1a1a]">{label}</span>
       </div>
-      <span className="text-sm font-medium text-[#6b6b6b]">{value}</span>
+      {typeof value === "string" ? (
+        <span className="text-sm font-medium text-[#6b6b6b]">{value}</span>
+      ) : (
+        value
+      )}
     </div>
   );
 }
 
 /* ─── MAIN SETTINGS PAGE ─── */
 
-export default function SettingsPage({
+export default function AccountsPage({
   user,
   profile,
   sessionCount,
+  account
 }: SettingsProps) {
   const router = useRouter();
   const [isPublic, setIsPublic] = useState(profile.isPublic);
@@ -167,6 +175,33 @@ export default function SettingsPage({
     month: "long",
     day: "numeric",
   });
+
+  const getProviderDisplay = (providerId?: string) => {
+    switch (providerId?.toLowerCase()) {
+      case "github":
+        return (
+          <div className="flex items-center gap-2 rounded-lg border border-[#e5e2dc] bg-[#fafafa]/80 px-3 py-1.5 shadow-sm">
+            <LuGithub className="size-3.5 text-[#1a1a1a]" />
+            <span className="text-xs font-semibold text-[#1a1a1a]">GitHub</span>
+          </div>
+        );
+      case "google":
+        return (
+          <div className="flex items-center gap-2 rounded-lg border border-[#e5e2dc] bg-[#fafafa]/80 px-3 py-1.5 shadow-sm">
+            <FaGoogle className="size-3.5 text-[#ea4335]" />
+            <span className="text-xs font-semibold text-[#1a1a1a]">Google</span>
+          </div>
+        );
+      case "credential":
+      default:
+        return (
+          <div className="flex items-center gap-2 rounded-lg border border-[#e5e2dc] bg-[#fafafa]/80 px-3 py-1.5 shadow-sm">
+            <Mail className="size-3.5 text-[#6b6b6b]" />
+            <span className="text-xs font-semibold text-[#1a1a1a]">Email</span>
+          </div>
+        );
+    }
+  };
 
   async function handlePrivacyToggle(value: boolean) {
     setIsPublic(value);
@@ -228,6 +263,11 @@ export default function SettingsPage({
             icon={Globe}
             label="Username"
             value={`@${profile.username}`}
+          />
+          <InfoRow 
+            icon={LogIn} 
+            label="Sign-in Provider" 
+            value={getProviderDisplay(account?.providerId)} 
           />
           <InfoRow icon={Calendar} label="Joined" value={createdDate} />
         </div>

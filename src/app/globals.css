@@ -74,3 +74,28 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
+
+/* Global Interactive Cursor Reset */
+@layer base {
+  button,
+  a,
+  label,
+  select,
+  summary,
+  [role="button"],
+  [role="switch"],
+  [role="checkbox"],
+  [type="button"],
+  [type="submit"],
+  [type="reset"] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  button[disabled],
+  a[aria-disabled="true"],
+  [aria-disabled="true"],
+  [data-disabled] {
+    cursor: not-allowed;
+  }
+}

@@ -50,11 +50,19 @@ export async function requireProfile() {
 export async function requireUserAndProfile() {
   const session = await requireSession();
 
-  const profile = await prisma.profile.findUnique({
-    where: {
-      userId: session.user.id,
-    },
-  });
+  const [profile, account] = await Promise.all([
+    prisma.profile.findUnique({
+      where: {
+        userId: session.user.id,
+      },
+    }),
+
+    prisma.account.findFirst({
+      where: {
+        userId: session.user.id,
+      },
+    }),
+  ]);
 
   if (!profile) {
     redirect("/onboarding");
@@ -64,5 +72,6 @@ export async function requireUserAndProfile() {
     session,
     user: session.user,
     profile,
+    account,
   };
 }

@@ -284,7 +284,6 @@ export function LoginForm({
             </FieldGroup>
           </form>
 
-          {/* Right panel */}
           <div className="relative hidden w-full h-full bg-[#fdfaf5] md:block overflow-hidden">
             <div className="absolute inset-0 bg-[url('/signIn.png')] bg-cover bg-center mix-blend-multiply" />
             {/* <div className="absolute inset-0 bg-gradient-to-tr from-[#f97316]/20 via-transparent to-transparent pointer-events-none" /> */}

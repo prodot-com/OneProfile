@@ -1,16 +1,16 @@
 import { prisma } from "@/lib/prisma";
 import { requireUserAndProfile } from "@/lib/session";
-import SettingsPage from "@/components/settings/SettingsPage";
+import AccountsPage from "@/components/settings/SettingsPage";
 
 export default async function Page() {
-  const { user, profile } = await requireUserAndProfile();
+  const { user, profile, account } = await requireUserAndProfile();
   // console.log(profile);
   const sessionCount = await prisma.session.count({
     where: { userId: user.id },
   });
 
   return (
-    <SettingsPage
+    <AccountsPage
       user={{
         id: user.id,
         name: user.name,
@@ -22,6 +22,9 @@ export default async function Page() {
         isPublic: profile.isPublic,
         avatar: profile.avatar ?? "/avatar.jpeg",
         displayName: profile.displayName,
+      }}
+      account={{
+        providerId: account?.providerId,
       }}
       sessionCount={sessionCount}
     />

@@ -118,7 +118,7 @@ export default function Sidebar({
                     {profile.displayName}
                   </span>
                   <span className="text-xs text-[#6b6b6b] truncate">
-                    {profile.username}@example.com
+                    {user?.email}
                   </span>
                 </div>
               </div>
@@ -135,7 +135,7 @@ export default function Sidebar({
                   <CreditCard className="size-4 text-[#6b6b6b]" />
                   Billing
                 </button> */}
-                <button className="w-full text-left px-3 py-2 text-sm text-[#1a1a1a] font-medium rounded-lg hover:bg-black/5 flex items-center gap-2 transition-colors">
+                <button className="w-full cursor-pointer text-left px-3 py-2 text-sm text-[#1a1a1a] font-medium rounded-lg hover:bg-black/5 flex items-center gap-2 transition-colors">
                   <Bell className="size-4 text-[#6b6b6b]" />
                   Notifications
                 </button>
@@ -143,7 +143,7 @@ export default function Sidebar({
               <div className="p-1 border-t border-[#f0f0f0]">
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left px-3 py-2 text-sm text-red-600 font-medium rounded-lg hover:bg-red-50 flex items-center gap-2 transition-colors"
+                  className="w-full cursor-pointer text-left px-3 py-2 text-sm text-red-600 font-medium rounded-lg hover:bg-red-50 flex items-center gap-2 transition-colors"
                 >
                   <LogOut className="size-4" />
                   Log out
