@@ -183,7 +183,7 @@ export function AddLinkModal({ open, onClose, onSuccess, onChange }: AddLinkModa
               disabled={loading}
               className="rounded-xl bg-[#1a1a1a] px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-[#333] active:scale-[0.98] disabled:opacity-60 cursor-pointer"
             >
-              {loading ? "Creating..." : "Create Link"}
+              {loading ? "Fetching website preview..." : "Create Link"}
             </button>
           </div>
         </form>
@@ -240,7 +240,7 @@ export function EditLinkModal({
 
   if (!open || !link || !mounted) return null;
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent, forceRefresh = false) {
     e.preventDefault();
     if (!link) return;
     setLoading(true);
@@ -250,6 +250,7 @@ export function EditLinkModal({
         url,
         description,
         active,
+        refreshMetadata: forceRefresh,
       });
       if (!res.success) {
         alert(res.message);
@@ -275,7 +276,7 @@ export function EditLinkModal({
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-xl rounded-[1.5rem] bg-white shadow-2xl border border-[#e5e2dc]"
       >
-        <div className="flex items-center justify-between border-b border-[#f0f0f0] p-6">
+          <div className="flex items-center justify-between border-b border-[#f0f0f0] p-6">
           <div>
             <h2 className="text-xl font-serif font-semibold text-[#1a1a1a]">Edit Link</h2>
             <p className="mt-1 text-sm text-[#6b6b6b]">
@@ -290,7 +291,7 @@ export function EditLinkModal({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5 p-6">
+        <form onSubmit={(e) => handleSubmit(e, false)} className="space-y-5 p-6">
           <div>
             <label className="mb-1.5 block text-sm font-medium text-zinc-700">
               Title
@@ -335,6 +336,18 @@ export function EditLinkModal({
             <Toggle checked={active} onChange={setActive} />
           </div>
           <div className="flex justify-end gap-3 pt-1">
+            {(!link.lastMetadataFetch ||
+              (new Date().getTime() - new Date(link.lastMetadataFetch).getTime()) >
+                30 * 24 * 60 * 60 * 1000) && (
+              <button
+                type="button"
+                onClick={(e) => handleSubmit(e, true)}
+                disabled={loading}
+                className="rounded-xl border border-zinc-200 bg-white px-5 py-2.5 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-50 disabled:opacity-50"
+              >
+                {loading ? "Fetching..." : "Refresh Metadata"}
+              </button>
+            )}
             <button
               type="button"
               onClick={onClose}
@@ -343,6 +356,7 @@ export function EditLinkModal({
               Cancel
             </button>
             <button
+              type="submit"
               disabled={loading}
               className="rounded-xl bg-[#1a1a1a] px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-[#333] active:scale-[0.98] disabled:opacity-60 cursor-pointer"
             >

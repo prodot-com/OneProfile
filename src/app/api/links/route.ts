@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { requireSession } from "@/lib/session";
 import { NextRequest, NextResponse } from "next/server";
+import { fetchOpenGraph } from "@/lib/og";
 
 export async function GET(_req: NextRequest) {
   try {
@@ -122,6 +123,14 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // Fetch Open Graph Metadata
+    let ogData = null;
+    try {
+      ogData = await fetchOpenGraph(url);
+    } catch (err) {
+      console.error("OG Fetch Error:", err);
+    }
+
     const link = await prisma.link.create({
       data: {
         title,
@@ -133,6 +142,13 @@ export async function POST(req: NextRequest) {
         startAt: startAt ? new Date(startAt) : null,
         endAt: endAt ? new Date(endAt) : null,
         profileId: profile.id,
+
+        ogTitle: ogData?.title || null,
+        ogDescription: ogData?.description || null,
+        ogImage: ogData?.image || null,
+        ogSiteName: ogData?.siteName || null,
+        favicon: ogData?.favicon || null,
+        lastMetadataFetch: new Date(),
       },
     });
 

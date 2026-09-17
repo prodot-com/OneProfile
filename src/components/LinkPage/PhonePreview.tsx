@@ -21,6 +21,7 @@ import { Theme, ButtonStyle, FontFamily, SocialPlatform } from "@prisma/client";
 import { getFontClass } from "@/lib/fonts";
 import { SOCIAL_ICONS } from "./SocialSection";
 import { PhoneMockupCard } from "@/components/ui/phoneMockup";
+import { LinkPreviewCard } from "@/components/ui/LinkPreviewCard";
 
 
 interface PreviewLink {
@@ -29,6 +30,11 @@ interface PreviewLink {
   url: string;
   active: boolean;
   description?: string | null;
+  ogTitle?: string | null;
+  ogDescription?: string | null;
+  ogImage?: string | null;
+  ogSiteName?: string | null;
+  favicon?: string | null;
 }
 
 interface PreviewSocial {
@@ -138,7 +144,7 @@ export default function PhonePreview({
           className={`h-full w-full overflow-y-auto overflow-x-hidden scrollbar-none relative ${themeClasses} ${fontClass}`}
         >
           {/* Banner */}
-          <div className="relative h-20 w-full" style={{ backgroundColor: accColor }}>
+          <div className="relative h-20 w-full rounded-b-2xl overflow-hidden" style={{ backgroundColor: accColor }}>
             {profile.banner ? (
               <img
                 src={profile.banner}
@@ -153,7 +159,7 @@ export default function PhonePreview({
           {/* Avatar + Info */}
           <div className="relative -mt-8 flex flex-col items-center px-4">
             {/* Avatar */}
-            <div className="size-16 overflow-hidden rounded-full border-[3px] border-white bg-white shadow-sm ring-1 ring-zinc-900/5">
+            <div className="size-20 overflow-hidden rounded-full border-[3px] border-white bg-white shadow-sm ring-1 ring-zinc-900/5">
               {profile.avatar ? (
                 <img
                   src={profile.avatar}
@@ -217,28 +223,14 @@ export default function PhonePreview({
               </div>
             ) : (
               activeLinks.map((link) => (
-                <div
+                <LinkPreviewCard
                   key={link.id}
-                  className="group relative flex items-center justify-between px-3 py-2.5 shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all hover:brightness-110"
-                  style={{ backgroundColor: btnColor, borderRadius: btnRadius, color: btnTextColor }}
-                >
-                  <div className="min-w-0 flex-1 pr-2">
-                    <p className="truncate text-[11px] font-medium">
-                      {link.title}
-                    </p>
-                    {link.description && (
-                      <p className="truncate text-[9px] opacity-70 mt-0.5">
-                        {link.description}
-                      </p>
-                    )}
-                  </div>
-                  <div 
-                    className="flex size-5 shrink-0 items-center justify-center rounded-full opacity-50 transition-opacity group-hover:opacity-100"
-                    style={{ backgroundColor: accColor }}
-                  >
-                    <ExternalLink className="size-2.5" style={{ color: btnTextColor }} />
-                  </div>
-                </div>
+                  link={link}
+                  btnColor={btnColor}
+                  btnTextColor={btnTextColor}
+                  btnRadius={btnRadius}
+                  accColor={accColor}
+                />
               ))
             )}
           </div>

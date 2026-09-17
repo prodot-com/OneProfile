@@ -24,6 +24,7 @@ import {
 } from "react-icons/fa";
 import { FaHashnode, FaXTwitter } from "react-icons/fa6";
 import { SiThreads } from "react-icons/si";
+import { LinkPreviewCard } from "@/components/ui/LinkPreviewCard";
 
 interface Props {
   params: Promise<{
@@ -171,7 +172,7 @@ export default async function PublicProfile({ params }: Props) {
       {themeSetup.bgLayer}
 
       {/* Main container with standard entrance animation */}
-      <div className="mx-auto w-full max-w-[680px] min-h-screen md:py-10 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both flex flex-col relative z-10">
+      <div className="mx-auto w-full max-w-[500px] min-h-screen md:py-10 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both flex flex-col relative z-10">
         
         {/* Unified Card Wrapper */}
         <div className={`relative flex-1 flex flex-col overflow-hidden w-full ${themeSetup.cardBg}`}>
@@ -188,7 +189,7 @@ export default async function PublicProfile({ params }: Props) {
 
           {/* ── Banner ── */}
           <div 
-            className="relative h-44 sm:h-56 w-full shrink-0" 
+            className="relative h-44 sm:h-56 w-full shrink-0 overflow-hidden rounded-b-[2rem] sm:rounded-b-[3rem]" 
             style={{ backgroundColor: profile.banner ? 'transparent' : accColor }}
           >
             {profile.banner ? (
@@ -295,40 +296,20 @@ export default async function PublicProfile({ params }: Props) {
             </div>
           ) : (
             profile.links.map((link, index) => (
-              <a
+              <div 
                 key={link.id}
-                href={`/r/${link.id}`}
-                className="group relative flex items-center justify-between p-4 sm:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-offset-2 overflow-hidden"
-                style={{ 
-                  backgroundColor: btnColor, 
-                  color: btnTextColor, 
-                  borderRadius: btnRadius,
-                  /* Staggered entry animation */
+                style={{
                   animation: `slide-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${0.5 + index * 0.05}s both`
                 }}
               >
-                {/* Subtle shine effect on hover */}
-                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 ease-in-out group-hover:translate-x-full" />
-                
-                <div className="flex flex-col pr-6 shrink relative z-10 w-full text-center items-center justify-center">
-                  <h2 className="text-[15px] sm:text-base font-semibold tracking-tight">
-                    {link.title}
-                  </h2>
-                  {link.description && (
-                    <p className="mt-1 text-xs sm:text-sm opacity-70 font-medium">
-                      {link.description}
-                    </p>
-                  )}
-                </div>
-                
-                {/* Hover Arrow */}
-                <div 
-                  className="absolute right-4 flex size-8 shrink-0 items-center justify-center rounded-full opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0"
-                  style={{ backgroundColor: accColor }}
-                >
-                  <ExternalLink className="size-4" style={{ color: btnTextColor }} />
-                </div>
-              </a>
+                <LinkPreviewCard
+                  link={link}
+                  btnColor={btnColor}
+                  btnTextColor={btnTextColor}
+                  btnRadius={btnRadius}
+                  accColor={accColor}
+                />
+              </div>
             ))
           )}
           </div>

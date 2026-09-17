@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { requireSession, requireUserAndProfile } from "@/lib/session";
+import { fetchOpenGraph } from "@/lib/og";
 
 interface RouteParams {
   params: Promise<{
@@ -27,7 +28,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 
     const body = await req.json();
 
-    const { title, url, description, icon, active, startAt, endAt } = body;
+    const { title, url, description, icon, active, startAt, endAt, refreshMetadata } = body;
 
     const profile = await prisma.profile.findUnique({
       where: {
@@ -62,6 +63,23 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       );
     }
 
+    let ogUpdateData: any = {};
+    if (existingLink.url !== url || refreshMetadata) {
+      try {
+        const ogData = await fetchOpenGraph(url);
+        ogUpdateData = {
+          ogTitle: ogData.title || null,
+          ogDescription: ogData.description || null,
+          ogImage: ogData.image || null,
+          ogSiteName: ogData.siteName || null,
+          favicon: ogData.favicon || null,
+          lastMetadataFetch: new Date(),
+        };
+      } catch (err) {
+        console.error("OG Update Fetch Error:", err);
+      }
+    }
+
     const updatedLink = await prisma.link.update({
       where: {
         id,
@@ -74,6 +92,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
         active,
         startAt: startAt ? new Date(startAt) : null,
         endAt: endAt ? new Date(endAt) : null,
+        ...ogUpdateData,
       },
     });
 

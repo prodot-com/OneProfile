@@ -8,6 +8,7 @@ export interface LinkPayload {
   active?: boolean;
   startAt?: string | null;
   endAt?: string | null;
+  refreshMetadata?: boolean;
 }
 
 const BASE_URL = "/api/links";
