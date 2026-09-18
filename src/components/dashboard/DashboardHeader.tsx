@@ -57,68 +57,42 @@ export default function DashboardHeader({ profile }: DashboardProps) {
       </div>
 
       {/* Profile card */}
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-2 bg-white/80 backdrop-blur-md border border-[#e5e2dc] p-3 md:p-4 rounded-lg shadow-sm transition-all hover:shadow-md">
+      <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
+        <div className="flex items-center gap-2 bg-white/80 backdrop-blur-md border border-[#e5e2dc] p-3 md:p-4 rounded-lg shadow-sm transition-all hover:shadow-md w-full sm:w-auto">
           <img
             src={profile?.avatar || "/avatar.png"}
             alt={profile.displayName}
-            className="w-12 h-12 rounded-full border border-[#f0f0f0] bg-[#fafafa] object-cover shadow-sm"
+            className="w-12 h-12 rounded-full border border-[#f0f0f0] bg-[#fafafa] object-cover shadow-sm shrink-0"
           />
-          <div className="flex-col gap-0">
-            <div className="font-semibold text-[#1a1a1a] text-sm">
+          <div className="flex-col gap-0 min-w-0">
+            <div className="font-semibold text-[#1a1a1a] text-sm truncate">
               {profile.displayName}
             </div>
             <div className="flex items-center gap-2">
-              <div className="text-[12px] text-[#6b6b6b]">
+              <div className="text-[12px] text-[#6b6b6b] truncate">
                 {`oneprofile.../${profile.username}`}
               </div>
-              {/* <button
-                onClick={copyUrl}
-                className={`rounded-xl transition-all duration-300 ${
-                  copied
-                    ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
-                    : "text-[#6b6b6b] border border-transparent hover:text-[#1a1a1a] hover:bg-white hover:border-[#e5e2dc] hover:shadow-sm"
-                }`}
-                aria-label="Copy URL"
-                title={copied ? "Copied!" : "Copy URL"}
-              >
-                {copied ? (
-                  <Check className="w-4 h-4" />
-                ) : (
-                  <Copy className="w-4 h-4" />
-                )}
-              </button> */}
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-1">
-          <CopyButton value={profileUrl} className="" />
-          <a href={profileUrl} target="_blank">
-            <ThreeDButton variant="solid" size="sm" className="shadow-none">
-              <ArrowUpRight /> Continue
+        <div className="flex flex-col gap-1 w-full sm:w-auto sm:flex-col sm:items-center">
+          <CopyButton value={profileUrl} className="w-full sm:w-auto justify-center" />
+          <a href={profileUrl} target="_blank" className="w-full sm:w-auto">
+            <ThreeDButton variant="solid" size="sm" className="shadow-none w-full justify-center">
+              <ArrowUpRight className="mr-1 h-4 w-4" /> Continue
             </ThreeDButton>
           </a>
         </div>
 
-        <div className="flex items-center border border-[#e5e2dc] p-3 rounded-lg bg-white/80 backdrop-blur-md border border-[#e5e2dc] shadow-sm transition-all hover:shadow-md">
+        <div className="flex items-center border border-[#e5e2dc] p-3 rounded-lg bg-white/80 backdrop-blur-md shadow-sm transition-all hover:shadow-md shrink-0">
           {qrCode && (
             <img
               src={qrCode}
               alt="QR"
               onClick={() => setShowQR(true)}
-              className="w-13 h-13 rounded-lg cursor-pointer hover:scale-105 transition"
+              className="w-10 h-10 md:w-13 md:h-13 rounded-lg cursor-pointer hover:scale-105 transition"
             />
           )}
-
-          {/* <a
-            href={profileUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2.5 bg-[#1a1a1a] text-white text-xs font-medium rounded-xl hover:bg-[#333] transition-all whitespace-nowrap active:scale-[0.98] shadow-sm"
-          >
-            <ExternalLink className="w-3.5 h-3.5" />
-            Visit
-          </a> */}
         </div>
       </div>
       <QRModal

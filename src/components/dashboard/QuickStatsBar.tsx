@@ -66,7 +66,7 @@ export default function QuickStatsBar({
   };
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {stats.map((s, i) => {
         const Icon = s.icon;
         return (
@@ -94,9 +94,7 @@ export default function QuickStatsBar({
 
             {/* Value */}
             <p
-              className={`mt-1 ${
-                s.key === "top" ? "text-xl truncate" : "text-3xl"
-              } font-serif tracking-tight text-[#1a1a1a]`}
+              className={`mt-1 text-xl sm:text-2xl md:text-3xl font-serif tracking-tight text-[#1a1a1a] truncate`}
             >
               {values[s.key]}
             </p>

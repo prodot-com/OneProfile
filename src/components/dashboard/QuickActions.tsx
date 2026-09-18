@@ -49,7 +49,7 @@ export default function QuickActions({ profileUrl }: QuickActionsProps) {
       <h3 className="text-lg font-serif font-semibold text-[#1a1a1a] mb-5">
         Quick Actions
       </h3>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {actions.map((a) => {
           const Icon = a.icon;
           return (
