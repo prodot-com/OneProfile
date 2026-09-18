@@ -53,77 +53,75 @@ export default function QRModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-white/10 backdrop-blur-sm"
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="relative w-full max-w-[400px] overflow-hidden rounded-[1rem] bg-white shadow-2xl ring-1 ring-black/5"
+            className="relative w-full max-w-[420px] overflow-hidden rounded-[1.5rem] bg-white/90 shadow-2xl ring-1 ring-white/10"
           >
-            <div className="flex items-center justify-between border-b border-[#e5e2dc] px-6 py-5 bg-[#fafafa]/50">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-100 text-orange-600">
-                  <QrCode className="size-4" />
+            <div className="p-6">
+              {/* Top line */}
+              <div className="flex justify-between items-start">
+                <div className="flex size-11 items-center justify-center rounded-[14px] bg-white/5 border border-white/5">
+                  <QrCode className="size-5 text-zinc-900" />
                 </div>
-                <h2 className="text-[17px] font-semibold text-[#1a1a1a]">
-                  Share Profile
+                <button
+                  onClick={onClose}
+                  className="flex size-8 items-center justify-center rounded-lg bg-white/5 border border-white/5 text-zinc-900 hover:text-black hover:bg-white/10 transition-all cursor-pointer"
+                >
+                  <X className="size-4" />
+                </button>
+              </div>
+
+              {/* Header */}
+              <div className="mt-6 mb-8">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="size-1.5 rounded-full bg-red-500" />
+                  {/* <span className="text-[10px] font-bold tracking-[0.2em] text-zinc-400 uppercase">
+                    OneProfile Notice
+                  </span> */}
+                </div>
+                <h2 className="text-2xl font-bold text-black leading-[1.3]">
+                  Kindly bookmark your <br /> new <span className="italic text-orange-500">official</span> profile
                 </h2>
               </div>
+
+
+              {/* QR Card */}
+              <div className="flex gap-4 p-4 rounded-xl border border-white/10 bg-white/[0.03] mb-4">
+                <div className="shrink-0 bg-white p-2 rounded-xl">
+                  {qr ? (
+                    <img src={qr} alt="QR" className="size-[88px] rounded-lg" />
+                  ) : (
+                    <div className="size-[88px] rounded-lg bg-zinc-200 animate-pulse" />
+                  )}
+                </div>
+                <div className="flex flex-col justify-center">
+                  
+                  <p className="text-[13px] text-zinc-900 leading-snug mb-3">
+                    Save this QR & scan to reach the official site if you can't access it.
+                  </p>
+                  <button
+                    onClick={download}
+                    className="self-start flex items-center gap-2 px-4 py-1.5 rounded-lg border border-orange-500/30 text-orange-400 hover:bg-orange-500/10 transition-colors text-xs font-semibold cursor-pointer"
+                  >
+                    <Download className="size-3.5" />
+                    Save QR Code
+                  </button>
+                </div>
+              </div>
+
+              {/* Dismiss */}
               <button
                 onClick={onClose}
-                className="flex h-8 w-8 items-center justify-center rounded-full text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 transition-colors cursor-pointer"
+                className="w-full flex justify-between items-center px-4 py-3.5 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] transition-colors text-sm font-medium text-white cursor-pointer mt-1"
               >
-                <X className="size-4" />
+                Dismiss
+                <span className="text-zinc-600 font-mono text-[10px] tracking-widest">esc</span>
               </button>
-            </div>
-
-            <div className="p-8 flex flex-col items-center bg-white">
-              <div className="relative inline-flex p-3 rounded-3xl bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)] ring-1 ring-black/5 mb-6">
-                {qr ? (
-                  <img
-                    src={qr}
-                    alt="QR Code"
-                    className="w-48 h-48 rounded-xl"
-                  />
-                ) : (
-                  <div className="w-48 h-48 rounded-xl bg-zinc-50 animate-pulse" />
-                )}
-              </div>
-
-              <div className="w-full bg-zinc-50 rounded-xl px-4 py-2.5 border border-zinc-100 flex items-center justify-center mb-8">
-                <span className="text-[13px] text-zinc-500 truncate select-all">
-                  {profileUrl}
-                </span>
-              </div>
-
-              <div className="flex w-full gap-3">
-                <button
-                  onClick={copy}
-                  className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-[#e5e2dc] bg-white py-3 text-[14px] font-medium text-[#1a1a1a] hover:bg-zinc-50 hover:border-zinc-300 transition-all cursor-pointer"
-                >
-                  {copied ? (
-                    <>
-                      <Check className="size-4 text-emerald-500" />
-                      <span className="text-emerald-600">Copied</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="size-4 text-zinc-400" />
-                      Copy Link
-                    </>
-                  )}
-                </button>
-
-                <button
-                  onClick={download}
-                  className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-400 py-3 text-[14px] font-medium text-white shadow-lg shadow-orange-500/25 hover:from-orange-600 hover:to-orange-500 hover:shadow-orange-600/25 transition-all cursor-pointer"
-                >
-                  <Download className="size-4" />
-                  Save QR
-                </button>
-              </div>
             </div>
           </motion.div>
         </div>
